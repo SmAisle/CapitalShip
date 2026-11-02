@@ -247,11 +247,13 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .seg button.sel{background:var(--ink);color:var(--paper)}
 .set.off{opacity:.45;pointer-events:none}
 .set small{display:block;font:500 11px var(--sans);color:var(--fade);margin-top:4px}
+#modeWrap{width:100%;display:flex;flex-direction:column;gap:5px}#modeWrap small{font:500 12px var(--sans);color:var(--ink2);min-height:16px}
+#hardTag{margin-right:6px;padding:1px 6px;border-radius:3px;background:var(--ink);color:var(--paper);font:800 10px var(--sans);letter-spacing:.08em}
 #mHub{background:var(--hi);color:var(--hiInk);border:2px solid var(--ink);text-transform:none;letter-spacing:0}
 .mlinks{display:flex;justify-content:center;gap:8px;font:700 12px var(--sans);color:var(--ink2)}.mlinks button{background:none;border:0;padding:4px;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px}
 .toast{position:fixed;left:50%;top:40%;z-index:45;transform:translate(-50%,-50%);background:var(--card);border:3px solid var(--ink);border-radius:8px;padding:10px 18px;box-shadow:5px 5px 0 rgba(0,0,0,.2);pointer-events:none;text-align:center;font:700 14px var(--sans);animation:toast 2s ease-in-out both;max-width:88%}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,-30%)}12%,80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-80%)}}
-@media (max-height:720px){#app{gap:4px}.k{height:37px}#msg{height:30px}.card{padding:12px 14px;gap:7px}.card h2{font-size:23px}.card li{font-size:14.5px;line-height:1.35}.card ul{gap:8px}.go{padding:10px}#qText{font-size:16.5px}.big{font-size:42px}}
+@media (max-height:720px){#menu .card{gap:6px}#menu .go{padding:8px}#app{gap:4px}.k{height:37px}#msg{height:30px}.card{padding:12px 14px;gap:7px}.card h2{font-size:23px}.card li{font-size:14.5px;line-height:1.35}.card ul{gap:8px}.go{padding:10px}#qText{font-size:16.5px}.big{font-size:42px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -277,7 +279,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <div class="box"><small>Captured</small><b id="sunkCount">0/5</b></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
   </div>
-  <div class="diff"><span>Theme</span><em id="themeName"></em></div>
+  <div class="diff"><b id="hardTag" hidden>Hard</b><span>Theme</span><em id="themeName"></em></div>
   <div id="msg"></div>
   <div id="stage"><div id="board"></div></div>
   <div id="tray"></div>
@@ -303,6 +305,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="mh"><h1>Capital Ship</h1><div class="ln"><span id="cvDate"></span><span id="cvNo"></span></div></div>
   <p class="tag">Five hidden words. Call letters to find them, then capture them.</p>
   <button id="cvStats" hidden aria-label="Your stats"></button>
+  <div id="modeWrap"><div class="seg" id="segMode"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div><small id="modeNote"></small></div>
   <button class="go" id="coverGo">Play today's puzzle</button>
   <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to play</button><span>·</span><button id="coverDemo">Demo</button></div>
   <button class="go alt" id="coverMake">Make your own</button>
@@ -328,6 +331,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <li><b>Gray key</b> = no more of that letter.</li>
     <li><b>Sonar +1:</b> ping any square once a game, free.</li>
     <li>After <b id="howCalls">15</b> calls, <b>fill in the words</b>. One wrong guess ends the game.</li>
+    <li><b>Hard:</b> fill-in letters are checked as you type. One wrong letter ends the game.</li>
     <li><b>Stars:</b> 3 words ⭐ · 4 words ⭐⭐ · all 5 ⭐⭐⭐</li>
   </ul>
   <button class="go" id="helpDemo">Watch the demo</button>
@@ -345,24 +349,32 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="go alt" id="mSent" hidden>Puzzles I've sent</button>
   <button class="go alt" id="mTwo">Two players</button>
   <button class="go alt" id="mHub" hidden>‹ smAisle Daily</button>
+  <button class="go alt" id="mSet">Settings</button>
+  <div class="ver" id="mVer"></div>
+</div></div>
+
+<div class="sheet" id="settings" hidden><div class="card" style="position:relative">
+  <button class="x" data-close aria-label="Close">✕</button>
+  <h2 style="text-align:left">Settings</h2>
   <div class="set"><h3>Style</h3><div class="seg" id="segLook"><button data-v="smaisle">smAisle</button><button data-v="classic">Classic</button></div></div>
   <div class="set" id="setDark"><h3>Dark mode</h3><div class="seg" id="segTheme"><button data-v="off">Off</button><button data-v="on">On</button><button data-v="auto">Match phone</button></div><small id="darkNote">On uses Navy. Match phone switches with your phone.</small></div>
   <div class="set"><h3>Sound</h3><div class="seg" id="segSound"><button data-v="on">On</button><button data-v="off">Off</button></div></div>
   <div class="mlinks"><button id="mFront">Front page</button><span>·</span><button id="mIntro">Replay the intro</button><span>·</span><button id="mTerms">Terms</button></div>
   <a class="smline" id="mSm" href="https://smaisle.app/" style="justify-content:center;border-top:1px solid var(--ink);padding-top:10px"><i class="smico"></i><b>smAisle</b><em>See our other games ›</em></a>
-  <div class="ver" id="mVer"></div>
+  <button class="go" id="setBack">Back to the menu</button>
 </div></div>
 
 <div class="sheet" id="past" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
   <h2>Archive</h2>
-  <p style="font-size:13px">Play any puzzle back to No. 1. They count, but they're marked as played late.</p>
+  <p style="font-size:13px"><span id="pastMode"></span>Play any puzzle back to No. 1. They count, but they're marked as played late.</p>
   <div id="pastList"></div>
 </div></div>
 
 <div class="sheet" id="stats" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
   <h2>Your Stats</h2>
+  <div class="seg" id="segStats"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div>
   <div class="statgrid" id="statgrid"></div>
   <div class="shead">Words captured</div>
   <div class="dist" id="dist"></div>
@@ -371,7 +383,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 
 <div class="sheet" id="guessAsk" hidden><div class="card" style="text-align:center">
   <h2>Start guessing?</h2>
-  <p style="font:500 16px/1.45 var(--sans)">You still have <b id="gaCalls"></b>. Once you start guessing you can't call more letters, and one wrong guess ends the game.</p>
+  <p style="font:500 16px/1.45 var(--sans)">You still have <b id="gaCalls"></b>. Once you start guessing you can't call more letters, and one wrong <span id="gaRule">guess</span> ends the game.</p>
   <div class="donegrid"><button class="go alt" id="gaNo">Keep calling</button><button class="go" id="gaYes">Start guessing</button></div>
 </div></div>
 
@@ -643,7 +655,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='29',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='30',VDATE='Nov 2',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -730,16 +742,20 @@ async function checkIn(kind){
   if(!WEB&&!window.CS_TEST)return;
   const st=streaks(hist),H=Object.values(hist),I=n=>({integerValue:String(Math.round(n)||0)}),T=v=>({stringValue:String(v)}),M=m=>({mapValue:{fields:Object.fromEntries(Object.entries(m).map(([k,v])=>[k,I(v)]))}});
   const body={fields:{first:T(u.first),last:T(day),days:I(u.days),v:T(VERSION),opens:I(u.opens),plays:I(u.plays),done:I(H.length),wins:I(H.filter(h=>h.win).length),
-    best:I(H.reduce((a,h)=>Math.max(a,h.sunk||0),0)),streak:I(st.cur),terms:T(store.get(TERMS_KEY,'').slice(0,10)),desk:{booleanValue:innerWidth>=820},code:T(inviteCode()),t:I(Date.now()),o:M(u.o),p:M(u.p),r:M(u.r),mk:I(u.mk),sent:I(u.sent),cp:I(u.cp),cd:I(u.cd),rb:I(u.rb),sc:I(u.sc)}};
+    best:I(H.reduce((a,h)=>Math.max(a,h.sunk||0),0)),streak:I(st.cur),terms:T(store.get(TERMS_KEY,'').slice(0,10)),desk:{booleanValue:innerWidth>=820},code:T(inviteCode()),t:I(Date.now()),o:M(u.o),p:M(u.p),r:M(u.r),mk:I(u.mk),sent:I(u.sent),cp:I(u.cp),cd:I(u.cd),rb:I(u.rb),sc:I(u.sc),hd:I(Object.keys(store.json('cs-hist-h',{})).length),hw:I(Object.values(store.json('cs-hist-h',{})).filter(h=>h.win).length)}};
   try{await fetch(`https://firestore.googleapis.com/v1/projects/${FB_PROJ}/databases/(default)/documents/${GAME}_devices/${devId()}?key=${FB_KEY}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true})}catch(e){}
 }
 
 /* ---------- Saving ---------- */
-const skey=d=>'cs-d_'+d;
+/* Normal and Hard share the daily board but keep separate saved games, stats and streaks. */
+let MODE=store.get('cs-mode','normal')==='hard'?'hard':'normal';
+const HARD=()=>MODE==='hard'&&!CUSTOM&&!TWO&&!DEMO;
+const histKey=(m=MODE)=>m==='hard'?'cs-hist-h':'cs-hist';
+const skey=d=>'cs-d_'+d+(MODE==='hard'&&/^\d{4}-/.test(d)?'-h':'');
 function save(){if(!DEMO)store.put(skey(DAY.date),ST)}
 function loadState(date){const s=store.json(skey(date),null);return s&&s.calls?s:newState(CALLS)}
-function recordDay(){const hist=store.json('cs-hist',{});if(hist[DAY.date])return;
-  hist[DAY.date]={win:ST.win,left:ST.left,sunk:ST.sunk.length,calls:ST.calls.length,...(DAY.date!==TODAY?{late:1}:{})};store.put('cs-hist',hist);
+function recordDay(){const hist=store.json(histKey(),{});if(hist[DAY.date])return;
+  hist[DAY.date]={win:ST.win,left:ST.left,sunk:ST.sunk.length,calls:ST.calls.length,...(DAY.date!==TODAY?{late:1}:{})};store.put(histKey(),hist);
   if(DAY.date===TODAY)markDone()}
 /* smAisle Daily hub: add this game to localStorage 'smaisle_done' {"YYYY-MM-DD":["cs",...]} */
 function markDone(){try{const d=new Date(),day=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -760,7 +776,7 @@ function keyState(L){const called=ST.calls.some(x=>x.l===L),seen=DAY.letters.som
   if((called||seen)&&remaining(DAY,ST,L)===0)return 'gone';return called?'called':''}
 function draw(){
   if(DEMO){$('noLabel').textContent='';$('dateLabel').textContent=''}else if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')}
-  $('themeName').textContent=DAY.theme;
+  $('themeName').textContent=DAY.theme;$('hardTag').hidden=!HARD();
   $('callsLeft').textContent=TWO?ST.calls.length:ST.left;$('callBox').classList.toggle('low',!TWO&&ST.left<=3&&!ST.over&&!ST.guessing);
   $('sunkCount').textContent=ST.sunk.length+'/'+DAY.words.length;
   const rev=new Set(ST.rev);
@@ -799,9 +815,9 @@ function drawTiles(){const kn=known(DAY,ST,sel);let j=0;
 function say(h,hot){$('msg').innerHTML='<span>'+h+'</span>';$('msg').classList.toggle('hot',!!hot)}
 function stamp(t){const e=document.createElement('div');e.className='call'+(t.length>6?' sm':'');e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),1300)}
 const SONAR_MSG='<b>Use your Sonar</b> before guessing: tap any dark square.';
-const GUESS_MSG='<b>Guessing round:</b> tap a word below and fill in the blanks. One wrong guess ends the game.';
+const guessMsg=()=>HARD()?'<b>Hard:</b> tap a word and fill in the blanks. One wrong letter ends the game.':'<b>Guessing round:</b> tap a word below and fill in the blanks. One wrong guess ends the game.';
 function pickWord(wi){if(!(ST.guessing||TWO)||(TWO&&TWO.busy)||ST.over||!canTry(DAY,ST,wi))return;sel=sel===wi?-1:wi;typed='';lastLit=-1;justSunk=-1;draw();
-  say(sel>=0?`${blanks()} blank${blanks()===1?'':'s'} to fill. Gray letters can't be in them.`:GUESS_MSG)}
+  say(sel>=0?`${blanks()} blank${blanks()===1?'':'s'} to fill. Gray letters can't be in them.`:guessMsg())}
 
 /* ---------- Playing ---------- */
 $('board').onclick=e=>{const b=e.target.closest('.cell');if(!b||ST.over||(TWO&&TWO.busy))return;const c=+b.dataset.c,wi=DAY.own[c];
@@ -817,24 +833,24 @@ $('sonarBtn').onclick=()=>{if(!ST||ST.over||ST.sonar!=null||ST.needSonar||(TWO&&
 function doSonar(c){const was=!!ST.needSonar,r=sonarCell(DAY,ST,c);sonarArm=false;if(!r){draw();return say('Pick a dark square that isn’t lit yet.',was)}if(was)dropIn=true;(ST.log=ST.log||[]).push('📡');
   lastLit=r.cell;const wi=DAY.own[c];justSunk=r.hit&&ST.sunk.includes(wi)?wi:-1;typed='';sel=-1;const L=DAY.letters[c];
   say(!r.hit?'Sonar found an <b>empty</b> square.':justSunk>=0?`Sonar completed <b>${DAY.words[wi]}</b>.`:`Sonar found ${/[AEFHILMNORSX]/.test(L)?'an':'a'} <b>${L}</b>.`);
-  afterMove();stamp(!r.hit?'Empty':justSunk>=0?'Captured!':'Found!');SND.ping();setTimeout(()=>(!r.hit?SND.water:justSunk>=0?SND.sink:SND.hit)(),450);if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0&&!sonarArm)say(GUESS_MSG)},1600)}
+  afterMove();stamp(!r.hit?'Empty':justSunk>=0?'Captured!':'Found!');SND.ping();setTimeout(()=>(!r.hit?SND.water:justSunk>=0?SND.sink:SND.hit)(),450);if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0&&!sonarArm)say(guessMsg())},1600)}
 $('kb').onclick=e=>{const b=e.target.closest('.k');if(!b||b.disabled||(TWO&&TWO.busy))return;const k=b.dataset.k;
-  if(sel>=0){if(k==='back')typed=typed.slice(0,-1);else if(k==='enter')return doGuess();else if(typed.length<blanks())typed+=k;drawBar();return}
+  if(sel>=0){if(k==='back')typed=typed.slice(0,-1);else if(k==='enter')return doGuess();else if(typed.length<blanks())return typeKey(k);drawBar();return}
   if(ST.guessing)return;
   if(ST.needSonar)return;if(sonarArm){sonarArm=false}
   pick=k;doCall()};
 $('goBtn').onclick=()=>{if(ST.over)return TWO?twoWin():showDone();if(sel>=0)return doGuess();if(!ST.guessing&&!ST.needSonar&&ST.calls.length)askGuessNow()};
-$('cancelBtn').onclick=()=>{if(sel>=0){sel=-1;typed='';draw();return say(GUESS_MSG)}
+$('cancelBtn').onclick=()=>{if(sel>=0){sel=-1;typed='';draw();return say(guessMsg())}
   if(ST.over)return;if(ST.guessing){only('finAsk');$('faSunk').textContent=ST.sunk.length+' word'+(ST.sunk.length===1?'':'s');return}
   askGuessNow()};
 $('faNo').onclick=()=>closeAll();
 $('faYes').onclick=()=>{closeAll();finishGame(DAY,ST);afterMove()};
 /* Guess now: a little confirm card, since you can't go back to calling */
-function askGuessNow(){only('guessAsk');$('gaCalls').textContent=ST.left+' call'+(ST.left===1?'':'s')}
-$('gaYes').onclick=()=>{closeAll();startGuessing(DAY,ST);pick=null;dropIn=ST.guessing;afterMove();if(!ST.over)say(ST.needSonar?SONAR_MSG:GUESS_MSG,ST.needSonar)};
+function askGuessNow(){only('guessAsk');$('gaRule').textContent=HARD()?'letter':'guess';$('gaCalls').textContent=ST.left+' call'+(ST.left===1?'':'s')}
+$('gaYes').onclick=()=>{closeAll();startGuessing(DAY,ST);pick=null;dropIn=ST.guessing;afterMove();if(!ST.over)say(ST.needSonar?SONAR_MSG:guessMsg(),ST.needSonar)};
 $('gaNo').onclick=()=>closeAll();
 addEventListener('keydown',e=>{if(!DAY||document.querySelector('.sheet:not([hidden])')||ST.over||(TWO&&TWO.busy)||e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key.toUpperCase();
-  if(sel>=0){if(k==='BACKSPACE'){typed=typed.slice(0,-1);drawBar()}else if(k==='ENTER')doGuess();else if(k==='ESCAPE')$('cancelBtn').click();else if(/^[A-Z]$/.test(k)&&keyState(k)!=='gone'&&typed.length<blanks()){typed+=k;drawBar()}return}
+  if(sel>=0){if(k==='BACKSPACE'){typed=typed.slice(0,-1);drawBar()}else if(k==='ENTER')doGuess();else if(k==='ESCAPE')$('cancelBtn').click();else if(/^[A-Z]$/.test(k)&&keyState(k)!=='gone'&&typed.length<blanks())typeKey(k);return}
   if(ST.guessing)return;
   if(ST.needSonar)return;if(/^[A-Z]$/.test(k)){if(keyState(k)==='gone')return;sonarArm=false;pick=k;doCall()}});
 function doCall(){const L=pick;pick=null;const first=!ST.calls.length;const r=callLetter(DAY,ST,L);if(!r)return;(ST.log=ST.log||[]).push(r.hit?'🟨':'⬜');
@@ -843,13 +859,16 @@ function doCall(){const L=pick;pick=null;const first=!ST.calls.length;const r=ca
   if(!r.hit)say(`No <b>${L}</b> on the board.`);
   else{const wi=DAY.own[r.cell];if(ST.sunk.includes(wi)){justSunk=wi;say(`<b>${L}</b> completed <b>${DAY.words[wi]}</b>.`)}else say(`${/[AEFHILMNORSX]/.test(L)?'An':'A'} <b>${L}</b> lit up.`)}
   afterMove();if(!r.hit){stamp('Nope');SND.miss()}else if(justSunk>=0){stamp('Captured!');SND.sink()}else SND.hit();
-  if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0)say('Out of calls! '+GUESS_MSG,1)},900);
+  if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0)say('Out of calls! '+guessMsg(),1)},900);
   if(ST.needSonar&&!ST.over)setTimeout(()=>{if(ST.needSonar)say('Out of calls! '+SONAR_MSG,1)},900)}
-function doGuess(){if(sel<0||typed.length<blanks())return;const kn=known(DAY,ST,sel);let j=0;const g=kn.map(ch=>ch||typed[j++]).join(''),wi=sel;
+/* Hard: each letter is checked as it is typed. A wrong letter ends the game; the last right letter captures the word. */
+function typeKey(k){typed+=k;if(HARD()){const kn=known(DAY,ST,sel),pos=kn.map((ch,i)=>ch?-1:i).filter(i=>i>=0)[typed.length-1];
+  if(DAY.words[sel][pos]!==k)return doGuess(true);if(typed.length===blanks())return doGuess()}drawBar()}
+function doGuess(force){if(sel<0||(force!==true&&typed.length<blanks()))return;const kn=known(DAY,ST,sel);let j=0;const g=kn.map(ch=>ch||typed[j++]).join(''),wi=sel;
   const r=TWO?guess2(DAY,ST,wi,g):guessWord(DAY,ST,wi,g);if(!r)return;(ST.log=ST.log||[]).push(r.ok?'🎯':'❌');
   sel=-1;typed='';lastLit=-1;
-  if(r.ok){justSunk=wi;say(`<b>${g}</b>. Captured!`);afterMove();stamp('Captured!');ST.win?setTimeout(SND.win,300):SND.sink();if(!ST.over&&!TWO)setTimeout(()=>{if(!ST.over&&sel<0)say(GUESS_MSG)},1400)}
-  else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Nope');SND.wrong()}}
+  if(r.ok){justSunk=wi;say(`<b>${g}</b>. Captured!`);afterMove();stamp('Captured!');ST.win?setTimeout(SND.win,300):SND.sink();if(!ST.over&&!TWO)setTimeout(()=>{if(!ST.over&&sel<0)say(guessMsg())},1400)}
+  else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:HARD()?`Wrong letter. It was <b>${DAY.words[wi]}</b>.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Nope');SND.wrong()}}
 function afterMove(){if(DEMO){draw();return}
   if(PREVIEW()&&!TWO&&!CUSTOM&&ST.sunk.length>=1&&!ST.over){save();draw();setTimeout(gateCheck,1400);return}
   if(TWO){TWO.busy=true;saveTwo();draw();setTimeout(ST.over?twoWin:passTurn,ST.over?1500:1700);return}
@@ -862,13 +881,14 @@ function closeAll(){document.querySelectorAll('.sheet').forEach(s=>s.hidden=true
 function closeSheet(s){s.hidden=true;if(!DAY)cover()}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeSheet(b.closest('.sheet')));
 document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2','gate','demoEnd'].includes(s.id))closeSheet(s)}));
-function cover(){only('cover');const st=store.json(skey(TODAY),null),h=store.json('cs-hist',{})[TODAY];
+function cover(){only('cover');const pv=PREVIEW();if(pv)MODE='normal';$('modeWrap').hidden=pv;document.querySelectorAll('#segMode button').forEach(b=>b.classList.toggle('sel',b.dataset.v===MODE));$('modeNote').textContent=MODE==='hard'?'In the guessing round, one wrong letter ends the game.':'In the guessing round, one wrong word ends the game.';const st=store.json(skey(TODAY),null),h=store.json(histKey(),{})[TODAY];
   $('cvDate').textContent=nice(TODAY,{weekday:'short',month:'short',day:'numeric',year:'numeric'});$('cvNo').textContent='Puzzle No. '+dayNo(TODAY);
   $('coverGo').textContent=h?'See today’s results':st&&st.calls&&st.calls.length?'Continue today’s puzzle':'Play today’s puzzle';
   const s=statsOf();$('cvStats').hidden=!s.played;if(s.played)$('cvStats').innerHTML=[[s.stars,'⭐ Stars'],[s.played,'Played'],[s.cur,'Streak'],[s.max,'Best streak']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
 function start(date){stopDemo();TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
-  say(ST.over?(ST.win?'All five captured.':`${ST.sunk.length} of 5 captured.`):ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
+  say(ST.over?(ST.win?'All five captured.':`${ST.sunk.length} of 5 captured.`):ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
   if(ST.over)setTimeout(showDone,300);else setTimeout(gateCheck,300)}
+document.querySelectorAll('#segMode button').forEach(b=>b.onclick=()=>{MODE=b.dataset.v;store.set('cs-mode',MODE);cover()});
 $('coverGo').onclick=()=>{start(TODAY);if(!store.get('cs-intro',''))intro(()=>closeAll())};
 $('coverHow').onclick=$('mHow').onclick=$('dHow').onclick=()=>only('help');
 $('mIntro').onclick=()=>intro(()=>{if(DAY)closeAll();else cover()});
@@ -876,6 +896,7 @@ $('coverPast').onclick=$('mPast').onclick=$('dPast').onclick=()=>{drawArchive();
 $('coverStats').onclick=$('cvStats').onclick=$('mStats').onclick=$('dStats').onclick=()=>{drawStats();only('stats')};
 $('menuBtn').onclick=()=>only('menu');
 $('mTerms').onclick=()=>only('terms');
+$('mSet').onclick=()=>only('settings');$('setBack').onclick=()=>only('menu');
 $('termsGo').onclick=()=>{const first=!agreed();store.set(TERMS_KEY,new Date().toISOString().slice(0,10));if(first){checkIn('open');LINK?gift():cover()}else if(DAY)closeAll();else cover()};
 $('dBoard').onclick=()=>closeAll();
 
@@ -895,26 +916,26 @@ $('quickGo').onclick=()=>{if(qi<Q.length-1){qi++;drawQ()}else endIntro()};
 $('qSkip').onclick=endIntro;
 function endIntro(){store.set('cs-intro','1');$('quick').hidden=true;const f=qDone;qDone=null;f&&f()}
 
-function drawArchive(){const hist=store.json('cs-hist',{}),n=dayNo(TODAY);let h='';
+function drawArchive(){const hist=store.json(histKey(),{}),n=dayNo(TODAY);let h='';$('pastMode').textContent=MODE==='hard'?'Hard mode. ':'';
   for(let i=n;i>=1;i--){const d=dateOf(i),r=hist[d],s=store.json(skey(d),null);
     const tag=r?`${'⭐'.repeat(starsFor(r))} ${r.sunk}/5`+(r.late?' · late':''):s&&s.calls&&s.calls.length?'In progress':'Play';
     h+=`<button class="go alt" data-d="${d}"><span><span>No. ${i} · ${nice(d,{weekday:'short',month:'short',day:'numeric'})}${i===n?' · Today':''}</span><small>${themeFor(i).name}</small></span><span>${tag}</span></button>`}
   $('pastList').innerHTML=h;$('pastList').querySelectorAll('button').forEach(b=>b.onclick=()=>start(b.dataset.d))}
 function starsFor(r){return starsOf(r.sunk||0)}
-function statsOf(){const hist=store.json('cs-hist',{}),H=Object.values(hist),W=H.filter(h=>h.win),st=streaks(hist);
+function statsOf(m=MODE){const hist=store.json(histKey(m),{}),H=Object.values(hist),W=H.filter(h=>h.win),st=streaks(hist);
   return {played:H.length,wins:W.length,pct:H.length?Math.round(W.length/H.length*100):0,cur:st.cur,max:st.max,stars:H.reduce((a,h)=>a+starsFor(h),0),
     avg:H.length?(H.reduce((a,h)=>a+(h.sunk||0),0)/H.length).toFixed(1):'–',hist}}
-function drawStats(){const s=statsOf();
+function drawStats(m=MODE){const s=statsOf(m);document.querySelectorAll('#segStats button').forEach(b=>{b.classList.toggle('sel',b.dataset.v===m);b.onclick=()=>drawStats(b.dataset.v)});
   $('statgrid').innerHTML=[[s.played,'Played'],[s.played?s.pct+'%':'–','All 5'],[s.stars,'⭐ Stars'],[s.cur,'Streak'],[s.max,'Best streak'],[s.avg,'Avg captured']].map(([b,l])=>`<div><b>${b}</b><span>${l}</span></div>`).join('');
   const buckets=['0','1','2','3','4','5+'],cnt=buckets.map(()=>0);let lost=0;Object.values(s.hist).forEach(h=>{if(!h.win)lost++;else cnt[Math.min(h.left,5)]++});
-  const max=Math.max(1,...cnt,lost),me=s.hist[DAY?DAY.date:TODAY];
+  const max=Math.max(1,...cnt,lost),me=m===MODE?s.hist[DAY?DAY.date:TODAY]:null;
   $('dist').innerHTML=buckets.map((b,i)=>`<div><em>${b}</em><i class="${me&&me.win&&Math.min(me.left,5)===i?'me':''}" style="width:${12+cnt[i]/max*78}%">${cnt[i]}</i></div>`).join('')+`<div><em>Lost</em><i class="${me&&!me.win?'me':''}" style="width:${12+lost/max*78}%">${lost}</i></div>`}
 function showDone(){if(!ST.over)return;only('done');loadMore();
   if(CUSTOM&&!CUSTOM.demo&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden)only('offer')},2200)}const s=starsOf(ST.sunk.length);
   $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
-  $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`);
+  $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`)+(HARD()?' · Hard':'');
   $('sendRow').hidden=!(CUSTOM&&CUSTOM.sid&&!ST.sentScore);if(!$('sendRow').hidden){$('nameIn').value=store.get('cs-name','');$('sendRow').querySelector('button').textContent='Send my score'}
   $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=PREVIEW()||!CUSTOM||!!(!CUSTOM.r&&!$('sendRow').hidden);
   $('shareBtn').textContent=CUSTOM?'Share your result':'Share';
@@ -928,7 +949,7 @@ function tick(){if($('done').hidden)return;if(CUSTOM){$('dNext').textContent='Cu
 /* moves in the order they happened: calls are 🟨 (found one) or ⬜ (miss), guesses 🎯 (sunk) or ❌ (wrong, game over) */
 function shareText(){const s=starsOf(ST.sunk.length),log=(ST.log||[]).join('');
   if(CUSTOM)return `Capital Ship 🚢 ${CUSTOM.n?CUSTOM.n+'’s':'Custom'} puzzle · ${DAY.theme}\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\n${shareUrl(CUSTOM.code,CUSTOM.sid)}`;
-  return `Capital Ship No. ${DAY.no} 🚢\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\nhttps://smaisle.app/CapitalShip/`}
+  return `Capital Ship No. ${DAY.no}${HARD()?' Hard':''} 🚢\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\nhttps://smaisle.app/CapitalShip/`}
 $('shareBtn').onclick=async()=>{const t=shareText();try{if(navigator.share&&matchMedia('(pointer:coarse)').matches){await navigator.share({text:t});return}}catch(e){if(e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(t);toast('Copied! Paste it anywhere.')}catch(e){toast('Couldn’t copy on this browser')}};
 
@@ -1001,7 +1022,7 @@ $('mSent').onclick=()=>{only('sent');const L=$('sentList'),G=sentList();L.innerH
 $('mkTry').onclick=()=>{if(MADE)startCustom(decodeMake(MADE.code))};
 function startCustom(m){const d=m&&makeCustom(m.w,m.t,m.code);if(!d){toast('That puzzle link is broken.');return cover()}
   stopDemo();TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
-  say(ST.over?`${ST.sunk.length} of 5 captured.`:ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
+  say(ST.over?`${ST.sunk.length} of 5 captured.`:ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
 const QS=new URLSearchParams(location.search),LINK=decodeMake(QS.get('c')||'');if(LINK&&/^[a-z0-9]{8,16}$/.test(QS.get('id')||''))LINK.sid=QS.get('id');
 function gift(){only('gift');$('gTitle').textContent=LINK.n?`A puzzle from ${LINK.n}`:'A puzzle for you';$('gSub').textContent=`5 hidden words · Theme: ${LINK.t||'Made for you'}`}
 $('gPlay').onclick=()=>{startCustom(LINK);if(!store.get('cs-intro',''))intro(()=>closeAll())};

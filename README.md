@@ -27,6 +27,10 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v30 (Nov 2)
+- Normal and Hard (change list #18): picked on the cover (cs-mode), same daily board. Hard checks each fill-in letter as it is typed; one wrong letter ends the game, and the last right letter captures the word. Calling is unchanged. Saved games, stats and streaks are separate (cs-d_DATE-h, cs-hist-h); Stats has Normal/Hard tabs; share says Hard. Make your own, Two players and preview are always Normal. Check-in adds hd, hw (Hard finished, all-5 wins).
+- Cleaner menu (#20): Back to the game, How to play, Archive, Stats, Make your own, Puzzles I've sent, Two players, ‹ smAisle Daily, Settings. Style, Dark mode, Sound, Front page, Replay the intro, Terms and See our other games moved to Settings.
+
 ## v29 (Nov 2)
 - v27 plus the v28 `code` check-in field.
 
