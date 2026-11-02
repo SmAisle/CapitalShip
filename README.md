@@ -1,0 +1,123 @@
+# Capital Ship (was Letter Fleet)
+
+A daily word game played like battleship, from smAisle. Original design made with Jeff on Nov 1, 2026 (Eastern).
+
+## How it plays
+- 8×8 board, 5 hidden words from the day's theme, across or down, never touching (not even corners).
+- **Call a letter** (tap it, then Call): ONE square holding it lights up, in the shortest word that still hides one (ties: the word that starts earlier on the board). Calling it again lights the next. No count is shown; a key turns gray when there are no more of that letter (called and none left, or all of it already showing). Misses turn gray too. A letter not on the board still uses a call. (Jeff's rule: "show the E of the shortest word first and say 2 more E's".)
+- **Sink a word:** tap a lit square and type the word through it. Wrong guess costs a call. Lighting every letter of a word also sinks it.
+- 14 calls (was 18 before v4). Then a fill-in round (v6).
+- Stars: win with 5+ calls left ⭐⭐⭐, 2+ ⭐⭐, otherwise ⭐. Share shows moves in order: 🟨 found, ⬜ miss, 🎯 sunk, ❌ wrong guess.
+- New puzzle at midnight Eastern. Archive back to No. 1 (Oct 1, 2026, EPOCH in logic.js).
+
+## Files
+- `index.html` is the whole game, built from `source/` with `python3 source/build.py` (src.html + logic.js).
+- 54 hand-written family-friendly themes in logic.js (THEMES), each 13-16 words of 3-7 letters. Themes go round in a shuffled order.
+- Calls tuned with a test robot (scratch): a player who guesses a word once half its letters show needs about 15 calls (median), so 18 leaves a few to spare.
+- `owner.html`: sign in with Jeff's Google account; opens / plays / finishes / win % / avg calls left per day (Eastern), streaks, versions, phone vs computer.
+
+## Usage
+After agreeing to the terms, the website copy (smaisle.app or github.io) sends an anonymous check-in to Firebase `aislerun-88e79`, collection `cs_devices` (12-char device id, 16 fields): first, last, days, v, opens, plays, done, wins, best, streak, terms, desk, t, plus maps o (opens/day), p (puzzles started/day), r (result/day: calls left if won, -1 if lost; last 60 days). The Claude-link copy doesn't check in. No rules change needed.
+
+## Rules followed
+Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scale=1, user-scalable=no, touch-action: manipulation). "Archive" naming. Looks: smAisle newspaper (default) / Classic; Theme Auto / Light / Navy. Yellow "‹ smAisle Daily" bar on the website copy only; marks 'lf' done in smaisle_done for the hub.
+
+## Not done yet
+- No GitHub repo yet (needs one under SmAisle, e.g. LetterFleet) and not on smaisle.app; ask Jeff before pushing live.
+- Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
+- No icon, sound, or vs-computer mode yet.
+
+## v1 (Nov 2)
+- First playable version.
+
+## v2 (Nov 2)
+- Restyled to match The Daily 15: cover with stats row, top bar with Calls and Sunk boxes, gray grid that lights up white, word strips like the tray, Daily 15 buttons, 4-card intro on first play (Menu → Replay the intro), How to Play with stars table, results card with countdown to midnight Eastern, Daily 15 stats grid, Archive list with themes.
+- Removed the "N more hidden" count (Jeff). Keys turn gray when there are no more of that letter.
+- Sunk words turn yellow; MISS / SUNK! stamps like The Daily 15's call-outs.
+
+## v3 (Nov 2)
+- Opens in smAisle paper colors even when the phone is in dark mode (Jeff). Navy only when picked in the menu; 'Match phone' follows the phone.
+
+## v4 (Nov 2)
+- Twist: 💥 Long shot. Sink a word while half or fewer of its letters are showing and you win a call back (stamp, Calls box flashes, 💥 in the share grid). In How to Play and a 5th intro card.
+- Calls cut from 18 to 14. Fair test player (sees only the lit squares, gray keys and theme; scratch fair.js), a year of puzzles at 14 calls: knows every word ~100% wins; knows 9 in 10 ~70%; knows 3 in 4 ~45%. Losses come from not thinking of a word, not from running out of calls.
+
+## v5 (Nov 2)
+- RESET_DAYS in src.html: clears a day's saved game once per number, so Jeff could replay No. 32 (Nov 1).
+
+## v6 (Nov 2)
+- Fill-in round (Jeff): when calls run out, one try at each word that has a lit letter. A miss loses just that word (red), instead of ending the game. Finish button ends the round. No Long shot call back in the fill-in round. Words with no lit letter can't be tried.
+
+## v7 (Nov 2)
+- New structure (Jeff): 15 calls first, no guessing while calling. Then the guessing round: tap a lit square, type its word; one wrong guess ends the game. "Guess now" (with a confirm card) starts guessing early. Lighting every letter of a word still sinks it. Words with no lit letter can't be guessed.
+- Long shot and the fill-in round (v4-v6) are gone. Stars by words sunk: 3 = ⭐, 4 = ⭐⭐, 5 = ⭐⭐⭐. Streak = days finished on their day.
+- Check-in map r is now words sunk (0-5); wins = sank all 5. Owner page shows All 5 % and Avg sunk.
+
+## v8 (Nov 2)
+- Renamed Capital Ship (Jeff). Game code cs: Firestore cs_devices, storage keys cs-*, smAisle Daily hub id 'cs'. Quick search found no other game called Capital Ship (it's a naval term).
+
+## v24 (Nov 2)
+- Way back to smaisle.app from inside the game, like the other games: the menu now ends with "smAisle · See our other games ›" and a Front page link (back to the cover). The cover's smAisle link works the same way: same tab on the website, the app's home inside smAisle Daily ({cmd:'home'}), a new tab elsewhere. On the website the yellow ‹ smAisle Daily button is still there too.
+
+## v23 (Nov 2)
+- How to Play fits one screen with no scrolling (375x667: 400px card): six short lines including stars, plus Watch the demo.
+- Demo (cover link "Demo" and How to Play): about 30 seconds of a real game on a fixed beach board (SAND, WAVES, SHELL, TOWEL, SUN): calls, gray keys, a Sonar hit, the word boxes filling, and all 5 words typed in. Skip pill top-left; ends on "That's Capital Ship!" with Play today's puzzle / Watch again. Never saved or counted. Works in smAisle and Navy.
+
+## v22 (Nov 2)
+- Capital Ship is a Plus game in smAisle Daily (Jeff, Nov 2), so its own PLUS labels are gone: Make your own, Two players and the Archive are part of the full game.
+- Preview mode: `?preview=1`, or inside the app when window.DG_APP.plus isn't true. Plays today's puzzle until the first word is sunk, then a "First word sunk!" card: Get smAisle Daily Plus (app: posts {cmd:'plus'} to webkit.messageHandlers.dg; web: smaisle.app/daily/#plus) and ‹ smAisle Daily (app: {cmd:'home'}; web: smaisle.app/daily/). Archive, Make your own and Two players are hidden in preview. The app can unlock live with dgNative('store',{plus:true}).
+
+## v21 (Nov 2)
+- Jeff's all-games rules (navy-dark-standard.md section 6): shared fit + zoom guard (iPhone pinch blocked, double-tap blocked, "Turn your phone upright" cover on a sideways phone) and the shared sound comeback (getAC() on every tap, rebuilt after leaving the app; the old once-only unlock is gone).
+- Checked at 375x667 and 430x932: cover, game, menu, Make your own, Two players and hide screens fit with no side-scrolling; 844x390 sideways shows the upright cover.
+
+## v20 (Nov 2)
+- Two players, pass the phone (cover and menu): enter two names; each player hides 5 words for the other (optional theme hint, or Pick random words), with a pass-the-phone screen in between. Turns alternate; a turn is one call, the one Sonar ping, or one guess (tap a word box). No call limit, a wrong guess just ends the turn, first to sink all 5 wins. Win card shows both players' words. Saved in cs-two (Continue your game); never counted in stats, streak or usage.
+
+## v19 (Nov 2)
+- New app icon (Jeff picked option A): a ship whose hull spells SHIP in yellow tiles, red flag, waves, on smAisle paper. icon/icon-1024/512/180/32.png.
+
+## v18 (Nov 2)
+- Intro has a Sonar +1 card (5 cards now). Page description no longer says "battleship".
+- Menu follows the shared standard: Back to the game, How to play, Archive, Stats, Make your own, Puzzles I've sent, ‹ smAisle Daily (yellow, website only), Style, Dark mode, Sound, then Replay the intro · Terms and "Capital Ship · v18 · Nov 2 · smAisle".
+- Sound (cs-sound, on by default): tick for a hit, thud for a miss, horn for a sink, ping for Sonar, buzz for a wrong guess, chime for all 5. Made with Web Audio, no files.
+- Usage check-in adds mk (puzzles made), sent, cp/cd (custom started/finished), rb (random boards), sc (scores sent back); owner.html shows a Make your own table.
+- App icon (icon/icon-1024/512/180/32.png): smAisle paper board, SHIP sunk in yellow, a lit A and a red Sonar ping. Favicon and apple-touch-icon are built into the page.
+- Win-rate test with Sonar (365 days, careful computer player): 15 calls → all 5 on 94% / 54% / 24% (knows every word / 9 in 10 / 3 in 4); 14 calls → 93/54/24; 13 → 91/52/23.
+
+## v17 (Nov 2)
+- Tapping a letter calls it right away (no Call button). The bottom bar is now [Sonar +1] [Guess now].
+- Sonar moved to the bottom bar, yellow with a red +1; shows "Sonar used" after.
+- If Sonar is unused when the calls run out (or on Guess now), you must use it first: the board is armed and the keys wait (st.needSonar), then the guessing round starts.
+
+## v16 (Nov 2)
+- Follows The Daily 15's Extra Edition: each send gets a random id (`&id=` in the link). Friends who finish can type a name and Send my score to Firestore `cs_shares/{id}/results/{device}` (name, n = sunk, score = sunk*100 + calls left, v, t). Rude names show as Someone.
+- Menu: Puzzles I've sent (cs-sent, last 40) lists each puzzle with its words and friends' scores, best first; ✕ hides one (cs-hide).
+- Make your own also has Play a random new board (random theme, same word rules as the daily). Results card for custom games: Send my score, Share, Pass it to a friend.
+- Needs the cs_shares rule (added to usage-tracking/firestore-rules.txt) published in the Firebase console before scores can save.
+
+## v15 (Nov 2)
+- Make your own (marked PLUS, like The Daily 15's Extra Edition; free on the website, would be Plus in an app; no real charges). From the cover, menu or results: theme, 5 words (3-7 letters, all different), optional name. Family-friendly word check. Makes a link `?c=CODE` (theme, name, words scrambled with XOR + base64url so the words don't show). Same code = same board (makeCustom() in logic.js).
+- Opening a `?c=` link shows "A puzzle from NAME" with Play it / Play today's instead. Custom games use the same rules (15 calls, Sonar), save under cs-d_c-HASH, and don't count in stats, streak, the hub list or usage check-ins. Results button reads "Send NAME your score".
+- Share link base: this page's address on the website, otherwise https://smaisle.app/CapitalShip/ (not live yet).
+
+## v14 (Nov 2)
+- Reset No. 32 again for Jeff (RESET_DAYS 4).
+
+## v13 (Nov 2)
+- Sonar now pings a square: tap Sonar, then any dark square. A letter there lights up (can sink a word); an empty square shows water (≈). One per game, no call used. Logic: sonarCell() replaces sonarWord(); st.sonar = cell, st.water = [cell]. Reset No. 32 again (RESET_DAYS 3).
+
+## v12 (Nov 2)
+- Reset Nov 1 (No. 32) again so Jeff can try Sonar (RESET_DAYS 2).
+
+## v11 (Nov 2)
+- Sonar hint: once a game, tap Sonar (top bar), then tap a word box (or a lit square of that word). Its first hidden letter lights up, no call used. In the guessing round with a word open, Sonar lights that word's next blank. Can finish (sink) a word. Share log shows 📡. Logic: sonarWord() in logic.js; state field st.sonar.
+
+## v10 (Nov 2)
+- Shared smAisle look standard (organized/navy-dark-standard.md): opens in smAisle colors. Menu has Style (smAisle / Classic) and "Dark mode: Off / On / Match phone", Off by default.
+- Dark mode uses the standard Navy (#121b2e, brass main button, cream letter tiles) on `<html data-mode="navy">`, saved in the shared key `smaisle-dark` (old `cs-theme` read once). A head script sets it before the page draws. Classic has its own colors, so the Dark mode row is grayed out there.
+- When the mode changes live, posts {cmd:'mode', navy} to webkit.messageHandlers.dg (does nothing on the web).
+
+## v9 (Nov 2)
+- Guessing round (Jeff): when calls run out (or Guess now), the lit letters drop into the word boxes under the board, in place. Tap a box (or a lit square) and it opens large; type the blanks. Gray keys stay gray and can't be typed (a gray letter can't be in a blank). One wrong guess ends the game. "Stop here" (with a confirm) keeps the words sunk so far. Any word can be guessed, even with no letters showing.
+- Fair test player, a year of puzzles, 15 calls (stops when unsure): knows every word: all 5 on 93% of days; knows 9 in 10: 53%; knows 3 in 4: 22%. Avg about 4.4 words.
