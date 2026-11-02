@@ -67,7 +67,7 @@ function draw(){
   const done=sum("done"), wins=sum("wins");
   $("#usage").innerHTML=`<div class="stats">${stat(opened(today),"opened today")}${stat(played(today),"played today")}${stat(fin(today).length,"finished today")}${stat(cnt(d=>d.last>=w),"active this week")}${stat(cnt(d=>d.last>=m),"active this month")}${stat(DEV.length,"devices ever")}${stat(cnt(d=>d.first>=w),"new this week")}${stat(num(done),"puzzles finished")}${stat(done?Math.round(wins/done*100)+"%":"–","sank all 5")}</div>
   <p class="muted">Counts phones and computers, not people. A device checks in when it opens the game, starts a puzzle and finishes it, from the website version only (smaisle.app or github.io), after agreeing to the terms. The Claude-link version isn't counted. Days are Eastern time.</p>
-  <h2>Last 14 days</h2><div style="overflow-x:auto"><table><tr><th>Day</th><th>Opened</th><th>Opens</th><th>Played</th><th>Finished</th><th>All 5</th><th>Avg sunk</th><th>New</th></tr>${days.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</table></div>
+  <h2>Last 14 days</h2><div style="overflow-x:auto"><table><tr><th>Day</th><th>Opened</th><th>Opens</th><th>Played</th><th>Finished</th><th>All 5</th><th>Avg captured</th><th>New</th></tr>${days.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</table></div>
   <div class="two">
   ${tbl("Streaks, active this week",[["On a streak of 3+ days",cnt(d=>d.last>=w&&+d.streak>=3)],["On a streak of 7+ days",cnt(d=>d.last>=w&&+d.streak>=7)]])}
   ${tbl("Game version, active this month",tallyBy("v").map(([k,v])=>["Version "+k,v]))}

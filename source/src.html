@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Capital Ship</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="A daily newspaper-style word hunt. Call letters to find five hidden words, then sink them.">
+<meta name="description" content="A daily newspaper-style word hunt. Call letters to find five hidden words, then capture them.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Capital Ship">
 <meta name="theme-color" content="#f4efe1">
@@ -267,7 +267,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="top">
     <div id="pno"><b id="noLabel">No. 1</b><small id="dateLabel"></small></div>
     <div class="box" id="callBox"><small>Calls</small><b id="callsLeft">0</b></div>
-    <div class="box"><small>Sunk</small><b id="sunkCount">0/5</b></div>
+    <div class="box"><small>Captured</small><b id="sunkCount">0/5</b></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
   </div>
   <div class="diff"><span>Theme</span><em id="themeName"></em></div>
@@ -294,7 +294,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 <div class="sheet" id="cover" hidden><div class="in">
   <a id="coverHub" href="https://smaisle.app/daily/" hidden>‹ smAisle Daily</a>
   <div class="mh"><h1>Capital Ship</h1><div class="ln"><span id="cvDate"></span><span id="cvNo"></span></div></div>
-  <p class="tag">Five hidden words. Call letters to find them, then sink them.</p>
+  <p class="tag">Five hidden words. Call letters to find them, then capture them.</p>
   <button id="cvStats" hidden aria-label="Your stats"></button>
   <button class="go" id="coverGo">Play today's puzzle</button>
   <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to play</button><span>·</span><button id="coverDemo">Demo</button></div>
@@ -357,7 +357,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="x" data-close aria-label="Close">✕</button>
   <h2>Your Stats</h2>
   <div class="statgrid" id="statgrid"></div>
-  <div class="shead">Words sunk</div>
+  <div class="shead">Words captured</div>
   <div class="dist" id="dist"></div>
   <div class="ver" id="sVer"></div>
 </div></div>
@@ -370,7 +370,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 
 <div class="sheet" id="finAsk" hidden><div class="card" style="text-align:center">
   <h2>Stop here?</h2>
-  <p style="font:500 16px/1.45 var(--sans)">You'll keep the <b id="faSunk"></b> you've sunk. The other words will be shown.</p>
+  <p style="font:500 16px/1.45 var(--sans)">You'll keep the <b id="faSunk"></b> you've captured. The other words will be shown.</p>
   <div class="donegrid"><button class="go alt" id="faNo">Keep guessing</button><button class="go" id="faYes">Stop here</button></div>
 </div></div>
 
@@ -406,7 +406,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 <div class="sheet" id="two" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
   <h2>Two players</h2>
-  <p class="sub" style="margin:0">Pass the phone. Each of you hides 5 words for the other. Then take turns: call a letter, ping with Sonar, or guess a word. A wrong guess just ends your turn. First to sink all 5 wins.</p>
+  <p class="sub" style="margin:0">Pass the phone. Each of you hides 5 words for the other. Then take turns: call a letter, ping with Sonar, or guess a word. A wrong guess just ends your turn. First to capture all 5 wins.</p>
   <div class="mk">
     <label for="n1">Player 1</label><input id="n1" class="soft" maxlength="12" placeholder="Name" autocomplete="off">
     <label for="n2">Player 2</label><input id="n2" class="soft" maxlength="12" placeholder="Name" autocomplete="off">
@@ -444,7 +444,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 </div></div>
 
 <div class="sheet" id="gate" hidden><div class="card" style="text-align:center">
-  <h2>First word sunk!</h2>
+  <h2>First word captured!</h2>
   <p class="sub" style="margin:0">That’s the end of the free preview. Unlock the rest with smAisle Daily Plus: the full daily game, the Archive, Make your own and Two players.</p>
   <button class="go" id="gateBuy" style="background:var(--hi);color:var(--hiInk)">Get smAisle Daily Plus</button>
   <button class="go alt" id="gateHub" style="text-transform:none;letter-spacing:0">‹ smAisle Daily</button>
@@ -468,7 +468,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 
 <div class="sheet" id="done" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
-  <h2 id="dTitle">All sunk!</h2>
+  <h2 id="dTitle">All captured!</h2>
   <div class="starsLine" id="dStars"></div>
   <div class="big" id="dBig"></div>
   <p class="sub" id="dSub"></p>
@@ -483,7 +483,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 
 <script>
 /*LOGIC*/
-const VERSION='24',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='25',VDATE='Nov 2',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -606,7 +606,7 @@ function draw(){
     else if(wi>=0&&(ST.missed||[]).includes(wi)){cls+=' on missed';t=ch}
     else if(rev.has(c)){cls+=' on'+(c===lastLit?' new':'')+(sel>=0&&wi===sel?' sel':'');t=ch}
     else if(ST.over&&ch){cls+=' show';t=ch}
-    else if((ST.water||[]).includes(c)){cls+=' water'+(c===lastLit?' new':'');t='≈'}
+    else if((ST.water||[]).includes(c)){cls+=' water'+(c===lastLit?' new':'');t='·'}
     return `<button class="${cls}" data-c="${c}" aria-label="square ${c+1}">${t}</button>`}).join('');
   /* Word boxes: blank while calling; in the guessing round the lit letters drop in and you tap a word to fill it in */
   if(ST.needSonar&&!ST.over)sonarArm=true;const sb=$('sonarBtn'),used=ST.sonar!=null;sb.hidden=ST.guessing||ST.over;sb.disabled=used;if(used)sonarArm=false;
@@ -653,8 +653,8 @@ $('sonarBtn').onclick=()=>{if(!ST||ST.over||ST.sonar!=null||ST.needSonar||(TWO&&
   say(sonarArm?'<b>Sonar:</b> tap any dark square on the board to ping it.':'Tap a letter to call it.')};
 function doSonar(c){const was=!!ST.needSonar,r=sonarCell(DAY,ST,c);sonarArm=false;if(!r){draw();return say('Pick a dark square that isn’t lit yet.',was)}if(was)dropIn=true;(ST.log=ST.log||[]).push('📡');
   lastLit=r.cell;const wi=DAY.own[c];justSunk=r.hit&&ST.sunk.includes(wi)?wi:-1;typed='';sel=-1;const L=DAY.letters[c];
-  say(!r.hit?'Sonar found <b>water</b> there.':justSunk>=0?`Sonar finished off <b>${DAY.words[wi]}</b>.`:`Sonar found ${/[AEFHILMNORSX]/.test(L)?'an':'a'} <b>${L}</b>.`);
-  afterMove();stamp(!r.hit?'Water':justSunk>=0?'Sunk!':'Hit!');SND.ping();setTimeout(()=>(!r.hit?SND.water:justSunk>=0?SND.sink:SND.hit)(),450);if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0&&!sonarArm)say(GUESS_MSG)},1600)}
+  say(!r.hit?'Sonar found an <b>empty</b> square.':justSunk>=0?`Sonar completed <b>${DAY.words[wi]}</b>.`:`Sonar found ${/[AEFHILMNORSX]/.test(L)?'an':'a'} <b>${L}</b>.`);
+  afterMove();stamp(!r.hit?'Empty':justSunk>=0?'Captured!':'Found!');SND.ping();setTimeout(()=>(!r.hit?SND.water:justSunk>=0?SND.sink:SND.hit)(),450);if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0&&!sonarArm)say(GUESS_MSG)},1600)}
 $('kb').onclick=e=>{const b=e.target.closest('.k');if(!b||b.disabled||(TWO&&TWO.busy))return;const k=b.dataset.k;
   if(sel>=0){if(k==='back')typed=typed.slice(0,-1);else if(k==='enter')return doGuess();else if(typed.length<blanks())typed+=k;drawBar();return}
   if(ST.guessing)return;
@@ -678,15 +678,15 @@ function doCall(){const L=pick;pick=null;const first=!ST.calls.length;const r=ca
   if(first&&!PAST&&!TWO&&!DEMO)checkIn(CUSTOM?'cplay':'play');
   lastLit=r.hit?r.cell:-1;justSunk=-1;if(ST.guessing)dropIn=true;
   if(!r.hit)say(`No <b>${L}</b> on the board.`);
-  else{const wi=DAY.own[r.cell];if(ST.sunk.includes(wi)){justSunk=wi;say(`<b>${L}</b> finished off <b>${DAY.words[wi]}</b>.`)}else say(`${/[AEFHILMNORSX]/.test(L)?'An':'A'} <b>${L}</b> lit up.`)}
-  afterMove();if(!r.hit){stamp('Miss');SND.miss()}else if(justSunk>=0){stamp('Sunk!');SND.sink()}else SND.hit();
+  else{const wi=DAY.own[r.cell];if(ST.sunk.includes(wi)){justSunk=wi;say(`<b>${L}</b> completed <b>${DAY.words[wi]}</b>.`)}else say(`${/[AEFHILMNORSX]/.test(L)?'An':'A'} <b>${L}</b> lit up.`)}
+  afterMove();if(!r.hit){stamp('Nope');SND.miss()}else if(justSunk>=0){stamp('Captured!');SND.sink()}else SND.hit();
   if(ST.guessing&&!ST.over)setTimeout(()=>{if(!ST.over&&sel<0)say('Out of calls! '+GUESS_MSG,1)},900);
   if(ST.needSonar&&!ST.over)setTimeout(()=>{if(ST.needSonar)say('Out of calls! '+SONAR_MSG,1)},900)}
 function doGuess(){if(sel<0||typed.length<blanks())return;const kn=known(DAY,ST,sel);let j=0;const g=kn.map(ch=>ch||typed[j++]).join(''),wi=sel;
   const r=TWO?guess2(DAY,ST,wi,g):guessWord(DAY,ST,wi,g);if(!r)return;(ST.log=ST.log||[]).push(r.ok?'🎯':'❌');
   sel=-1;typed='';lastLit=-1;
-  if(r.ok){justSunk=wi;say(`<b>${g}</b>. Sunk!`);afterMove();stamp('Sunk!');ST.win?setTimeout(SND.win,300):SND.sink();if(!ST.over&&!TWO)setTimeout(()=>{if(!ST.over&&sel<0)say(GUESS_MSG)},1400)}
-  else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Miss');SND.wrong()}}
+  if(r.ok){justSunk=wi;say(`<b>${g}</b>. Captured!`);afterMove();stamp('Captured!');ST.win?setTimeout(SND.win,300):SND.sink();if(!ST.over&&!TWO)setTimeout(()=>{if(!ST.over&&sel<0)say(GUESS_MSG)},1400)}
+  else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Nope');SND.wrong()}}
 function afterMove(){if(DEMO){draw();return}
   if(PREVIEW()&&!TWO&&!CUSTOM&&ST.sunk.length>=1&&!ST.over){save();draw();setTimeout(gateCheck,1400);return}
   if(TWO){TWO.busy=true;saveTwo();draw();setTimeout(ST.over?twoWin:passTurn,ST.over?1500:1700);return}
@@ -704,7 +704,7 @@ function cover(){only('cover');const st=store.json(skey(TODAY),null),h=store.jso
   $('coverGo').textContent=h?'See today’s results':st&&st.calls&&st.calls.length?'Continue today’s puzzle':'Play today’s puzzle';
   const s=statsOf();$('cvStats').hidden=!s.played;if(s.played)$('cvStats').innerHTML=[[s.stars,'⭐ Stars'],[s.played,'Played'],[s.cur,'Streak'],[s.max,'Best streak']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
 function start(date){stopDemo();TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
-  say(ST.over?(ST.win?'All five sunk.':`${ST.sunk.length} of 5 sunk.`):ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
+  say(ST.over?(ST.win?'All five captured.':`${ST.sunk.length} of 5 captured.`):ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
   if(ST.over)setTimeout(showDone,300);else setTimeout(gateCheck,300)}
 $('coverGo').onclick=()=>{start(TODAY);if(!store.get('cs-intro',''))intro(()=>closeAll())};
 $('coverHow').onclick=$('mHow').onclick=$('dHow').onclick=()=>only('help');
@@ -721,7 +721,7 @@ const Q=[
  {t:'Five hidden words',x:'Everyone gets the same <b>5 words</b> today, hidden across or down. They all fit the <b>theme</b>.',p:()=>mini('......SEAL.....O....',{all:1})},
  {t:'Call a letter',x:'Tap a letter to call it. <b>One</b> square with that letter lights up, starting with the shortest word.',p:()=>`<div><span class="qk">D</span><span class="qk pick">E</span><span class="qk">F</span></div><div style="margin-top:12px">${mini('.......E............',{all:1})}</div>`},
  {t:'Gray means gone',x:'When a key turns <b>gray</b>, there are no more of that letter on the board. Misses turn gray too.',p:()=>`<div><span class="qk">R</span><span class="qk gone">S</span><span class="qk">T</span><span class="qk gone">K</span></div>`},
- {t:'Sonar +1',x:'One free ping a game. Tap <b>Sonar</b>, then any square: a letter lights up, or you find water. If you still have it after your last call, you use it then.',p:()=>`<div><span class="qsonar">Sonar <span class="plus1">+1</span></span></div><div style="margin-top:12px">${mini('..........M.........',{all:1})}</div>`},
+ {t:'Sonar +1',x:'One free ping a game. Tap <b>Sonar</b>, then any square: a letter lights up, or it shows empty. If you still have it after your last call, you use it then.',p:()=>`<div><span class="qsonar">Sonar <span class="plus1">+1</span></span></div><div style="margin-top:12px">${mini('..........M.........',{all:1})}</div>`},
  {t:'Then fill them in',x:`After <b>${CALLS} calls</b>, your letters drop into the word boxes. Tap a word and fill in the blanks. <b>One wrong guess ends the game.</b>`,p:()=>`<div class="wp"><b>S</b><b></b><b>A</b><b></b></div><div style="margin-top:10px" class="wp s"><b>S</b><b>E</b><b>A</b><b>L</b></div>`}];
 function mini(s,o){return `<div class="mini">${[...s].map((ch,i)=>{const sk=(o.sunk||[]).includes(i),on=o.all&&ch!=='.';return `<i class="${sk?'s':on?'on':''}">${sk||on?ch:''}</i>`}).join('')}</div>`}
 let qi=0,qDone=null;
@@ -742,15 +742,15 @@ function statsOf(){const hist=store.json('cs-hist',{}),H=Object.values(hist),W=H
   return {played:H.length,wins:W.length,pct:H.length?Math.round(W.length/H.length*100):0,cur:st.cur,max:st.max,stars:H.reduce((a,h)=>a+starsFor(h),0),
     avg:H.length?(H.reduce((a,h)=>a+(h.sunk||0),0)/H.length).toFixed(1):'–',hist}}
 function drawStats(){const s=statsOf();
-  $('statgrid').innerHTML=[[s.played,'Played'],[s.played?s.pct+'%':'–','All 5'],[s.stars,'⭐ Stars'],[s.cur,'Streak'],[s.max,'Best streak'],[s.avg,'Avg sunk']].map(([b,l])=>`<div><b>${b}</b><span>${l}</span></div>`).join('');
+  $('statgrid').innerHTML=[[s.played,'Played'],[s.played?s.pct+'%':'–','All 5'],[s.stars,'⭐ Stars'],[s.cur,'Streak'],[s.max,'Best streak'],[s.avg,'Avg captured']].map(([b,l])=>`<div><b>${b}</b><span>${l}</span></div>`).join('');
   const buckets=['0','1','2','3','4','5+'],cnt=buckets.map(()=>0);let lost=0;Object.values(s.hist).forEach(h=>{if(!h.win)lost++;else cnt[Math.min(h.left,5)]++});
   const max=Math.max(1,...cnt,lost),me=s.hist[DAY?DAY.date:TODAY];
   $('dist').innerHTML=buckets.map((b,i)=>`<div><em>${b}</em><i class="${me&&me.win&&Math.min(me.left,5)===i?'me':''}" style="width:${12+cnt[i]/max*78}%">${cnt[i]}</i></div>`).join('')+`<div><em>Lost</em><i class="${me&&!me.win?'me':''}" style="width:${12+lost/max*78}%">${lost}</i></div>`}
 function showDone(){if(!ST.over)return;only('done');const s=starsOf(ST.sunk.length);
-  $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Good fight!':'Sunk yourself!';
+  $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
-  $('dSub').textContent=(ST.win?'All five words sunk.':`You sank ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`);
+  $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`);
   $('sendRow').hidden=!(CUSTOM&&CUSTOM.sid&&!ST.sentScore);if(!$('sendRow').hidden){$('nameIn').value=store.get('cs-name','');$('sendRow').querySelector('button').textContent='Send my score'}
   $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=!!(CUSTOM&&!CUSTOM.r&&!$('sendRow').hidden);
   $('shareBtn').textContent=CUSTOM?'Share your result':'Share';
@@ -763,8 +763,8 @@ function tick(){if($('done').hidden)return;if(CUSTOM){$('dNext').textContent='Cu
   $('dNext').innerHTML=`Next puzzle in <b>${Math.floor(s/3600)}:${String(Math.floor(s%3600/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}</b>`;setTimeout(tick,1000)}
 /* moves in the order they happened: calls are 🟨 (found one) or ⬜ (miss), guesses 🎯 (sunk) or ❌ (wrong, game over) */
 function shareText(){const s=starsOf(ST.sunk.length),log=(ST.log||[]).join('');
-  if(CUSTOM)return `Capital Ship 🚢 ${CUSTOM.n?CUSTOM.n+'’s':'Custom'} puzzle · ${DAY.theme}\n${ST.sunk.length}/5 sunk ${'⭐'.repeat(s)}\n${log}\n${shareUrl(CUSTOM.code,CUSTOM.sid)}`;
-  return `Capital Ship No. ${DAY.no} 🚢\n${ST.sunk.length}/5 sunk ${'⭐'.repeat(s)}\n${log}\n${WEB?location.origin+location.pathname:'smaisle.app'}`}
+  if(CUSTOM)return `Capital Ship 🚢 ${CUSTOM.n?CUSTOM.n+'’s':'Custom'} puzzle · ${DAY.theme}\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\n${shareUrl(CUSTOM.code,CUSTOM.sid)}`;
+  return `Capital Ship No. ${DAY.no} 🚢\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\n${WEB?location.origin+location.pathname:'smaisle.app'}`}
 $('shareBtn').onclick=async()=>{const t=shareText();try{if(navigator.share&&matchMedia('(pointer:coarse)').matches){await navigator.share({text:t});return}}catch(e){if(e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(t);toast('Copied! Paste it anywhere.')}catch(e){toast('Couldn’t copy on this browser')}};
 
@@ -807,7 +807,7 @@ const sentList=()=>store.json('cs-sent',[]),hiddenRes=()=>store.json('cs-hide',[
 async function sendBoard(m,b){const sid=Array.from(crypto.getRandomValues(new Uint8Array(10)),v=>'abcdefghijklmnopqrstuvwxyz0123456789'[v%36]).join('');
   checkIn('sent');const L=sentList();L.unshift({id:sid,code:m.code,th:m.t||'',w:m.w,t:Date.now()});store.put('cs-sent',L.slice(0,40));sentUI();
   const nm=okName(store.get('cs-name',''))||m.n;
-  const t=`🚢 Capital Ship\n${nm?nm+' hid':'I hid'} 5 words${m.t?' · Theme: '+m.t:''}. Can you sink them?\n${shareUrl(m.code,sid)}`;
+  const t=`🚢 Capital Ship\n${nm?nm+' hid':'I hid'} 5 words${m.t?' · Theme: '+m.t:''}. Can you find them?\n${shareUrl(m.code,sid)}`;
   try{if(navigator.share&&matchMedia('(pointer:coarse)').matches){await navigator.share({text:t});return}}catch(e){if(e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(t);toast('Link copied! Paste it to a friend.')}catch(e){toast('Couldn’t copy on this browser')}}
 $('mkSend').onclick=()=>{if(MADE)sendBoard(MADE)};
@@ -831,13 +831,13 @@ $('mSent').onclick=()=>{only('sent');const L=$('sentList'),G=sentList();L.innerH
       const H=hiddenRes(),rs=(d.documents||[]).map(x=>({dev:(x.name||'').split('/').pop(),name:x.fields.name&&x.fields.name.stringValue||'',n:+(x.fields.n&&x.fields.n.integerValue||0),score:+(x.fields.score&&x.fields.score.integerValue||0)})).filter(x=>!H.includes(x.dev)).sort((a,b)=>b.score-a.score);
       c.querySelector('.w').remove();
       if(!rs.length){c.insertAdjacentHTML('beforeend','<div class="w">Nobody has sent a score yet</div>');return}
-      rs.forEach((x,i)=>{const top=i===0&&x.n===5;c.insertAdjacentHTML('beforeend',`<div class="r${top?' win':''}"><span>${top?'🏆 ':''}${esc(okName(x.name)||'Someone')}</span><span>${x.n}/5 sunk${x.n?' '+'⭐'.repeat(starsOf(x.n)):''} <button class="hide" aria-label="Hide this score">✕</button></span></div>`);
+      rs.forEach((x,i)=>{const top=i===0&&x.n===5;c.insertAdjacentHTML('beforeend',`<div class="r${top?' win':''}"><span>${top?'🏆 ':''}${esc(okName(x.name)||'Someone')}</span><span>${x.n}/5 captured${x.n?' '+'⭐'.repeat(starsOf(x.n)):''} <button class="hide" aria-label="Hide this score">✕</button></span></div>`);
         c.lastElementChild.querySelector('.hide').onclick=e=>{const h=hiddenRes();h.push(x.dev);store.put('cs-hide',h.slice(-200));e.target.closest('.r').remove()}})
     }).catch(()=>{c.querySelector('.w').textContent='Couldn’t load scores right now'})}};
 $('mkTry').onclick=()=>{if(MADE)startCustom(decodeMake(MADE.code))};
 function startCustom(m){const d=m&&makeCustom(m.w,m.t,m.code);if(!d){toast('That puzzle link is broken.');return cover()}
   stopDemo();TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
-  say(ST.over?`${ST.sunk.length} of 5 sunk.`:ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
+  say(ST.over?`${ST.sunk.length} of 5 captured.`:ST.needSonar?SONAR_MSG:ST.guessing?GUESS_MSG:ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
 const QS=new URLSearchParams(location.search),LINK=decodeMake(QS.get('c')||'');if(LINK&&/^[a-z0-9]{8,16}$/.test(QS.get('id')||''))LINK.sid=QS.get('id');
 function gift(){only('gift');$('gTitle').textContent=LINK.n?`A puzzle from ${LINK.n}`:'A puzzle for you';$('gSub').textContent=`5 hidden words · Theme: ${LINK.t||'Made for you'}`}
 $('gPlay').onclick=()=>{startCustom(LINK);if(!store.get('cs-intro',''))intro(()=>closeAll())};
@@ -877,7 +877,7 @@ function showMine(){stopDemo();const t=TWO.turn;DAY=TWO.days[t];ST=TWO.sts[t];CU
   say(`<b>${TWO.names[t]}</b>, your move: call a letter, use Sonar, or tap a word to guess.`);draw()}
 function passTurn(){if(!TWO)return;TWO.turn^=1;TWO.busy=false;saveTwo();showPass()}
 function twoWin(){if(!TWO)return;const t=TWO.turn,me=TWO.names[t],st=TWO.sts[t];TWO.over=1;saveTwo();only('win2');SND.win();
-  $('wTitle').textContent=me+' wins!';$('wSub').textContent=`Sank all 5 words in ${st.calls.length} call${st.calls.length===1?'':'s'}${st.sonar!=null?' and a Sonar':''}, with ${st.guesses.length} guess${st.guesses.length===1?'':'es'}.`;
+  $('wTitle').textContent=me+' wins!';$('wSub').textContent=`Captured all 5 words in ${st.calls.length} call${st.calls.length===1?'':'s'}${st.sonar!=null?' and a Sonar':''}, with ${st.guesses.length} guess${st.guesses.length===1?'':'es'}.`;
   $('wBoards').innerHTML=[0,1].map(i=>{const d=TWO.days[i],s2=TWO.sts[i];return `<div><h3>${TWO.names[i]} · ${s2.sunk.length}/5</h3><div class="recap">${d.words.map((w,k)=>`<div class="wp ${s2.sunk.includes(k)?'s':'lost'}">${[...w].map(c=>`<b>${c}</b>`).join('')}</div>`).join('')}</div></div>`}).join('')}
 $('wAgain').onclick=()=>{const n=TWO?TWO.names:SETUP.names;TWO=null;SETUP={names:n,words:[null,null],themes:['',''],codes:['',''],p:0};openHide(0)};
 $('wToday').onclick=()=>{TWO=null;cover()};

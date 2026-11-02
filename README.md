@@ -56,6 +56,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 ## v8 (Nov 2)
 - Renamed Capital Ship (Jeff). Game code cs: Firestore cs_devices, storage keys cs-*, smAisle Daily hub id 'cs'. Quick search found no other game called Capital Ship (it's a naval term).
 
+## v25 (Nov 2)
+- No sink/sunk/battle words anywhere a player sees (Jeff): words are "captured" (top box "Captured", "All captured!", "First word captured!", share "n/5 captured", stats "Words captured", owner page "Avg captured"). Stamps are Found! / Nope / Captured! / Empty; Sonar finds an empty square (shown ·) instead of water. "Sunk yourself!" → "Tough one!", "Good fight!" → "Nice try!". Code names (st.sunk, cs_shares fields) unchanged.
+
 ## v24 (Nov 2)
 - Way back to smaisle.app from inside the game, like the other games: the menu now ends with "smAisle · See our other games ›" and a Front page link (back to the cover). The cover's smAisle link works the same way: same tab on the website, the app's home inside smAisle Daily ({cmd:'home'}), a new tab elsewhere. On the website the yellow ‹ smAisle Daily button is still there too.
 
