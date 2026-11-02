@@ -61,8 +61,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #menuBtn{flex:none;width:34px;height:30px;padding:0;line-height:1;border-radius:4px;background:transparent;border:1.5px solid var(--ink);color:var(--ink);font-size:17px}
 /* Theme line and message line */
 .diff{text-align:center;font:800 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.diff em{margin-left:6px;font:italic 400 15px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
-:root[data-look=classic] .diff em{font-style:normal;font-weight:700}
+.diff em{margin-left:8px;padding:3px 8px;background:var(--hi);color:var(--hiInk);font:800 12px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase}
 #msg{height:36px;line-height:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;font-style:italic;font-size:14px;color:var(--ink2)}
 #msg b{font-style:normal;font-family:var(--sans);font-weight:800;color:var(--ink)}
 #msg.hot{color:var(--red)}
@@ -215,8 +214,15 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #pass h2{font-size:30px}
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center}.vs h3{margin:0 0 4px;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase}
 .vs .recap{flex-direction:column;align-items:center}
-#demoBar{position:fixed;left:max(16px,calc(50% - 244px));top:calc(env(safe-area-inset-top,0px) + 8px);z-index:25;display:flex;gap:10px;align-items:center;background:var(--ink);color:var(--paper);padding:8px 10px 8px 14px;border-radius:99px;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;box-shadow:3px 3px 0 var(--shadow)}
-#demoBar button{background:var(--hi);color:var(--hiInk);border:0;border-radius:99px;padding:6px 12px;font:inherit}
+#demoBar{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:25;width:min(calc(100% - 20px),470px);box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:2px 10px;align-items:center;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:var(--r);box-shadow:3px 3px 0 var(--ink);padding:7px 10px}
+.dc-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font:800 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+#demoSkip{background:none;border:0;padding:2px 0 2px 10px;font:inherit;color:inherit;text-decoration:underline}
+#demoText{margin:0;font:500 14px/1.3 var(--sans);min-height:54px}
+#demoNext{align-self:end;height:40px;border:2px solid var(--ink);border-radius:var(--r);background:var(--hi);color:var(--hiInk);font:800 14px var(--sans)}
+#demoNext:disabled{opacity:.4}
+.demoHi{outline:3px solid #d62f24;outline-offset:2px;border-radius:4px;animation:demoP 1s ease-in-out infinite alternate}
+@keyframes demoP{to{outline-offset:4px}}
+@media (prefers-reduced-motion:reduce){.demoHi{animation:none}}
 #demoBlock{position:fixed;inset:0;z-index:24}
 .hubBtn{background:var(--hi)!important;color:var(--hiInk)!important;text-transform:none!important;letter-spacing:0!important}
 .shareRow{display:flex;gap:8px}.shareRow .go{flex:1;padding:11px 4px}
@@ -279,7 +285,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <div class="box"><small>Captured</small><b id="sunkCount">0/5</b></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
   </div>
-  <div class="diff"><b id="hardTag" hidden>Hard</b><span>Theme</span><em id="themeName"></em></div>
+  <div class="diff"><b id="hardTag" hidden>Hard</b><span id="themeLab">Today's theme</span><em id="themeName"></em></div>
   <div id="msg"></div>
   <div id="stage"><div id="board"></div></div>
   <div id="tray"></div>
@@ -471,7 +477,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 </div></div>
 
 <div id="demoBlock" hidden></div>
-<div id="demoBar" hidden><span>Demo</span><button id="demoSkip">Skip</button></div>
+<div id="demoBar" hidden><div class="dc-top"><span id="demoStep">Demo</span><button id="demoSkip">Skip</button></div><p id="demoText"></p><button id="demoNext">Next</button></div>
 <div class="sheet" id="demoEnd" hidden><div class="card" style="text-align:center">
   <h2>That’s Capital Ship!</h2>
   <p class="sub" style="margin:0">Call letters, ping with Sonar, then fill in the words. Ready?</p>
@@ -655,7 +661,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='30',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='31',VDATE='Nov 2',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -776,7 +782,7 @@ function keyState(L){const called=ST.calls.some(x=>x.l===L),seen=DAY.letters.som
   if((called||seen)&&remaining(DAY,ST,L)===0)return 'gone';return called?'called':''}
 function draw(){
   if(DEMO){$('noLabel').textContent='';$('dateLabel').textContent=''}else if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')}
-  $('themeName').textContent=DAY.theme;$('hardTag').hidden=!HARD();
+  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||DEMO||TWO)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
   $('callsLeft').textContent=TWO?ST.calls.length:ST.left;$('callBox').classList.toggle('low',!TWO&&ST.left<=3&&!ST.over&&!ST.guessing);
   $('sunkCount').textContent=ST.sunk.length+'/'+DAY.words.length;
   const rev=new Set(ST.rev);
@@ -1082,22 +1088,34 @@ if(!window.dgNative)window.dgNative=(cmd,d)=>{if(cmd!=='store'||!window.DG_APP)r
 
 /* ---------- Demo: a short auto-playing game on a fixed board (Jeff's rule: every game has a demo) ---------- */
 const DEMO_WORDS=['SAND','WAVES','SHELL','TOWEL','SUN'];
-function stopDemo(){if(!DEMO)return;DEMO.t.forEach(clearTimeout);DEMO=null;$('demoBar').hidden=true;$('demoBlock').hidden=true}
-function startDemo(){stopDemo();TWO=null;const d=makeCustom(DEMO_WORDS,'At the beach','demo-board');DEMO={t:[]};CUSTOM={demo:1,n:'',t:'At the beach',w:DEMO_WORDS,code:'demo-board'};
+function demoHi(q){document.querySelectorAll('.demoHi').forEach(e=>e.classList.remove('demoHi'));if(!q)return;const e=typeof q==='string'?document.querySelector(q):q;if(e)e.classList.add('demoHi')}
+function stopDemo(){if(!DEMO)return;DEMO.t.forEach(clearTimeout);DEMO=null;demoHi();$('demoBar').hidden=true;$('demoBlock').hidden=true}
+/* A guided walkthrough: the player taps Next, so each step can be read. Each step shows its words and red ring,
+   and Next runs what comes after. A step's run() may return how long its moves take. */
+function startDemo(){stopDemo();TWO=null;const d=makeCustom(DEMO_WORDS,'At the beach','demo-board');DEMO={t:[],i:-1};CUSTOM={demo:1,n:'',t:'At the beach',w:DEMO_WORDS,code:'demo-board'};
   DAY=d;ST=newState(CALLS);PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;closeAll();$('demoBar').hidden=false;$('demoBlock').hidden=false;
-  say('Five words about <b>the beach</b> are hidden on this board.');draw();
-  const steps=[];let at=1600;const add=(f,ms=1500)=>{steps.push([at,f]);at+=ms};
-  for(const L of 'EASLT'){add(()=>{pick=L;drawKb()},450);add(()=>{pick=L;doCall()},1100)}
-  add(()=>say('Gray key = that letter is used up. Next, the <b>Sonar</b>: one free ping.'),1800);
-  add(()=>{sonarArm=true;draw();say('<b>Sonar:</b> tap any dark square…')},1100);
-  add(()=>{const c=d.cells[1][1];doSonar(c)},1900);
-  for(const L of 'WON'){add(()=>{pick=L;doCall()},1000)}
-  add(()=>{if(!ST.guessing&&!ST.over){startGuessing(DAY,ST);dropIn=true;draw()}say('Now the lit letters drop into the word boxes.')},2000);
-  d.words.forEach((w,wi)=>{add(()=>{if(ST.over||!canTry(DAY,ST,wi))return;pickWord(wi);say(`Tap a word, then type its blanks…`)},800);
-    add(()=>{if(sel!==wi)return;typed=known(DAY,ST,wi).map((ch,k)=>ch?'':w[k]).join('');drawBar()},700);
-    add(()=>{if(sel===wi)doGuess();if(ST.over&&DEMO){DEMO.t.forEach(clearTimeout);DEMO.t=[setTimeout(()=>{stopDemo();only('demoEnd')},1800)]}},1100)});
-  add(()=>{stopDemo();only('demoEnd')},800);
-  DEMO.t=steps.map(([ms,f])=>setTimeout(()=>{if(DEMO)f()},ms))}
+  say('Tap a letter to call it.');draw();
+  const later=(f,ms)=>DEMO.t.push(setTimeout(()=>{if(DEMO)f()},ms)),call=L=>{pick=L;doCall()},calls=(w,gap)=>{[...w].forEach((L,i)=>later(()=>call(L),i*gap));return w.length*gap+300};
+  const open=()=>d.words.map((_,i)=>i).filter(i=>canTry(DAY,ST,i)),fill=wi=>{if(sel!==wi)pickWord(wi);typed=known(DAY,ST,wi).map((ch,k)=>ch?'':d.words[wi][k]).join('');drawBar()};
+  const steps=[
+   {t:'Five words about <b>the beach</b> are hidden on this board. Find them all to win.',hi:'#stage'},
+   {t:'Tap a letter to call it. Let’s call <b>E</b>.',hi:'.k[data-k="E"]'},
+   {run:()=>{call('E');return 300},t:'E is on the board, so <b>one</b> E lights up. That used 1 of your 15 calls.',hi:'#stage'},
+   {t:'Now <b>Z</b>.',hi:'.k[data-k="Z"]'},
+   {run:()=>{call('Z');return 300},t:'No Z here. The key turns <b>gray</b>, and it still used a call.',hi:'.k[data-k="Z"]'},
+   {run:()=>calls('ASLTO',750),t:'Keep calling. Gray keys have no more of that letter. The letters start to show the words.',hi:'#stage'},
+   {t:'<b>Sonar</b> is one free look each game. Tap it, then tap any dark square.',hi:'#sonarBtn'},
+   {run:()=>{sonarArm=true;draw();later(()=>{const c=d.cells.flat().find(x=>!ST.rev.includes(x));doSonar(c)},900);return 1200},t:'A letter lit up, and it didn’t use a call.',hi:'#stage'},
+   {t:'Ready to fill in the words? Tap <b>Guess now</b>. It also starts when your calls run out.',hi:'#goBtn'},
+   {run:()=>{startGuessing(DAY,ST);dropIn=true;draw();return 500},t:'Your letters drop into the <b>word boxes</b>. After this you can’t call more letters.',hi:'#tray'},
+   {t:'Tap a word box, then type the missing letters. <b>One wrong guess ends the game.</b>',hi:'#tray',run:()=>{const o=open();if(o.length)pickWord(o[0]);return 300}},
+   {run:()=>{const o=open();if(o.length){fill(sel>=0?sel:o[0]);later(doGuess,900)}return 1300},t:'Right! That word is <b>captured</b>.',hi:'#tray'},
+   {run:()=>{const o=open();o.forEach((wi,i)=>{later(()=>fill(wi),i*1300);later(doGuess,i*1300+800)});return o.length*1300+300},t:'All 5 captured! 3 words is ⭐, 4 is ⭐⭐, all 5 is ⭐⭐⭐.',hi:'#tray'},
+   {t:'Want more of a challenge? Pick <b>Hard</b> on the front page: one wrong <b>letter</b> ends the game.'}];
+  const show=s=>{demoHi(s.hi);$('demoText').innerHTML=s.t;$('demoStep').textContent=`Demo · ${DEMO.i+1} of ${steps.length}`;$('demoNext').disabled=false;$('demoNext').textContent=DEMO.i===steps.length-1?'Done':'Next'};
+  const next=()=>{if(!DEMO)return;DEMO.i++;if(DEMO.i>=steps.length){stopDemo();only('demoEnd');return}
+    const s=steps[DEMO.i],ms=s.run?s.run()||0:0;demoHi();$('demoNext').disabled=true;later(()=>show(s),ms)};
+  $('demoNext').onclick=next;next()}
 $('demoSkip').onclick=()=>{stopDemo();cover()};
 $('coverDemo').onclick=$('helpDemo').onclick=startDemo;
 $('deGo').onclick=()=>$('coverGo').onclick();
