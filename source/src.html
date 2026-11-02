@@ -61,8 +61,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #menuBtn{flex:none;width:34px;height:30px;padding:0;line-height:1;border-radius:4px;background:transparent;border:1.5px solid var(--ink);color:var(--ink);font-size:17px}
 /* Theme line and message line */
 .diff{text-align:center;font:800 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.diff em{margin-left:6px;font:italic 400 15px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
-:root[data-look=classic] .diff em{font-style:normal;font-weight:700}
+.diff em{margin-left:8px;padding:3px 8px;background:var(--hi);color:var(--hiInk);font:800 12px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase}
 #msg{height:36px;line-height:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;font-style:italic;font-size:14px;color:var(--ink2)}
 #msg b{font-style:normal;font-family:var(--sans);font-weight:800;color:var(--ink)}
 #msg.hot{color:var(--red)}
@@ -285,7 +284,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <div class="box"><small>Captured</small><b id="sunkCount">0/5</b></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
   </div>
-  <div class="diff"><b id="hardTag" hidden>Hard</b><span>Theme</span><em id="themeName"></em></div>
+  <div class="diff"><b id="hardTag" hidden>Hard</b><span id="themeLab">Today's theme</span><em id="themeName"></em></div>
   <div id="msg"></div>
   <div id="stage"><div id="board"></div></div>
   <div id="tray"></div>
@@ -642,7 +641,7 @@ function keyState(L){const called=ST.calls.some(x=>x.l===L),seen=DAY.letters.som
   if((called||seen)&&remaining(DAY,ST,L)===0)return 'gone';return called?'called':''}
 function draw(){
   if(DEMO){$('noLabel').textContent='';$('dateLabel').textContent=''}else if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')}
-  $('themeName').textContent=DAY.theme;$('hardTag').hidden=!HARD();
+  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||DEMO||TWO)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
   $('callsLeft').textContent=TWO?ST.calls.length:ST.left;$('callBox').classList.toggle('low',!TWO&&ST.left<=3&&!ST.over&&!ST.guessing);
   $('sunkCount').textContent=ST.sunk.length+'/'+DAY.words.length;
   const rev=new Set(ST.rev);
