@@ -217,6 +217,12 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #demoBar{position:fixed;left:max(16px,calc(50% - 244px));top:calc(env(safe-area-inset-top,0px) + 8px);z-index:25;display:flex;gap:10px;align-items:center;background:var(--ink);color:var(--paper);padding:8px 10px 8px 14px;border-radius:99px;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;box-shadow:3px 3px 0 var(--shadow)}
 #demoBar button{background:var(--hi);color:var(--hiInk);border:0;border-radius:99px;padding:6px 12px;font:inherit}
 #demoBlock{position:fixed;inset:0;z-index:24}
+.hubBtn{background:var(--hi)!important;color:var(--hiInk)!important;text-transform:none!important;letter-spacing:0!important}
+.shareRow{display:flex;gap:8px}.shareRow .go{flex:1;padding:11px 4px}
+#dMore .shead{margin:0}
+.moreRow{display:flex;gap:8px;overflow-x:auto;margin-top:6px;padding-bottom:2px;scrollbar-width:none}.moreRow::-webkit-scrollbar{display:none}
+.moreRow a{flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;width:52px;text-decoration:none;color:var(--ink);font:700 9px/1.15 var(--sans);text-align:center}
+.moreRow img{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--ink);background:var(--card)}
 #mkErr,#hErr{margin:0;min-height:18px;font:italic 13px var(--body);color:var(--red)}
 .donegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .donegrid .go{padding:9px 4px;font-size:13px}
@@ -441,6 +447,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="vs" id="wBoards"></div>
   <button class="go" id="wAgain">Play again</button>
   <button class="go alt" id="wToday">Today's puzzle</button>
+  <button class="go alt hubBtn" id="wHub">‹ smAisle Daily</button>
 </div></div>
 
 <div class="sheet" id="gate" hidden><div class="card" style="text-align:center">
@@ -459,6 +466,17 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="go alt" id="deAgain">Watch again</button>
 </div></div>
 
+<div class="sheet" id="offer" hidden><div class="card" style="text-align:center;position:relative">
+  <button class="x" data-close aria-label="Close">✕</button>
+  <div><span class="plusTag" style="margin:0">FOUNDING MEMBER</span></div>
+  <h2>Play every day with Plus</h2>
+  <p class="sub" style="margin:0">That puzzle was on your friend. smAisle Daily Plus unlocks Capital Ship every day, plus Make your own, Two players and the full Archive in every smAisle Daily game.</p>
+  <p style="margin:0;font:800 15px/1.4 var(--sans)">$0.99 a month for your first year<br>or $4.99 for the whole first year</p>
+  <p class="sub" style="margin:0;font-size:12px">Founding Member price through Jan 31.</p>
+  <button class="go" id="offerGo" style="background:var(--hi);color:var(--hiInk)">Get smAisle Daily Plus</button>
+  <button class="go alt" id="offerNo">Not now</button>
+</div></div>
+
 <div class="sheet" id="gift" hidden><div class="card" style="text-align:center">
   <h2 id="gTitle">A puzzle for you</h2>
   <p class="sub" id="gSub" style="margin:0"></p>
@@ -474,16 +492,17 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <p class="sub" id="dSub"></p>
   <div class="recap" id="dWords"></div>
   <form id="sendRow" hidden><label for="nameIn">Your name, so your friend sees your score</label><input id="nameIn" maxlength="16" autocomplete="off" placeholder="Leave blank to stay Someone"><button class="go">Send my score</button></form>
-  <button class="go" id="shareBtn">Share</button>
+  <div class="shareRow"><button class="go" id="shareBtn">Share</button><button class="go alt hubBtn" id="dHub">‹ smAisle Daily</button></div>
   <button class="go alt" id="dSendBoard" hidden>Pass it to a friend</button>
   <button class="go alt" id="dMake">Make your own</button>
   <div class="donegrid"><button class="go alt" id="dBoard">See the board</button><button class="go alt" id="dStats">Stats</button><button class="go alt" id="dPast">Archive</button><button class="go alt" id="dHow">How to play</button></div>
   <p class="next" id="dNext"></p>
+  <div id="dMore" hidden><div class="shead">More smAisle games</div><div class="moreRow" id="dMoreRow"></div></div>
 </div></div>
 
 <script>
 /*LOGIC*/
-const VERSION='28',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='29',VDATE='Nov 2',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -749,13 +768,14 @@ function drawStats(){const s=statsOf();
   const buckets=['0','1','2','3','4','5+'],cnt=buckets.map(()=>0);let lost=0;Object.values(s.hist).forEach(h=>{if(!h.win)lost++;else cnt[Math.min(h.left,5)]++});
   const max=Math.max(1,...cnt,lost),me=s.hist[DAY?DAY.date:TODAY];
   $('dist').innerHTML=buckets.map((b,i)=>`<div><em>${b}</em><i class="${me&&me.win&&Math.min(me.left,5)===i?'me':''}" style="width:${12+cnt[i]/max*78}%">${cnt[i]}</i></div>`).join('')+`<div><em>Lost</em><i class="${me&&!me.win?'me':''}" style="width:${12+lost/max*78}%">${lost}</i></div>`}
-function showDone(){if(!ST.over)return;only('done');const s=starsOf(ST.sunk.length);
+function showDone(){if(!ST.over)return;only('done');loadMore();
+  if(CUSTOM&&!CUSTOM.demo&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden)only('offer')},2200)}const s=starsOf(ST.sunk.length);
   $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
   $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`);
   $('sendRow').hidden=!(CUSTOM&&CUSTOM.sid&&!ST.sentScore);if(!$('sendRow').hidden){$('nameIn').value=store.get('cs-name','');$('sendRow').querySelector('button').textContent='Send my score'}
-  $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=!!(CUSTOM&&!CUSTOM.r&&!$('sendRow').hidden);
+  $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=PREVIEW()||!CUSTOM||!!(!CUSTOM.r&&!$('sendRow').hidden);
   $('shareBtn').textContent=CUSTOM?'Share your result':'Share';
   $('dWords').innerHTML=DAY.words.map((w,i)=>`<div class="wp ${ST.sunk.includes(i)?'s':'lost'}">${[...w].map(c=>`<b>${c}</b>`).join('')}</div>`).join('');
   tick()}
@@ -767,7 +787,7 @@ function tick(){if($('done').hidden)return;if(CUSTOM){$('dNext').textContent='Cu
 /* moves in the order they happened: calls are 🟨 (found one) or ⬜ (miss), guesses 🎯 (sunk) or ❌ (wrong, game over) */
 function shareText(){const s=starsOf(ST.sunk.length),log=(ST.log||[]).join('');
   if(CUSTOM)return `Capital Ship 🚢 ${CUSTOM.n?CUSTOM.n+'’s':'Custom'} puzzle · ${DAY.theme}\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\n${shareUrl(CUSTOM.code,CUSTOM.sid)}`;
-  return `Capital Ship No. ${DAY.no} 🚢\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\n${WEB?location.origin+location.pathname:'smaisle.app'}`}
+  return `Capital Ship No. ${DAY.no} 🚢\n${ST.sunk.length}/5 captured ${'⭐'.repeat(s)}\n${log}\nhttps://smaisle.app/CapitalShip/`}
 $('shareBtn').onclick=async()=>{const t=shareText();try{if(navigator.share&&matchMedia('(pointer:coarse)').matches){await navigator.share({text:t});return}}catch(e){if(e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(t);toast('Copied! Paste it anywhere.')}catch(e){toast('Couldn’t copy on this browser')}};
 
@@ -783,7 +803,7 @@ function encodeMake(m){return b64u(scramble(['1',m.t,m.n,m.w.join('.')].join('|'
 function decodeMake(code){try{const [v,t,n,w]=unscramble(unb64u(code)).split('|');const words=(w||'').split('.');
   if(v!=='1'||words.length!==5||!words.every(x=>/^[A-Z]{3,7}$/.test(x)))return null;return {t:clean(t,24),n:clean(n,16),w:words,code}}catch(e){return null}}
 function clean(t,n){return String(t||'').replace(/[<>&"|]/g,'').trim().slice(0,n)}
-function shareUrl(code,sid){return (WEB?location.origin+location.pathname:'https://smaisle.app/CapitalShip/')+'?c='+code+(sid?'&id='+sid:'')}
+function shareUrl(code,sid){return 'https://smaisle.app/CapitalShip/?c='+code+(sid?'&id='+sid:'')}
 /* keep it family friendly */
 const BAD_IN=/FUCK|SHIT|CUNT|BITCH|WHORE|SLUT|NIGG|PORN|ASSHOLE|FAGGOT/,BAD_IS=new Set('DICK COCK ASS SEX SEXY TIT TITS BOOB BOOBS RAPE FAG NAZI PUSSY DAMN CRAP PISS'.split(' '));
 function badText(t){const u=String(t).toUpperCase();return BAD_IN.test(u.replace(/[^A-Z]/g,''))||u.split(/[^A-Z]+/).some(x=>BAD_IS.has(x))}
@@ -920,6 +940,21 @@ $('demoSkip').onclick=()=>{stopDemo();cover()};
 $('coverDemo').onclick=$('helpDemo').onclick=startDemo;
 $('deGo').onclick=()=>$('coverGo').onclick();
 $('deAgain').onclick=startDemo;
+
+/* ---------- Finish screen: ‹ smAisle Daily and More smAisle games (shared list from smaisle.app/daily/games.js) ---------- */
+function goOut(url){if(window.DG_APP)return toApp({cmd:'open',url});if(WEB)location.href=url;else window.open(url,'_blank','noopener')}
+function goHub(){if(window.DG_APP)return toApp({cmd:'home'});goOut('https://smaisle.app/daily/')}
+$('dHub').onclick=$('wHub').onclick=goHub;
+let moreTried=false;
+function drawMore(){const S=window.SMAISLE;if(!S||!S.games)return;const G=S.games.filter(g=>g.id!=='cs'&&g.id!=='daily'&&g.url&&g.icon);if(!G.length)return;
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  $('dMoreRow').innerHTML=G.map(g=>`<a href="${esc(g.url)}" data-u="${esc(g.url)}"><img src="${esc(g.icon)}" alt="" loading="lazy">${esc(g.name)}</a>`).join('');
+  $('dMoreRow').querySelectorAll('a').forEach(a=>a.onclick=e=>{e.preventDefault();goOut(a.dataset.u)});$('dMore').hidden=false}
+function loadMore(){if(window.SMAISLE)return drawMore();if(moreTried)return;moreTried=true;const sc=document.createElement('script');sc.src='https://smaisle.app/daily/games.js';sc.onload=drawMore;sc.onerror=()=>{};document.head.appendChild(sc)}
+
+/* Shared Plus game (standard section 8): a friend without Plus plays a shared puzzle free, then sees the Founding Member offer once */
+$('offerGo').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.href='https://smaisle.app/daily/#plus'};
+$('offerNo').onclick=()=>showDone();
 
 /* ---------- Start ---------- */
 ['helpVer','sVer'].forEach(id=>$(id).textContent=VTXT);$('mVer').textContent=`Capital Ship · ${VTXT} · smAisle`;

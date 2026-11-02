@@ -27,6 +27,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v29 (Nov 2)
+- v27 plus the v28 `code` check-in field.
+
 ## v28 (Nov 2, live)
 - Usage check-in adds `code`: this device's saved smAisle invite code (localStorage smaisle_code, else the first of smaisle_codes preferring daily15, abcdeal, gramble, all; else 'unknown'), for the By code table on smaisle.app/stats.html. Built on v25, since v26-v27 are still waiting for Jeff's OK.
 
@@ -58,6 +61,13 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 
 ## v8 (Nov 2)
 - Renamed Capital Ship (Jeff). Game code cs: Firestore cs_devices, storage keys cs-*, smAisle Daily hub id 'cs'. Quick search found no other game called Capital Ship (it's a naval term).
+
+## v27 (Nov 2)
+- Shared Plus games (standard section 8): a friend without Plus (preview mode) who opens a shared Make your own link plays that puzzle free, with no first-word stop. When it ends, the Founding Member offer shows once: $0.99 a month for the first year or $4.99 for the first year, through Jan 31. Get smAisle Daily Plus posts {cmd:'plus'} in the app (web: smaisle.app/daily/#plus); Not now goes back to the results. Two players is pass-the-phone on one device, so there's nothing to share there.
+
+## v26 (Nov 2)
+- Finish screen (standard section 7): Share and a yellow ‹ smAisle Daily button side by side, then a "More smAisle games" row of the other games' icons from https://smaisle.app/daily/games.js (loaded on the finish screen; hidden if it can't load). Icons open each game (same tab on the website, {cmd:'open',url} in the app). The two-player win card also has ‹ smAisle Daily. Make your own left the daily finish card (still in the menu and on custom results) so the card fits a small iPhone without scrolling.
+- Share links are hardcoded to https://smaisle.app/CapitalShip/ (daily share and custom puzzle links), never the current page address.
 
 ## v25 (Nov 2)
 - No sink/sunk/battle words anywhere a player sees (Jeff): words are "captured" (top box "Captured", "All captured!", "First word captured!", share "n/5 captured", stats "Words captured", owner page "Avg captured"). Stamps are Found! / Nope / Captured! / Empty; Sonar finds an empty square (shown ·) instead of water. "Sunk yourself!" → "Tough one!", "Good fight!" → "Nice try!". Code names (st.sunk, cs_shares fields) unchanged.
