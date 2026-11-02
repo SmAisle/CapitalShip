@@ -624,7 +624,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='25',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='28',VDATE='Nov 2',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -696,6 +696,9 @@ function agreed(){return !!store.get(TERMS_KEY,'')}
 function devId(){let id=store.get('cs-dev','');if(!id){id=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>'abcdefghijklmnopqrstuvwxyz0123456789'[b%36]).join('');store.set('cs-dev',id)}return id}
 function trimMap(m){const k=Object.keys(m).sort();while(k.length>60)delete m[k.shift()];return m}
 /* kind: 'open', 'play' (first call of today's puzzle) or 'done'. Per-day maps: o = opens, p = puzzles started, r = today's result (words sunk, 0-5). */
+/* invite code saved on this device (same lookup as smaisle.app gate.js), for the By code table on stats.html */
+function inviteCode(){try{const c=localStorage.getItem('smaisle_code');if(c)return String(c).slice(0,40);const m=JSON.parse(localStorage.getItem('smaisle_codes')||'null');
+  if(m&&typeof m==='object'){for(const k of ['daily15','abcdeal','gramble','all'])if(m[k])return String(m[k]).slice(0,40);const v=Object.values(m).find(x=>x);if(v)return String(v).slice(0,40)}}catch(e){}return 'unknown'}
 async function checkIn(kind){
   if(!agreed())return;
   const day=TODAY,u=store.json('cs-usage',{first:day,days:0,opens:0,plays:0,o:{},p:{},r:{}});
@@ -708,7 +711,7 @@ async function checkIn(kind){
   if(!WEB&&!window.CS_TEST)return;
   const st=streaks(hist),H=Object.values(hist),I=n=>({integerValue:String(Math.round(n)||0)}),T=v=>({stringValue:String(v)}),M=m=>({mapValue:{fields:Object.fromEntries(Object.entries(m).map(([k,v])=>[k,I(v)]))}});
   const body={fields:{first:T(u.first),last:T(day),days:I(u.days),v:T(VERSION),opens:I(u.opens),plays:I(u.plays),done:I(H.length),wins:I(H.filter(h=>h.win).length),
-    best:I(H.reduce((a,h)=>Math.max(a,h.sunk||0),0)),streak:I(st.cur),terms:T(store.get(TERMS_KEY,'').slice(0,10)),desk:{booleanValue:innerWidth>=820},t:I(Date.now()),o:M(u.o),p:M(u.p),r:M(u.r),mk:I(u.mk),sent:I(u.sent),cp:I(u.cp),cd:I(u.cd),rb:I(u.rb),sc:I(u.sc)}};
+    best:I(H.reduce((a,h)=>Math.max(a,h.sunk||0),0)),streak:I(st.cur),terms:T(store.get(TERMS_KEY,'').slice(0,10)),desk:{booleanValue:innerWidth>=820},code:T(inviteCode()),t:I(Date.now()),o:M(u.o),p:M(u.p),r:M(u.r),mk:I(u.mk),sent:I(u.sent),cp:I(u.cp),cd:I(u.cd),rb:I(u.rb),sc:I(u.sc)}};
   try{await fetch(`https://firestore.googleapis.com/v1/projects/${FB_PROJ}/databases/(default)/documents/${GAME}_devices/${devId()}?key=${FB_KEY}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true})}catch(e){}
 }
 

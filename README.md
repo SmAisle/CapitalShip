@@ -27,6 +27,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v28 (Nov 2, live)
+- Usage check-in adds `code`: this device's saved smAisle invite code (localStorage smaisle_code, else the first of smaisle_codes preferring daily15, abcdeal, gramble, all; else 'unknown'), for the By code table on smaisle.app/stats.html. Built on v25, since v26-v27 are still waiting for Jeff's OK.
+
 ## v1 (Nov 2)
 - First playable version.
 
