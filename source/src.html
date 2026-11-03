@@ -41,8 +41,9 @@ body{background:var(--paper);background-image:var(--dots);background-size:4px 4p
 button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 6px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(16px,env(safe-area-inset-left,0px))}
-#hubBar{display:block;margin:-6px -16px 0;padding:7px 16px;background:var(--card);border-bottom:2px solid var(--rule);color:var(--ink);font:800 12px var(--sans);letter-spacing:.06em;text-decoration:none}
-#hubBar span{background:var(--hi);color:var(--hiInk);padding:1px 5px}
+/* Way back to smAisle Daily: the yellow button shows on the cover only; during play the way back is the menu row (Jeff, Nov 3). */
+#coverHub{flex:none;display:block;box-sizing:border-box;height:30px;padding:4px 10px;background:#ffe27a;color:#1a1814;border:2px solid #1a1814;border-radius:4px;font:800 13px/18px var(--sans);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
+#coverHub{position:absolute;top:calc(env(safe-area-inset-top,0px) + 6px);left:calc(max(0px,50vw - 260px) + 12px);z-index:2}
 /* Top bar, like The Daily 15 */
 .top{display:flex;align-items:center;gap:8px;border-bottom:3px double var(--rule);padding:2px 0 6px}
 #pno{flex:1;display:flex;flex-direction:column;line-height:1;min-width:0}
@@ -148,9 +149,9 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .ver{text-align:center;font-size:11px;opacity:.55;font-family:var(--sans)}
 .x{position:absolute;top:10px;right:10px;width:30px;height:28px;border:1.5px solid var(--ink);border-radius:4px;background:transparent;font-size:14px;padding:0}
 /* Cover, like The Daily 15 */
-#cover{background:var(--paper);background-image:var(--dots);background-size:4px 4px;z-index:40}
+#cover{background:var(--paper);background-image:var(--dots);background-size:4px 4px;z-index:40;padding-top:calc(env(safe-area-inset-top,0px) + 42px);overflow:auto;place-items:safe center}
+#cover .ver a{color:inherit}
 #cover .in{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:340px;text-align:center}
-#coverHub{align-self:flex-start;font:800 13px var(--sans);letter-spacing:.06em;color:#1a1814;text-decoration:none;border:2px solid #1a1814;border-radius:4px;background:#fae38a;padding:6px 10px}
 #cover .mh{border-top:3px double var(--ink);border-bottom:3px double var(--ink);padding:8px 0;width:100%}
 #cover h1{font:900 clamp(40px,13vw,54px)/1 var(--head);margin:0;letter-spacing:-.01em}
 #cover .ln{display:flex;justify-content:space-between;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;margin-top:6px;color:var(--ink2)}
@@ -277,7 +278,6 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 </script>
 
 <div id="app">
-  <a id="hubBar" href="https://smaisle.app/daily/" hidden><span>‹ smAisle Daily</span></a>
   <div class="top">
     <div id="pno"><b id="noLabel">No. 1</b><small id="dateLabel"></small></div>
     <div class="box" id="callBox"><small>Calls</small><b id="callsLeft">0</b></div>
@@ -312,10 +312,10 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button id="cvStats" hidden aria-label="Your stats"></button>
   <div id="modeWrap"><div class="seg" id="segMode"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div><small id="modeNote"></small></div>
   <button class="go" id="coverGo">Play today's puzzle</button>
-  <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to play</button><span>·</span><button id="coverDemo">Demo</button></div>
+  <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to Play</button><span>·</span><button id="coverDemo">Demo</button></div>
   <button class="go alt" id="coverMake">Make your own</button>
   <button class="go alt" id="coverTwo">Two players</button>
-  <a class="smline" id="coverSm" href="https://smaisle.app/" target="_blank" rel="noopener"><i class="smico"></i><b>smAisle</b><em>See our other games ›</em></a>
+  <div class="ver"><a id="coverSm" href="https://smaisle.app/" target="_blank" rel="noopener">smAisle Home</a> · <span id="cvVer"></span></div>
 </div></div>
 
 <div class="sheet" id="quick" hidden><div class="card" id="qCard">
@@ -520,7 +520,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 
 <script>
 /*LOGIC*/
-const VERSION='31',VDATE='Nov 2',GAME='cs',CALLS=15;
+const VERSION='33',VDATE='Nov 3',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -996,12 +996,12 @@ $('offerGo').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.hre
 $('offerNo').onclick=()=>showDone();
 
 /* ---------- Start ---------- */
-['helpVer','sVer'].forEach(id=>$(id).textContent=VTXT);$('mVer').textContent=`Capital Ship · ${VTXT} · smAisle`;
+['helpVer','sVer','cvVer'].forEach(id=>$(id).textContent=VTXT);$('mVer').textContent=`Capital Ship · ${VTXT} · smAisle`;
 $('mBack').onclick=()=>{if(DAY)closeAll();else cover()};
 $('mFront').onclick=()=>{stopDemo();cover()};
 /* smAisle home: same tab on the website, the app's own home inside smAisle Daily, a new tab elsewhere */
 ['mSm','coverSm'].forEach(id=>$(id).onclick=e=>{e.preventDefault();if(window.DG_APP)return toApp({cmd:'home'});if(WEB)location.href='https://smaisle.app/';else window.open('https://smaisle.app/','_blank','noopener')});$('howCalls').textContent=CALLS;
-if(WEB){$('hubBar').hidden=false;$('coverHub').hidden=false;$('mHub').hidden=false;$('mHub').onclick=()=>{location.href='https://smaisle.app/daily/'}}
+if(WEB||window.DG_APP){$('coverHub').hidden=false;$('mHub').hidden=false;$('coverHub').onclick=e=>{e.preventDefault();goHub()};$('mHub').onclick=goHub}
 applyLook();sentUI();drawSound();previewUI();
 if(!agreed())only('terms');else{checkIn('open');LINK?gift():cover()}
 </script>
