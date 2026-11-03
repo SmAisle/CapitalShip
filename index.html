@@ -41,9 +41,8 @@ body{background:var(--paper);background-image:var(--dots);background-size:4px 4p
 button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 6px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(16px,env(safe-area-inset-left,0px))}
-/* Way back to smAisle Daily: same yellow button, same spot, on the cover and in the game (Jeff, Nov 3). */
-#hubBar,#coverHub{flex:none;display:block;box-sizing:border-box;height:30px;padding:4px 10px;background:#ffe27a;color:#1a1814;border:2px solid #1a1814;border-radius:4px;font:800 13px/18px var(--sans);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
-#hubBar{align-self:flex-start;margin:0 0 0 -4px}
+/* Way back to smAisle Daily: the yellow button shows on the cover only; during play the way back is the menu row (Jeff, Nov 3). */
+#coverHub{flex:none;display:block;box-sizing:border-box;height:30px;padding:4px 10px;background:#ffe27a;color:#1a1814;border:2px solid #1a1814;border-radius:4px;font:800 13px/18px var(--sans);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
 #coverHub{position:absolute;top:calc(env(safe-area-inset-top,0px) + 6px);left:calc(max(0px,50vw - 260px) + 12px);z-index:2}
 /* Top bar, like The Daily 15 */
 .top{display:flex;align-items:center;gap:8px;border-bottom:3px double var(--rule);padding:2px 0 6px}
@@ -280,7 +279,6 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 </script>
 
 <div id="app">
-  <a id="hubBar" href="https://smaisle.app/daily/" hidden>‹ smAisle Daily</a>
   <div class="top">
     <div id="pno"><b id="noLabel">No. 1</b><small id="dateLabel"></small></div>
     <div class="box" id="callBox"><small>Calls</small><b id="callsLeft">0</b></div>
@@ -663,7 +661,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='32',VDATE='Nov 3',GAME='cs',CALLS=15;
+const VERSION='33',VDATE='Nov 3',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -1144,7 +1142,7 @@ $('mBack').onclick=()=>{if(DAY)closeAll();else cover()};
 $('mFront').onclick=()=>{stopDemo();cover()};
 /* smAisle home: same tab on the website, the app's own home inside smAisle Daily, a new tab elsewhere */
 ['mSm','coverSm'].forEach(id=>$(id).onclick=e=>{e.preventDefault();if(window.DG_APP)return toApp({cmd:'home'});if(WEB)location.href='https://smaisle.app/';else window.open('https://smaisle.app/','_blank','noopener')});$('howCalls').textContent=CALLS;
-if(WEB||window.DG_APP){$('hubBar').hidden=false;$('coverHub').hidden=false;$('mHub').hidden=false;$('hubBar').onclick=$('coverHub').onclick=e=>{e.preventDefault();goHub()};$('mHub').onclick=goHub}
+if(WEB||window.DG_APP){$('coverHub').hidden=false;$('mHub').hidden=false;$('coverHub').onclick=e=>{e.preventDefault();goHub()};$('mHub').onclick=goHub}
 applyLook();sentUI();drawSound();previewUI();
 if(!agreed())only('terms');else{checkIn('open');LINK?gift():cover()}
 </script>
