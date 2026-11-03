@@ -27,6 +27,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v35 (Nov 3)
+- Play again on the results screen. Daily and Archive: the same board starts fresh, in memory only, with "Your score is locked. Keep playing for fun." A replay saves, records and checks in nothing, and a reload drops it. When it ends the saved results and Share card come back. Make your own: Play again opens the empty form, or deals a new board after a Random one. Two players already had Play again. Hidden in the free preview.
+
 ## v34 (Nov 3)
 - Menu standard (Jeff): the menu now matches Straight Down Spell. Top to bottom: Menu, Back to game, then the two-column grid, Home Screen and ‹ smAisle Daily side by side, Settings, version. The ⭐ Plus row shows only in the preview and opens the Plus offer. The demo stays in How to Play. Home Screen moved here from the Settings links (it was Front page).
 
