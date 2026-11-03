@@ -27,6 +27,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v32 (Nov 3)
+- One way home (navigation standard): the yellow ‹ smAisle Daily button sits top left in the same spot on the cover and in the game, and now also shows in the smAisle Daily app (it posts home to the app). It replaces the white bar. smAisle Home is now a small link on the cover's version line, in place of See our other games. The cover now shows the version.
+
 ## v31 (Nov 2)
 - Demo rebuilt as a guided walkthrough (Jeff: people were confused). 14 steps, the player taps Next, so nothing flies by. A card at the top explains each step, and a red ring marks what it means: calling, a miss, gray keys, Sonar, Guess now, word boxes, filling in, stars and Hard. Uses the same fixed beach board.
 
