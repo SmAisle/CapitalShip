@@ -27,6 +27,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v34 (Nov 3)
+- Menu standard (Jeff): the menu now matches Straight Down Spell. Top to bottom: Menu, Back to game, then the two-column grid, Home Screen and ‹ smAisle Daily side by side, Settings, version. The ⭐ Plus row shows only in the preview and opens the Plus offer. The demo stays in How to Play. Home Screen moved here from the Settings links (it was Front page).
+
 ## v33 (Nov 3)
 - Correction from Jeff: the yellow ‹ smAisle Daily button shows on the cover only, never during play. During play the way back is the ‹ smAisle Daily row in the menu (website and app). The results screen keeps its row.
 
