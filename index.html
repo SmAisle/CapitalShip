@@ -256,6 +256,10 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .set small{display:block;font:500 11px var(--sans);color:var(--fade);margin-top:4px}
 #modeWrap{width:100%;display:flex;flex-direction:column;gap:5px}#modeWrap small{font:500 12px var(--sans);color:var(--ink2);min-height:16px}
 #hardTag{margin-right:6px;padding:1px 6px;border-radius:3px;background:var(--ink);color:var(--paper);font:800 10px var(--sans);letter-spacing:.08em}
+/* Menu standard, same as Straight Down Spell (Jeff, Nov 3). An odd last row spans both columns. */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mpair{display:flex;gap:8px}.mpair .go{flex:1}
+.mgrid .go,.mpair .go{padding:9px 4px;font-size:12px}
+.mgrid>:not([hidden]):nth-last-child(1 of :not([hidden])):nth-child(odd of :not([hidden])){grid-column:1/-1}
 #mHub{background:var(--hi);color:var(--hiInk);border:2px solid var(--ink);text-transform:none;letter-spacing:0}
 .mlinks{display:flex;justify-content:center;gap:8px;font:700 12px var(--sans);color:var(--ink2)}.mlinks button{background:none;border:0;padding:4px;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px}
 .toast{position:fixed;left:50%;top:40%;z-index:45;transform:translate(-50%,-50%);background:var(--card);border:3px solid var(--ink);border-radius:8px;padding:10px 18px;box-shadow:5px 5px 0 rgba(0,0,0,.2);pointer-events:none;text-align:center;font:700 14px var(--sans);animation:toast 2s ease-in-out both;max-width:88%}
@@ -347,14 +351,17 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 <div class="sheet" id="menu" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
   <h2 style="text-align:left">Menu</h2>
-  <button class="go" id="mBack">Back to the game</button>
-  <button class="go alt" id="mHow">How to play</button>
-  <button class="go alt" id="mPast">Archive</button>
-  <button class="go alt" id="mStats">Stats</button>
-  <button class="go alt" id="mMake">Make your own</button>
-  <button class="go alt" id="mSent" hidden>Puzzles I've sent</button>
-  <button class="go alt" id="mTwo">Two players</button>
-  <button class="go alt" id="mHub" hidden>‹ smAisle Daily</button>
+  <button class="go" id="mBack">Back to game</button>
+  <div class="mgrid">
+    <button class="go alt" id="mPast">Archive</button>
+    <button class="go alt" id="mStats">Stats</button>
+    <button class="go alt" id="mHow">How to Play</button>
+    <button class="go alt" id="mPlus" hidden>⭐ Plus</button>
+    <button class="go alt" id="mMake">Make your own</button>
+    <button class="go alt" id="mTwo">Two players</button>
+    <button class="go alt" id="mSent" hidden>Puzzles I've sent</button>
+  </div>
+  <div class="mpair"><button class="go alt" id="mFront">Home Screen</button><button class="go alt" id="mHub" hidden>‹ smAisle Daily</button></div>
   <button class="go alt" id="mSet">Settings</button>
   <div class="ver" id="mVer"></div>
 </div></div>
@@ -365,7 +372,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="set"><h3>Style</h3><div class="seg" id="segLook"><button data-v="smaisle">smAisle</button><button data-v="classic">Classic</button></div></div>
   <div class="set" id="setDark"><h3>Dark mode</h3><div class="seg" id="segTheme"><button data-v="off">Off</button><button data-v="on">On</button><button data-v="auto">Match phone</button></div><small id="darkNote">On uses Navy. Match phone switches with your phone.</small></div>
   <div class="set"><h3>Sound</h3><div class="seg" id="segSound"><button data-v="on">On</button><button data-v="off">Off</button></div></div>
-  <div class="mlinks"><button id="mFront">Front page</button><span>·</span><button id="mIntro">Replay the intro</button><span>·</span><button id="mTerms">Terms</button></div>
+  <div class="mlinks"><button id="mIntro">Replay the intro</button><span>·</span><button id="mTerms">Terms</button></div>
   <a class="smline" id="mSm" href="https://smaisle.app/" style="justify-content:center;border-top:1px solid var(--ink);padding-top:10px"><i class="smico"></i><b>smAisle</b><em>See our other games ›</em></a>
   <button class="go" id="setBack">Back to the menu</button>
 </div></div>
@@ -489,7 +496,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="x" data-close aria-label="Close">✕</button>
   <div><span class="plusTag" style="margin:0">FOUNDING MEMBER</span></div>
   <h2>Play every day with Plus</h2>
-  <p class="sub" style="margin:0">That puzzle was on your friend. smAisle Daily Plus unlocks Capital Ship every day, plus Make your own, Two players and the full Archive in every smAisle Daily game.</p>
+  <p class="sub" style="margin:0"><span id="offerLead">That puzzle was on your friend. </span>smAisle Daily Plus unlocks Capital Ship every day, plus Make your own, Two players and the full Archive in every smAisle Daily game.</p>
   <p style="margin:0;font:800 15px/1.4 var(--sans)">$0.99 a month for your first year<br>or $4.99 for the whole first year</p>
   <p class="sub" style="margin:0;font-size:12px">Founding Member price through Jan 31.</p>
   <button class="go" id="offerGo" style="background:var(--hi);color:var(--hiInk)">Get smAisle Daily Plus</button>
@@ -661,7 +668,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='33',VDATE='Nov 3',GAME='cs',CALLS=15;
+const VERSION='34',VDATE='Nov 3',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -937,7 +944,7 @@ function drawStats(m=MODE){const s=statsOf(m);document.querySelectorAll('#segSta
   const max=Math.max(1,...cnt,lost),me=m===MODE?s.hist[DAY?DAY.date:TODAY]:null;
   $('dist').innerHTML=buckets.map((b,i)=>`<div><em>${b}</em><i class="${me&&me.win&&Math.min(me.left,5)===i?'me':''}" style="width:${12+cnt[i]/max*78}%">${cnt[i]}</i></div>`).join('')+`<div><em>Lost</em><i class="${me&&!me.win?'me':''}" style="width:${12+lost/max*78}%">${lost}</i></div>`}
 function showDone(){if(!ST.over)return;only('done');loadMore();
-  if(CUSTOM&&!CUSTOM.demo&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden)only('offer')},2200)}const s=starsOf(ST.sunk.length);
+  if(CUSTOM&&!CUSTOM.demo&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden){$('offerLead').hidden=false;only('offer')}},2200)}const s=starsOf(ST.sunk.length);
   $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
@@ -1079,7 +1086,7 @@ $('wToday').onclick=()=>{TWO=null;cover()};
 const PREVIEW=()=>new URLSearchParams(location.search).get('preview')==='1'&&!(window.DG_APP&&window.DG_APP.plus)||(!!window.DG_APP&&!window.DG_APP.plus);
 const toApp=m=>{try{window.webkit&&webkit.messageHandlers&&webkit.messageHandlers.dg&&webkit.messageHandlers.dg.postMessage(m)}catch(e){}};
 function previewUI(){const pv=PREVIEW();['coverPast','coverMake','coverTwo','mPast','mMake','mTwo','dPast','dMake'].forEach(id=>{const e=$(id);if(e)e.hidden=pv});
-  document.querySelectorAll('.links span:first-of-type').forEach(e=>e.hidden=pv);if(pv)$('mSent').hidden=true;else sentUI()}
+  document.querySelectorAll('.links span:first-of-type').forEach(e=>e.hidden=pv);$('mPlus').hidden=!pv;if(pv)$('mSent').hidden=true;else sentUI()}
 function gateCheck(){if(PREVIEW()&&!TWO&&!CUSTOM&&!PAST&&ST&&ST.sunk.length>=1&&!ST.over){only('gate');return true}return false}
 $('gateBuy').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.href='https://smaisle.app/daily/#plus'};
 $('gateHub').onclick=()=>{if(window.DG_APP)toApp({cmd:'home'});else location.href='https://smaisle.app/daily/'};
@@ -1134,7 +1141,8 @@ function loadMore(){if(window.SMAISLE)return drawMore();if(moreTried)return;more
 
 /* Shared Plus game (standard section 8): a friend without Plus plays a shared puzzle free, then sees the Founding Member offer once */
 $('offerGo').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.href='https://smaisle.app/daily/#plus'};
-$('offerNo').onclick=()=>showDone();
+$('offerNo').onclick=()=>$('offerLead').hidden?only('menu'):showDone();
+$('mPlus').onclick=()=>{$('offerLead').hidden=true;only('offer')};
 
 /* ---------- Start ---------- */
 ['helpVer','sVer','cvVer'].forEach(id=>$(id).textContent=VTXT);$('mVer').textContent=`Capital Ship · ${VTXT} · smAisle`;
