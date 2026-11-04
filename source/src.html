@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>/* one Sound setting for every smAisle game */(function(){try{var s=localStorage.getItem('smaisle-sound');if(s==='on'||s==='off')localStorage.setItem('cs-sound',s)}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Capital Ship</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -131,8 +132,6 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #bar #sonarBtn.used{background:var(--card);color:var(--fade);box-shadow:none}
 #bar #sonarBtn.used .plus1{display:none}
 #kb.wait .k{opacity:.4}
-.qsonar{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border:2px solid var(--ink);border-radius:var(--r);background:var(--hi);color:var(--hiInk);font:800 15px var(--sans);text-transform:uppercase;letter-spacing:.06em;box-shadow:2px 2px 0 var(--ink)}
-.qsonar .plus1{background:var(--red);color:#fff;border-radius:99px;padding:2px 7px;font-size:12px;letter-spacing:0}
 #bar button:disabled{opacity:.35;cursor:default;animation:none}
 @keyframes nudge{to{transform:scale(1.05)}}
 /* Cards */
@@ -162,26 +161,12 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #cvStats div+div{border-left:1px solid var(--fade)}
 #cvStats b{font:900 22px/1.1 var(--head)}
 #cvStats span{font:800 9px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
-#cover .links{display:flex;gap:8px;align-items:center;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+#cover .links{display:flex;gap:4px;align-items:center;justify-content:center;font:800 11px var(--sans);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
 #cover .links button{background:none;border:none;padding:6px 2px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink);text-decoration:underline}
 .smline{display:flex;align-items:center;gap:8px;background:none;border:none;padding:6px;color:var(--ink);font-family:var(--sans);font-size:14px;text-decoration:none}
 .smline b{font-weight:800}.smline em{font-family:var(--body);color:var(--ink2);font-size:13px}
 .smico{display:inline-block;flex:none;background-size:cover;border-radius:22%}
 /*SMICO*/
-/* Intro steps, like The Daily 15 */
-#qCard{min-height:min(470px,86vh);justify-content:space-between;text-align:center}
-#qSkip{background:none;border:none;padding:4px 0;font:800 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;color:var(--ink2)}
-#qPic{min-height:110px;display:grid;place-items:center}
-#qTitle{border:none!important;padding:0!important}
-#qText{font:700 19px/1.45 var(--sans)}
-#qDots{display:flex;justify-content:center;gap:8px}
-#qDots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
-#qDots span.on{background:var(--ink)}
-.mini{display:inline-grid;grid-template-columns:repeat(5,26px);grid-auto-rows:26px;gap:1px;background:var(--gridline);border:2px solid var(--ink)}
-.mini i{background:var(--off);display:grid;place-items:center;font:800 15px var(--sans);font-style:normal;color:var(--ink)}
-.mini i.on{background:var(--card)}.mini i.s{background:var(--sunk);color:var(--hiInk)}
-.qk{display:inline-grid;place-items:center;width:36px;height:40px;border:2px solid var(--ink);border-radius:var(--r);background:var(--card);font:800 17px var(--sans);box-shadow:2px 2px 0 var(--ink);margin:0 3px}
-.qk.pick{background:var(--hi);color:var(--hiInk)}.qk.gone{background:var(--off);color:var(--fade);border-color:var(--line);box-shadow:none}
 /* Stars table, like The Daily 15 */
 .stars{width:100%;border-collapse:collapse;text-align:center;background:var(--card)}
 .stars th,.stars td{border:2px solid var(--ink);padding:6px 4px}
@@ -214,16 +199,6 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #pass h2{font-size:30px}
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center}.vs h3{margin:0 0 4px;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase}
 .vs .recap{flex-direction:column;align-items:center}
-#demoBar{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:25;width:min(calc(100% - 20px),470px);box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:2px 10px;align-items:center;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:var(--r);box-shadow:3px 3px 0 var(--ink);padding:7px 10px}
-.dc-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font:800 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
-#demoSkip{background:none;border:0;padding:2px 0 2px 10px;font:inherit;color:inherit;text-decoration:underline}
-#demoText{margin:0;font:500 14px/1.3 var(--sans);min-height:54px}
-#demoNext{align-self:end;height:40px;border:2px solid var(--ink);border-radius:var(--r);background:var(--hi);color:var(--hiInk);font:800 14px var(--sans)}
-#demoNext:disabled{opacity:.4}
-.demoHi{outline:3px solid #d62f24;outline-offset:2px;border-radius:4px;animation:demoP 1s ease-in-out infinite alternate}
-@keyframes demoP{to{outline-offset:4px}}
-@media (prefers-reduced-motion:reduce){.demoHi{animation:none}}
-#demoBlock{position:fixed;inset:0;z-index:24}
 .hubBtn{background:var(--hi)!important;color:var(--hiInk)!important;text-transform:none!important;letter-spacing:0!important}
 .shareRow{display:flex;gap:8px}.shareRow .go{flex:1;padding:11px 4px}
 #dMore .shead{margin:0}
@@ -266,6 +241,34 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,-30%)}12%,80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-80%)}}
 @media (max-height:720px){#menu .card{gap:6px}#menu .go{padding:8px}#app{gap:4px}.k{height:37px}#msg{height:30px}.card{padding:12px 14px;gap:7px}.card h2{font-size:23px}.card li{font-size:14.5px;line-height:1.35}.card ul{gap:8px}.go{padding:10px}#qText{font-size:16.5px}.big{font-size:42px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style id="smDemoCss">
+#smDemo{position:fixed;left:0;right:0;top:0;height:100vh;height:100dvh;z-index:50;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--sans,"Libre Franklin",Arial,sans-serif);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#smDemo::after{content:"";position:absolute;inset:0;z-index:30;pointer-events:none;border:6px solid transparent;background:repeating-linear-gradient(45deg,#ffe27a 0 12px,#1a1814 12px 24px) border-box;-webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) padding-box exclude,linear-gradient(#000 0 0)}
+.smTop{flex:none;height:50px;display:flex;align-items:center;justify-content:space-between;padding:6px 12px 0 14px;background:#ffe27a;color:#1a1814;border-bottom:3px solid #1a1814}.smTop span{display:flex;align-items:center;gap:8px;min-width:0}.smTop b{background:#1a1814;color:#ffe27a;font:900 15px/1 var(--sans,Arial);letter-spacing:.14em;padding:5px 7px 5px 9px;border-radius:3px}.smTop i{font:800 11.5px var(--sans,Arial);font-style:normal}.smTop button{position:relative;z-index:31;height:32px;padding:0 12px;border:2px solid #1a1814;border-radius:3px;background:#fffdf6;color:#1a1814;font:800 12px var(--sans,Arial);letter-spacing:.08em;text-transform:uppercase}
+.smStage{position:relative;flex:1 1 0;min-height:0;overflow:hidden;padding:10px 14px 8px}.smStage::before{content:"DEMO";position:absolute;left:50%;top:52%;z-index:3;transform:translate(-50%,-50%) rotate(-22deg);font:900 118px/1 var(--head,Georgia,serif);letter-spacing:.04em;color:var(--ink);opacity:.09;pointer-events:none}
+.smCap{flex:none;background:var(--card);border-top:2px solid var(--ink);padding:9px 16px 14px;display:grid;gap:5px}.smH{display:flex;justify-content:space-between;align-items:baseline}.smH b{font:900 19px var(--head,Georgia,serif)}.smH small{font:800 11px var(--sans,Arial);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}.smCap p{margin:0;min-height:60px;font:500 15px/20px var(--sans,Arial)}.smCap p.nudge{background:#ffe27a;color:#1a1814;margin:0 -6px;padding:0 6px;border-radius:3px}
+.smDots{display:flex;gap:6px}.smDots i{width:10px;height:10px;border:2px solid var(--ink);border-radius:50%}.smDots i.on{background:var(--btn)}
+.smSlot{min-height:44px;margin-top:2px}.smTurn{height:44px;display:flex;align-items:center;justify-content:center;text-align:center;border:2px dashed var(--ink2);border-radius:3px;font:800 12px var(--sans,Arial);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.smBtn{display:block;width:100%;height:46px;border:2px solid var(--ink);border-radius:3px;background:var(--btn);color:var(--paper);font:800 14px var(--sans,Arial);letter-spacing:.08em;text-transform:uppercase}.smBtn.alt{background:var(--card);color:var(--ink)}
+.smF{position:absolute;z-index:7;width:0;height:0;pointer-events:none;transition:left .5s ease,top .5s ease}.smF svg{position:absolute;left:-13px;top:-2px;width:38px;height:46px;transform-origin:13px 2px;animation:smBob .9s ease-in-out infinite}.smF.up svg{transform:scaleY(-1);animation:none}.smR{position:absolute;z-index:6;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid #ffe27a;pointer-events:none;animation:smRip .5s ease-out forwards}.smW{animation:smWob .28s ease 2}
+@keyframes smBob{50%{translate:3px 6px}}@keyframes smRip{to{transform:scale(4.4);opacity:0}}@keyframes smWob{25%{translate:-4px 0}75%{translate:4px 0}}
+.smPop{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(26,24,20,.62);animation:smIn .25s ease both}.smPc{width:100%;max-width:340px;background:var(--paper);color:var(--ink);border:3px double var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.3);padding:16px;display:grid;gap:10px;text-align:center}.smPc h3{margin:0;font:900 34px/1.1 var(--head,Georgia,serif);border-bottom:3px double var(--ink);padding-bottom:8px}.smPc p{margin:0 0 4px;font:500 15px/1.35 var(--sans,Arial)}
+@keyframes smIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.smF svg{animation:none}.smF{transition:none}}
+@media (max-height:640px){.smTop{height:42px;padding-top:4px}.smStage{padding:6px 12px 4px}.smCap{padding:5px 14px 9px;gap:3px}.smCap p{min-height:40px;font-size:13.5px;line-height:18px}.smH b{font-size:16px}.smDots{display:none}.smSlot{min-height:0;margin:0}.smTurn{display:none}.smBtn{height:40px}}
+/* Capital Ship's practice board inside the demo frame */
+.csD{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;gap:6px;--csC:27px}
+.csD .top{padding:0 0 5px;flex:none}.csTh{flex:1;min-width:0;line-height:1}.csTh small{display:block;font:700 9px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:2px}.csTh b{font:900 16px var(--head);white-space:nowrap}
+.csBd{position:relative;align-self:center;flex:none;background:var(--gridline);border:2px solid var(--ink);display:grid;grid-template-columns:repeat(6,var(--csC));grid-auto-rows:var(--csC);gap:1px;--cell:var(--csC);border-radius:calc(var(--r) - 1px);overflow:hidden}
+.csTray{flex:none;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 12px;min-height:30px;align-items:center}.csTray .wp b{width:22px;height:22px}.csTray.play .wp b{width:25px;height:25px;font-size:15px;box-shadow:0 3px 0 var(--ink)}.csTray.play .wp.s b{box-shadow:none}
+.wp.smNow b{background:var(--hi);color:var(--hiInk)}
+.csG{flex:none;display:flex;flex-direction:column;align-items:center;gap:3px}.csG .q{font:800 10px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}.csT{display:flex}.csT b{width:28px;height:28px;display:grid;place-items:center;border:2px solid var(--tileEdge);margin-left:-2px;background:var(--tile);color:var(--tileInk);font:800 16px var(--sans)}.csT b:first-child{margin-left:0}.csT b.e{background:transparent;border-style:dashed;border-color:var(--fade)}
+.csKb{flex:none;display:flex;flex-direction:column;gap:4px;margin-top:auto}.csD .k{height:33px;font-size:14px;box-shadow:1px 1px 0 var(--shadow)}.csD .k.csOff{opacity:.4}.csD .k.smNow{background:var(--hi);color:var(--hiInk);opacity:1}
+.csBar{flex:none;display:flex;gap:8px}.csBar button{flex:1;padding:7px 4px;border-radius:var(--r);border:2px solid var(--ink);color:var(--ink);background:var(--card);font:800 13px var(--sans);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}.csBar .csGo{flex:2.6;background:var(--btn);color:var(--btnInk)}.csBar .csOff{opacity:.35}.csBar .csSon{flex:1.4;color:var(--fade)}
+@media (max-height:600px){#help .card{padding:12px;gap:6px}#help h2{font-size:22px}#help .how li{font-size:12.5px;line-height:1.3;margin:2px 0}#help .how{margin:0}#help .go{padding:8px}}
+@media (max-height:640px){.csD{--csC:23px;gap:4px}.csD .k{height:28px}.csBar button{padding:5px 4px}.csD .top{padding-bottom:3px}.csTray.play .wp b{width:22px;height:22px;font-size:13px}.csTray{min-height:24px}.csT b{width:24px;height:24px;font-size:14px}}
+@media (min-height:800px){.csD{--csC:36px;gap:10px}.csD .k{height:40px;font-size:16px}.csBar button{padding:10px 4px}.csTray.play .wp b{width:28px;height:28px}}
 </style>
 </head>
 <body>
@@ -317,19 +320,10 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button id="cvStats" hidden aria-label="Your stats"></button>
   <div id="modeWrap"><div class="seg" id="segMode"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div><small id="modeNote"></small></div>
   <button class="go" id="coverGo">Play today's puzzle</button>
-  <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to Play</button><span>·</span><button id="coverDemo">Demo</button></div>
+  <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to Play</button><span>·</span><button id="coverDemo">Try the demo</button></div>
   <button class="go alt" id="coverMake">Make your own</button>
   <button class="go alt" id="coverTwo">Two players</button>
   <div class="ver"><a id="coverSm" href="https://smaisle.app/" target="_blank" rel="noopener">smAisle Home</a> · <span id="cvVer"></span></div>
-</div></div>
-
-<div class="sheet" id="quick" hidden><div class="card" id="qCard">
-  <div style="text-align:right"><button id="qSkip">Skip intro</button></div>
-  <div id="qPic"></div>
-  <h2 id="qTitle"></h2>
-  <p id="qText"></p>
-  <div id="qDots"></div>
-  <button class="go" id="quickGo">Next</button>
 </div></div>
 
 <div class="sheet" id="help" hidden><div class="card" style="position:relative">
@@ -344,7 +338,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <li><b>Hard:</b> fill-in letters are checked as you type. One wrong letter ends the game.</li>
     <li><b>Stars:</b> 3 words ⭐ · 4 words ⭐⭐ · all 5 ⭐⭐⭐</li>
   </ul>
-  <button class="go" id="helpDemo">Watch the demo</button>
+  <button class="go" id="helpDemo">Try the demo</button>
   <div class="ver" id="helpVer"></div>
 </div></div>
 
@@ -372,7 +366,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="set"><h3>Style</h3><div class="seg" id="segLook"><button data-v="smaisle">smAisle</button><button data-v="classic">Classic</button></div></div>
   <div class="set" id="setDark"><h3>Dark mode</h3><div class="seg" id="segTheme"><button data-v="off">Off</button><button data-v="on">On</button><button data-v="auto">Match phone</button></div><small id="darkNote">On uses Navy. Match phone switches with your phone.</small></div>
   <div class="set"><h3>Sound</h3><div class="seg" id="segSound"><button data-v="on">On</button><button data-v="off">Off</button></div></div>
-  <div class="mlinks"><button id="mIntro">Replay the intro</button><span>·</span><button id="mTerms">Terms</button></div>
+  <div class="mlinks"><button id="mIntro">Try the demo</button><span>·</span><button id="mTerms">Terms</button></div>
   <a class="smline" id="mSm" href="https://smaisle.app/" style="justify-content:center;border-top:1px solid var(--ink);padding-top:10px"><i class="smico"></i><b>smAisle</b><em>See our other games ›</em></a>
   <button class="go" id="setBack">Back to the menu</button>
 </div></div>
@@ -483,14 +477,6 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="go alt" id="gateHub" style="text-transform:none;letter-spacing:0">‹ smAisle Daily</button>
 </div></div>
 
-<div id="demoBlock" hidden></div>
-<div id="demoBar" hidden><div class="dc-top"><span id="demoStep">Demo</span><button id="demoSkip">Skip</button></div><p id="demoText"></p><button id="demoNext">Next</button></div>
-<div class="sheet" id="demoEnd" hidden><div class="card" style="text-align:center">
-  <h2>That’s Capital Ship!</h2>
-  <p class="sub" style="margin:0">Call letters, ping with Sonar, then fill in the words. Ready?</p>
-  <button class="go" id="deGo">Play today's puzzle</button>
-  <button class="go alt" id="deAgain">Watch again</button>
-</div></div>
 
 <div class="sheet" id="offer" hidden><div class="card" style="text-align:center;position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
@@ -529,8 +515,35 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 </div></div>
 
 <script>
+/* smAisle demo frame v1 (Nov 4, 2026). One demo for every game: Try it with a coach (change list #30).
+   Add demo-frame.css to the page, this script after it, then call:
+   smDemo({name:'Game',moves:[{cap:'What to do',nudge:'What to say after a wrong tap'},...],win:'How you win',
+     play:function(){start the real game},
+     board:function(stage){draw a tiny practice board in stage; return {to:function(n){show the board after n moves},
+       tgt:function(n){return the element to tap for move n},win:function(){show the finished board}}},
+     auto:true for fast games that can't pause (it plays itself, model B)});
+   Uses the page's --paper --card --ink --ink2 --btn --hi colors. Saves nothing and counts nothing. */
+function smDemo(o){
+ var E=function(h){var t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild},root=document.getElementById('smDemo'),timers=[],k=0,busy=false,B,stage,capT,capN,capH,dots,slot;
+ var HAND='<svg viewBox="0 0 38 46" aria-hidden="true"><path d="M13 2c3 0 5 2 5 5v11l11 2c4 1 6 3 6 7l-1 9c-1 5-4 8-9 8H17c-3 0-5-1-7-4L3 29c-2-3 2-6 5-4l1 1 0-19c0-3 2-5 4-5z" fill="#ffe27a" stroke="#1a1814" stroke-width="2.4" stroke-linejoin="round"/></svg>';
+ var TOP='<div class="smTop"><span><b>DEMO</b><i>Practice only. Nothing counts.</i></span><button type="button" id="smSkip">Skip</button></div>';
+ if(root)root.remove();root=E('<div id="smDemo" role="dialog" aria-label="'+o.name+' demo"></div>');document.body.appendChild(root);
+ function later(f,ms){timers.push(setTimeout(f,ms))}function stop(){timers.forEach(clearTimeout);timers=[]}
+ function close(){stop();root.remove()}
+ function run(){stop();k=0;busy=false;root.innerHTML=TOP+'<div class="smStage"></div><div class="smCap"><div class="smH"><b></b><small></small></div><p></p><div class="smDots"></div><div class="smSlot"></div></div>';root.querySelector('#smSkip').onclick=close;stage=root.querySelector('.smStage');var c=root.querySelector('.smCap');capH=c.querySelector('b');capN=c.querySelector('small');capT=c.querySelector('p');dots=c.querySelector('.smDots');slot=c.querySelector('.smSlot');B=o.board(stage);slot.innerHTML='<div class="smTurn">'+(o.auto?'Plays by itself':'Your turn. Tap where the finger points.')+'</div>';show();if(!o.auto)stage.onclick=tap}
+ function cap(h,i,n,t){capH.textContent=h;capN.textContent=n?'Step '+(i+1)+' of '+n:'Done';capT.textContent=t;capT.className='';dots.innerHTML=o.moves.map(function(m,j){return '<i class="'+(j<=i?'on':'')+'"></i>'}).join('')}
+ function fin(){var f=stage.querySelector('.smF');if(f)f.remove()}
+ function point(el){var f=stage.querySelector('.smF');if(!f){f=E('<div class="smF">'+HAND+'</div>');f.style.left=stage.clientWidth/2+'px';f.style.top=stage.clientHeight-60+'px';stage.appendChild(f);void f.offsetWidth}var a=el.getBoundingClientRect(),b=stage.getBoundingClientRect(),x=a.left-b.left+a.width/2,y=a.top-b.top+a.height-6;f.classList.toggle('up',y+46>stage.clientHeight);f.style.left=x+'px';f.style.top=(y+46>stage.clientHeight?a.top-b.top+6:y)+'px'}
+ function rip(el){var a=el.getBoundingClientRect(),b=stage.getBoundingClientRect(),r=E('<i class="smR"></i>');r.style.left=a.left-b.left+a.width/2+'px';r.style.top=a.top-b.top+a.height/2+'px';stage.appendChild(r);setTimeout(function(){r.remove()},520)}
+ function show(){B.to(k);cap('Your move',k,o.moves.length,o.moves[k].cap);var t=B.tgt(k);t.classList.add('smNow');point(t);busy=false;if(o.auto)later(function(){done(t)},1700)}
+ function done(t){busy=true;rip(t);fin();k++;if(k<o.moves.length){B.to(k);later(show,o.auto?900:450)}else{B.to(k);later(function(){B.win();cap('How you win',k-1,0,o.win);slot.innerHTML='';later(ready,1500)},900)}}
+ function tap(e){if(busy)return;var h=e.target.closest('.smNow');if(h){done(h);return}capT.textContent=o.moves[k].nudge;capT.className='nudge';var n=stage.querySelector('.smNow');if(n){n.classList.remove('smW');void n.offsetWidth;n.classList.add('smW')}}
+ function ready(){stop();fin();var p=E('<div class="smPop"><div class="smPc"><h3>You’re ready</h3><p>'+o.win+'</p><button type="button" class="smBtn" id="smPlay">Play</button><button type="button" class="smBtn alt" id="smAg">Demo again</button></div></div>');root.appendChild(p);root.querySelector('#smPlay').onclick=function(){close();o.play()};root.querySelector('#smAg').onclick=run}
+ run();return {close:close}}
+</script>
+<script>
 /*LOGIC*/
-const VERSION='35',VDATE='Nov 3',GAME='cs',CALLS=15;
+const VERSION='37',VDATE='Nov 4',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -545,7 +558,7 @@ const TODAY=todayET();
 const RESET_DAYS={'2026-11-01':4};
 for(const [d,n] of Object.entries(RESET_DAYS)){const k='cs-reset_'+d;if(store.get(k,'')!==String(n)){try{localStorage.removeItem('cs-d_'+d)}catch(e){}const h=store.json('cs-hist',{});delete h[d];store.put('cs-hist',h);store.set(k,String(n))}}
 let REPLAY=null,REPLAYED=null;/* REPLAY: a finished daily or Archive board being played again for fun. It lives in memory only: nothing saves, records or checks in. */
-let DEMO=null,TWO=null,CUSTOM=null,sonarArm=false,DAY=null,ST=null,PAST=false,pick=null,sel=-1,typed='',lastLit=-1,justSunk=-1,dropIn=false;
+let TWO=null,CUSTOM=null,sonarArm=false,DAY=null,ST=null,PAST=false,pick=null,sel=-1,typed='',lastLit=-1,justSunk=-1,dropIn=false;
 
 /* ---------- Look and theme ---------- */
 const darkQ=matchMedia('(prefers-color-scheme: dark)');
@@ -625,10 +638,10 @@ async function checkIn(kind){
 /* ---------- Saving ---------- */
 /* Normal and Hard share the daily board but keep separate saved games, stats and streaks. */
 let MODE=store.get('cs-mode','normal')==='hard'?'hard':'normal';
-const HARD=()=>MODE==='hard'&&!CUSTOM&&!TWO&&!DEMO;
+const HARD=()=>MODE==='hard'&&!CUSTOM&&!TWO;
 const histKey=(m=MODE)=>m==='hard'?'cs-hist-h':'cs-hist';
 const skey=d=>'cs-d_'+d+(MODE==='hard'&&/^\d{4}-/.test(d)?'-h':'');
-function save(){if(!DEMO&&!REPLAY)store.put(skey(DAY.date),ST)}
+function save(){if(!REPLAY)store.put(skey(DAY.date),ST)}
 function loadState(date){const s=store.json(skey(date),null);return s&&s.calls?s:newState(CALLS)}
 function recordDay(){if(REPLAY)return;const hist=store.json(histKey(),{});if(hist[DAY.date])return;
   hist[DAY.date]={win:ST.win,left:ST.left,sunk:ST.sunk.length,calls:ST.calls.length,...(DAY.date!==TODAY?{late:1}:{})};store.put(histKey(),hist);
@@ -651,8 +664,8 @@ addEventListener('resize',fitBoard);
 function keyState(L){const called=ST.calls.some(x=>x.l===L),seen=DAY.letters.some((ch,c)=>ch===L&&(ST.rev.includes(c)||ST.sunk.includes(DAY.own[c])));
   if((called||seen)&&remaining(DAY,ST,L)===0)return 'gone';return called?'called':''}
 function draw(){
-  if(DEMO){$('noLabel').textContent='';$('dateLabel').textContent=''}else if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')+(REPLAY?' · Replay':'')}
-  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||DEMO||TWO)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
+  if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')+(REPLAY?' · Replay':'')}
+  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||TWO)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
   $('callsLeft').textContent=TWO?ST.calls.length:ST.left;$('callBox').classList.toggle('low',!TWO&&ST.left<=3&&!ST.over&&!ST.guessing);
   $('sunkCount').textContent=ST.sunk.length+'/'+DAY.words.length;
   const rev=new Set(ST.rev);
@@ -725,12 +738,12 @@ $('faYes').onclick=()=>{closeAll();finishGame(DAY,ST);afterMove()};
 function askGuessNow(){only('guessAsk');$('gaRule').textContent=HARD()?'letter':'guess';$('gaCalls').textContent=ST.left+' call'+(ST.left===1?'':'s')}
 $('gaYes').onclick=()=>{closeAll();startGuessing(DAY,ST);pick=null;dropIn=ST.guessing;afterMove();if(!ST.over)say(ST.needSonar?SONAR_MSG:guessMsg(),ST.needSonar)};
 $('gaNo').onclick=()=>closeAll();
-addEventListener('keydown',e=>{if(!DAY||document.querySelector('.sheet:not([hidden])')||ST.over||(TWO&&TWO.busy)||e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key.toUpperCase();
+addEventListener('keydown',e=>{if(!DAY||$('smDemo')||document.querySelector('.sheet:not([hidden])')||ST.over||(TWO&&TWO.busy)||e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key.toUpperCase();
   if(sel>=0){if(k==='BACKSPACE'){typed=typed.slice(0,-1);drawBar()}else if(k==='ENTER')doGuess();else if(k==='ESCAPE')$('cancelBtn').click();else if(/^[A-Z]$/.test(k)&&keyState(k)!=='gone'&&typed.length<blanks())typeKey(k);return}
   if(ST.guessing)return;
   if(ST.needSonar)return;if(/^[A-Z]$/.test(k)){if(keyState(k)==='gone')return;sonarArm=false;pick=k;doCall()}});
 function doCall(){const L=pick;pick=null;const first=!ST.calls.length;const r=callLetter(DAY,ST,L);if(!r)return;(ST.log=ST.log||[]).push(r.hit?'🟨':'⬜');
-  if(first&&!PAST&&!TWO&&!DEMO&&!REPLAY)checkIn(CUSTOM?'cplay':'play');
+  if(first&&!PAST&&!TWO&&!REPLAY)checkIn(CUSTOM?'cplay':'play');
   lastLit=r.hit?r.cell:-1;justSunk=-1;if(ST.guessing)dropIn=true;
   if(!r.hit)say(`No <b>${L}</b> on the board.`);
   else{const wi=DAY.own[r.cell];if(ST.sunk.includes(wi)){justSunk=wi;say(`<b>${L}</b> completed <b>${DAY.words[wi]}</b>.`)}else say(`${/[AEFHILMNORSX]/.test(L)?'An':'A'} <b>${L}</b> lit up.`)}
@@ -745,7 +758,7 @@ function doGuess(force){if(sel<0||(force!==true&&typed.length<blanks()))return;c
   sel=-1;typed='';lastLit=-1;
   if(r.ok){justSunk=wi;say(`<b>${g}</b>. Captured!`);afterMove();stamp('Captured!');ST.win?setTimeout(SND.win,300):SND.sink();if(!ST.over&&!TWO)setTimeout(()=>{if(!ST.over&&sel<0)say(guessMsg())},1400)}
   else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:HARD()?`Wrong letter. It was <b>${DAY.words[wi]}</b>.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Nope');SND.wrong()}}
-function afterMove(){if(DEMO){draw();return}
+function afterMove(){
   if(REPLAY){draw();if(ST.over){const r=REPLAY;setTimeout(()=>{if(REPLAY===r)endReplay()},ST.win?1100:1500)}return}
   if(PREVIEW()&&!TWO&&!CUSTOM&&ST.sunk.length>=1&&!ST.over){save();draw();setTimeout(gateCheck,1400);return}
   if(TWO){TWO.busy=true;saveTwo();draw();setTimeout(ST.over?twoWin:passTurn,ST.over?1500:1700);return}
@@ -757,18 +770,17 @@ function only(id){document.querySelectorAll('.sheet').forEach(s=>s.hidden=s.id!=
 function closeAll(){document.querySelectorAll('.sheet').forEach(s=>s.hidden=true)}
 function closeSheet(s){s.hidden=true;if(!DAY)cover()}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeSheet(b.closest('.sheet')));
-document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2','gate','demoEnd'].includes(s.id))closeSheet(s)}));
+document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2','gate'].includes(s.id))closeSheet(s)}));
 function cover(){if(REPLAY){REPLAY=null;ST=loadState(DAY.date);draw()}only('cover');const pv=PREVIEW();if(pv)MODE='normal';$('modeWrap').hidden=pv;document.querySelectorAll('#segMode button').forEach(b=>b.classList.toggle('sel',b.dataset.v===MODE));$('modeNote').textContent=MODE==='hard'?'In the guessing round, one wrong letter ends the game.':'In the guessing round, one wrong word ends the game.';const st=store.json(skey(TODAY),null),h=store.json(histKey(),{})[TODAY];
   $('cvDate').textContent=nice(TODAY,{weekday:'short',month:'short',day:'numeric',year:'numeric'});$('cvNo').textContent='Puzzle No. '+dayNo(TODAY);
   $('coverGo').textContent=h?'See today’s results':st&&st.calls&&st.calls.length?'Continue today’s puzzle':'Play today’s puzzle';
   const s=statsOf();$('cvStats').hidden=!s.played;if(s.played)$('cvStats').innerHTML=[[s.stars,'⭐ Stars'],[s.played,'Played'],[s.cur,'Streak'],[s.max,'Best streak']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
-function start(date){stopDemo();REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
+function start(date){REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
   say(ST.over?(ST.win?'All five captured.':`${ST.sunk.length} of 5 captured.`):ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
   if(ST.over)setTimeout(showDone,300);else setTimeout(gateCheck,300)}
 document.querySelectorAll('#segMode button').forEach(b=>b.onclick=()=>{MODE=b.dataset.v;store.set('cs-mode',MODE);cover()});
-$('coverGo').onclick=()=>{start(TODAY);if(!store.get('cs-intro',''))intro(()=>closeAll())};
+$('coverGo').onclick=()=>{start(TODAY);firstDemo()};
 $('coverHow').onclick=$('mHow').onclick=$('dHow').onclick=()=>only('help');
-$('mIntro').onclick=()=>intro(()=>{if(DAY)closeAll();else cover()});
 $('coverPast').onclick=$('mPast').onclick=$('dPast').onclick=()=>{drawArchive();only('past')};
 $('coverStats').onclick=$('cvStats').onclick=$('mStats').onclick=$('dStats').onclick=()=>{drawStats();only('stats')};
 $('menuBtn').onclick=()=>only('menu');
@@ -777,21 +789,6 @@ $('mSet').onclick=()=>only('settings');$('setBack').onclick=()=>only('menu');
 $('termsGo').onclick=()=>{const first=!agreed();store.set(TERMS_KEY,new Date().toISOString().slice(0,10));if(first){checkIn('open');LINK?gift():cover()}else if(DAY)closeAll();else cover()};
 $('dBoard').onclick=()=>closeAll();
 
-/* Intro: five quick cards, like The Daily 15 */
-const Q=[
- {t:'Five hidden words',x:'Everyone gets the same <b>5 words</b> today, hidden across or down. They all fit the <b>theme</b>.',p:()=>mini('......SEAL.....O....',{all:1})},
- {t:'Call a letter',x:'Tap a letter to call it. <b>One</b> square with that letter lights up, starting with the shortest word.',p:()=>`<div><span class="qk">D</span><span class="qk pick">E</span><span class="qk">F</span></div><div style="margin-top:12px">${mini('.......E............',{all:1})}</div>`},
- {t:'Gray means gone',x:'When a key turns <b>gray</b>, there are no more of that letter on the board. Misses turn gray too.',p:()=>`<div><span class="qk">R</span><span class="qk gone">S</span><span class="qk">T</span><span class="qk gone">K</span></div>`},
- {t:'Sonar +1',x:'One free ping a game. Tap <b>Sonar</b>, then any square: a letter lights up, or it shows empty. If you still have it after your last call, you use it then.',p:()=>`<div><span class="qsonar">Sonar <span class="plus1">+1</span></span></div><div style="margin-top:12px">${mini('..........M.........',{all:1})}</div>`},
- {t:'Then fill them in',x:`After <b>${CALLS} calls</b>, your letters drop into the word boxes. Tap a word and fill in the blanks. <b>One wrong guess ends the game.</b>`,p:()=>`<div class="wp"><b>S</b><b></b><b>A</b><b></b></div><div style="margin-top:10px" class="wp s"><b>S</b><b>E</b><b>A</b><b>L</b></div>`}];
-function mini(s,o){return `<div class="mini">${[...s].map((ch,i)=>{const sk=(o.sunk||[]).includes(i),on=o.all&&ch!=='.';return `<i class="${sk?'s':on?'on':''}">${sk||on?ch:''}</i>`}).join('')}</div>`}
-let qi=0,qDone=null;
-function intro(then){qi=0;qDone=then;only('quick');drawQ()}
-function drawQ(){const q=Q[qi];$('qPic').innerHTML=q.p();$('qTitle').textContent=q.t;$('qText').innerHTML=q.x;
-  $('qDots').innerHTML=Q.map((_,i)=>`<span class="${i===qi?'on':''}"></span>`).join('');$('quickGo').textContent=qi<Q.length-1?'Next':'Let’s play'}
-$('quickGo').onclick=()=>{if(qi<Q.length-1){qi++;drawQ()}else endIntro()};
-$('qSkip').onclick=endIntro;
-function endIntro(){store.set('cs-intro','1');$('quick').hidden=true;const f=qDone;qDone=null;f&&f()}
 
 function drawArchive(){const hist=store.json(histKey(),{}),n=dayNo(TODAY);let h='';$('pastMode').textContent=MODE==='hard'?'Hard mode. ':'';
   for(let i=n;i>=1;i--){const d=dateOf(i),r=hist[d],s=store.json(skey(d),null);
@@ -814,7 +811,7 @@ function endReplay(){REPLAYED={n:ST.sunk.length};REPLAY=null;ST=loadState(DAY.da
 function playAgain(){if(!CUSTOM)return startReplay();if(CUSTOM.r){const m=randomMake();if(m){checkIn('rand');return startCustom(m)}}$('mkAgain').click();openMake()}
 $('dAgain').onclick=playAgain;
 function showDone(){if(!ST.over)return;if(REPLAY)return endReplay();only('done');loadMore();
-  if(CUSTOM&&!CUSTOM.demo&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden){$('offerLead').hidden=false;only('offer')}},2200)}const s=starsOf(ST.sunk.length);
+  if(CUSTOM&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden){$('offerLead').hidden=false;only('offer')}},2200)}const s=starsOf(ST.sunk.length);
   $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
@@ -822,7 +819,7 @@ function showDone(){if(!ST.over)return;if(REPLAY)return endReplay();only('done')
   $('sendRow').hidden=!(CUSTOM&&CUSTOM.sid&&!ST.sentScore);if(!$('sendRow').hidden){$('nameIn').value=store.get('cs-name','');$('sendRow').querySelector('button').textContent='Send my score'}
   $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=PREVIEW()||!CUSTOM||!CUSTOM.r;
   $('shareBtn').textContent=CUSTOM?'Share your result':'Share';
-  $('dAgain').hidden=PREVIEW()||!!(CUSTOM&&CUSTOM.demo);$('dLock').hidden=$('dAgain').hidden||!!CUSTOM;$('dLock').textContent=(REPLAYED?`Replay: ${REPLAYED.n} of 5 captured. `:'')+'Your score is locked. Keep playing for fun.';
+  $('dAgain').hidden=PREVIEW();$('dLock').hidden=$('dAgain').hidden||!!CUSTOM;$('dLock').textContent=(REPLAYED?`Replay: ${REPLAYED.n} of 5 captured. `:'')+'Your score is locked. Keep playing for fun.';
   $('dWords').innerHTML=DAY.words.map((w,i)=>`<div class="wp ${ST.sunk.includes(i)?'s':'lost'}">${[...w].map(c=>`<b>${c}</b>`).join('')}</div>`).join('');
   tick()}
 /* countdown to the next puzzle at midnight Eastern */
@@ -905,11 +902,11 @@ $('mSent').onclick=()=>{only('sent');const L=$('sentList'),G=sentList();L.innerH
     }).catch(()=>{c.querySelector('.w').textContent='Couldn’t load scores right now'})}};
 $('mkTry').onclick=()=>{if(MADE)startCustom(decodeMake(MADE.code))};
 function startCustom(m){const d=m&&makeCustom(m.w,m.t,m.code);if(!d){toast('That puzzle link is broken.');return cover()}
-  stopDemo();REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
+  REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
   say(ST.over?`${ST.sunk.length} of 5 captured.`:ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
 const QS=new URLSearchParams(location.search),LINK=decodeMake(QS.get('c')||'');if(LINK&&/^[a-z0-9]{8,16}$/.test(QS.get('id')||''))LINK.sid=QS.get('id');
 function gift(){only('gift');$('gTitle').textContent=LINK.n?`A puzzle from ${LINK.n}`:'A puzzle for you';$('gSub').textContent=`5 hidden words · Theme: ${LINK.t||'Made for you'}`}
-$('gPlay').onclick=()=>{startCustom(LINK);if(!store.get('cs-intro',''))intro(()=>closeAll())};
+$('gPlay').onclick=()=>{startCustom(LINK);firstDemo()};
 $('gToday').onclick=()=>cover();
 
 /* ---------- Two players: pass the phone ----------
@@ -942,7 +939,7 @@ function passTo(name,sub,then,btn){PASS=then;only('pass');$('pSub').textContent=
 $('pGo').onclick=()=>{const f=PASS;PASS=null;if(f)f()};
 $('pQuit').onclick=()=>{if(TWO){TWO.over=1;saveTwo()}TWO=null;SETUP=null;cover()};
 function showPass(){const n=TWO.names[TWO.turn];passTo(n,'Pass the phone to',showMine,`I’m ${n}, show my board`)}
-function showMine(){stopDemo();REPLAY=null;REPLAYED=null;const t=TWO.turn;DAY=TWO.days[t];ST=TWO.sts[t];CUSTOM=null;PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;TWO.busy=false;closeAll();
+function showMine(){REPLAY=null;REPLAYED=null;const t=TWO.turn;DAY=TWO.days[t];ST=TWO.sts[t];CUSTOM=null;PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;TWO.busy=false;closeAll();
   say(`<b>${TWO.names[t]}</b>, your move: call a letter, use Sonar, or tap a word to guess.`);draw()}
 function passTurn(){if(!TWO)return;TWO.turn^=1;TWO.busy=false;saveTwo();showPass()}
 function twoWin(){if(!TWO)return;const t=TWO.turn,me=TWO.names[t],st=TWO.sts[t];TWO.over=1;saveTwo();only('win2');SND.win();
@@ -964,40 +961,38 @@ $('gateHub').onclick=()=>{if(window.DG_APP)toApp({cmd:'home'});else location.hre
 /* the app tells the page when Plus changes: dgNative('store',{plus:true}) */
 if(!window.dgNative)window.dgNative=(cmd,d)=>{if(cmd!=='store'||!window.DG_APP)return;window.DG_APP.plus=!!(d&&d.plus);previewUI();if(!PREVIEW()&&!$('gate').hidden)closeAll()};
 
-/* ---------- Demo: a short auto-playing game on a fixed board (Jeff's rule: every game has a demo) ---------- */
-const DEMO_WORDS=['SAND','WAVES','SHELL','TOWEL','SUN'];
-function demoHi(q){document.querySelectorAll('.demoHi').forEach(e=>e.classList.remove('demoHi'));if(!q)return;const e=typeof q==='string'?document.querySelector(q):q;if(e)e.classList.add('demoHi')}
-function stopDemo(){if(!DEMO)return;DEMO.t.forEach(clearTimeout);DEMO=null;demoHi();$('demoBar').hidden=true;$('demoBlock').hidden=true}
-/* A guided walkthrough: the player taps Next, so each step can be read. Each step shows its words and red ring,
-   and Next runs what comes after. A step's run() may return how long its moves take. */
-function startDemo(){stopDemo();REPLAY=null;REPLAYED=null;TWO=null;const d=makeCustom(DEMO_WORDS,'At the beach','demo-board');DEMO={t:[],i:-1};CUSTOM={demo:1,n:'',t:'At the beach',w:DEMO_WORDS,code:'demo-board'};
-  DAY=d;ST=newState(CALLS);PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;closeAll();$('demoBar').hidden=false;$('demoBlock').hidden=false;
-  say('Tap a letter to call it.');draw();
-  const later=(f,ms)=>DEMO.t.push(setTimeout(()=>{if(DEMO)f()},ms)),call=L=>{pick=L;doCall()},calls=(w,gap)=>{[...w].forEach((L,i)=>later(()=>call(L),i*gap));return w.length*gap+300};
-  const open=()=>d.words.map((_,i)=>i).filter(i=>canTry(DAY,ST,i)),fill=wi=>{if(sel!==wi)pickWord(wi);typed=known(DAY,ST,wi).map((ch,k)=>ch?'':d.words[wi][k]).join('');drawBar()};
-  const steps=[
-   {t:'Five words about <b>the beach</b> are hidden on this board. Find them all to win.',hi:'#stage'},
-   {t:'Tap a letter to call it. Let’s call <b>E</b>.',hi:'.k[data-k="E"]'},
-   {run:()=>{call('E');return 300},t:'E is on the board, so <b>one</b> E lights up. That used 1 of your 15 calls.',hi:'#stage'},
-   {t:'Now <b>Z</b>.',hi:'.k[data-k="Z"]'},
-   {run:()=>{call('Z');return 300},t:'No Z here. The key turns <b>gray</b>, and it still used a call.',hi:'.k[data-k="Z"]'},
-   {run:()=>calls('ASLTO',750),t:'Keep calling. Gray keys have no more of that letter. The letters start to show the words.',hi:'#stage'},
-   {t:'<b>Sonar</b> is one free look each game. Tap it, then tap any dark square.',hi:'#sonarBtn'},
-   {run:()=>{sonarArm=true;draw();later(()=>{const c=d.cells.flat().find(x=>!ST.rev.includes(x));doSonar(c)},900);return 1200},t:'A letter lit up, and it didn’t use a call.',hi:'#stage'},
-   {t:'Ready to fill in the words? Tap <b>Guess now</b>. It also starts when your calls run out.',hi:'#goBtn'},
-   {run:()=>{startGuessing(DAY,ST);dropIn=true;draw();return 500},t:'Your letters drop into the <b>word boxes</b>. After this you can’t call more letters.',hi:'#tray'},
-   {t:'Tap a word box, then type the missing letters. <b>One wrong guess ends the game.</b>',hi:'#tray',run:()=>{const o=open();if(o.length)pickWord(o[0]);return 300}},
-   {run:()=>{const o=open();if(o.length){fill(sel>=0?sel:o[0]);later(doGuess,900)}return 1300},t:'Right! That word is <b>captured</b>.',hi:'#tray'},
-   {run:()=>{const o=open();o.forEach((wi,i)=>{later(()=>fill(wi),i*1300);later(doGuess,i*1300+800)});return o.length*1300+300},t:'All 5 captured! 3 words is ⭐, 4 is ⭐⭐, all 5 is ⭐⭐⭐.',hi:'#tray'},
-   {t:'Want more of a challenge? Pick <b>Hard</b> on the front page: one wrong <b>letter</b> ends the game.'}];
-  const show=s=>{demoHi(s.hi);$('demoText').innerHTML=s.t;$('demoStep').textContent=`Demo · ${DEMO.i+1} of ${steps.length}`;$('demoNext').disabled=false;$('demoNext').textContent=DEMO.i===steps.length-1?'Done':'Next'};
-  const next=()=>{if(!DEMO)return;DEMO.i++;if(DEMO.i>=steps.length){stopDemo();only('demoEnd');return}
-    const s=steps[DEMO.i],ms=s.run?s.run()||0:0;demoHi();$('demoNext').disabled=true;later(()=>show(s),ms)};
-  $('demoNext').onclick=next;next()}
-$('demoSkip').onclick=()=>{stopDemo();cover()};
-$('coverDemo').onclick=$('helpDemo').onclick=startDemo;
-$('deGo').onclick=()=>$('coverGo').onclick();
-$('deAgain').onclick=startDemo;
+/* ---------- The demo: Try it with a coach. A practice board of its own that never touches DAY or ST and saves nothing.
+   Real rules, checked by hand: one S, N and A light per call, shortest word first (SUN, then SAND, then WAVES), and
+   Sonar is already used, so the last call goes straight to the fill-in round. ---------- */
+function csBoard(stage){
+  const WORDS=[['SAND',[0,1,2,3]],['WAVES',[24,25,26,27,28]],['SUN',[5,11,17]]],LET=Array(36).fill('');WORDS.forEach(([w,cs])=>[...w].forEach((L,i)=>LET[cs[i]]=L));
+  const LIT=[0,1,2,25,28],GONE='SUNARTOILC';
+  stage.innerHTML='<div class="csD"></div>';const R=stage.firstChild;let wrap=()=>{};
+  /* v: what the board shows. sunk = captured word numbers, left = calls left, g = fill-in round, sel = word picked */
+  const paint=v=>{const rev=new Set(v.rev),own=c=>WORDS.findIndex(x=>x[1].includes(c));
+    const cells=LET.map((ch,c)=>{const wi=own(c);let cls='cell',t='';if(wi>=0&&v.sunk.includes(wi)){cls+=' on sunk';t=ch}else if(rev.has(c)){cls+=' on'+(wi===v.sel?' sel':'');t=ch}else if(c===14){cls+=' water';t='·'}return `<button type="button" class="${cls}" tabindex="-1">${t}</button>`}).join('');
+    const tray=WORDS.map(([w,cs],i)=>{const sk=v.sunk.includes(i);return `<button type="button" class="wp ${sk?'s':''}" data-w="${w}" tabindex="-1">${[...w].map((ch,k)=>`<b>${sk||(v.g&&rev.has(cs[k]))?ch:''}</b>`).join('')}</button>`}).join('');
+    const guess=v.sel>=0?`<div class="csG"><div class="q">Fill in the blanks</div><div class="csT"><b>S</b><b>A</b><b>N</b><b class="e"></b></div></div>`:`<div class="csTray${v.g?' play':''}">${tray}</div>`;
+    const kb=['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].map((r,ri)=>`<div class="kr">${ri===2&&v.sel>=0?'<button type="button" class="k wide" tabindex="-1">Enter</button>':''}${[...r].map(L=>`<button type="button" class="k ${GONE.includes(L)||(v.g&&L==='E')?'gone':''}${v.g&&v.sel<0?' csOff':''}" data-k="${L}" tabindex="-1">${L}</button>`).join('')}${ri===2&&v.sel>=0?'<button type="button" class="k wide" tabindex="-1">⌫</button>':''}</div>`).join('');
+    const bar=v.g?`<button type="button" tabindex="-1">${v.sel>=0?'Cancel':'Stop here'}</button><button type="button" class="csGo csOff" tabindex="-1">${v.sel>=0?'Guess':'Tap a word'}</button>`:'<button type="button" class="csSon" tabindex="-1">Sonar used</button><button type="button" class="csGo" tabindex="-1">Guess now</button>';
+    R.innerHTML=`<div class="top"><div class="csTh"><small>Theme</small><b>At the beach</b></div><div class="box${v.left<=3&&!v.g?' low':''}"><small>Calls</small><b>${v.left}</b></div><div class="box"><small>Captured</small><b>${v.sunk.length}/3</b></div></div>
+      <div class="csBd" style="--cell:var(--csC)">${cells}${v.stamp?`<div class="call sm">${v.stamp}</div>`:''}</div>${guess}<div class="csKb">${kb}</div><div class="csBar">${bar}</div>`};
+  const ALL=[...LIT,3,5,11,17,24,26,27];
+  return {to(n){if(n===0)paint({left:1,rev:LIT.concat(5,11,17),sunk:[2],g:0,sel:-1});
+      else if(n===1)paint({left:0,rev:LIT.concat(5,11,17,27),sunk:[2],g:1,sel:-1});
+      else if(n===2)paint({left:0,rev:LIT.concat(5,11,17,27),sunk:[2],g:1,sel:0});
+      else paint({left:0,rev:LIT.concat(3,5,11,17,27),sunk:[0,2],g:1,sel:-1,stamp:'Captured!'})},
+    tgt(n){return R.querySelector(n===0?'[data-k=E]':n===1?'[data-w=SAND]':'[data-k=D]')},
+    win(){paint({left:0,rev:ALL,sunk:[0,1,2],g:1,sel:-1})}}}
+function openDemo(play){smDemo({name:'Capital Ship',moves:[
+    {cap:'Words about the beach are hidden here. Tap a letter to call it and one square lights up. This is your last call. Tap E.',nudge:'Call E for this one. Tap the yellow key.'},
+    {cap:'Out of calls, so your letters drop into the word boxes. Tap the first word.',nudge:'Tap the first word box, the one that starts with S.'},
+    {cap:'It is SAND, so tap D. The demo taps Guess for you. One wrong guess ends a real game.',nudge:'S, A and N are in. The blank is D. Tap D.'}],
+    win:'Capture all 5 words for 3 stars. 4 words is 2 stars and 3 words is 1. You get 15 calls and one free Sonar.',
+    play:play||(()=>start(TODAY)),board:csBoard})}
+/* First time you start a game, the demo comes up on top of it. Skip or Play and the game is right there. */
+function firstDemo(){if(store.get('cs-intro',''))return;store.set('cs-intro','1');openDemo(()=>closeAll())}
+$('coverDemo').onclick=$('helpDemo').onclick=$('mIntro').onclick=()=>openDemo();
 
 /* ---------- Finish screen: ‹ smAisle Daily and More smAisle games (shared list from smaisle.app/daily/games.js) ---------- */
 function goOut(url){if(window.DG_APP)return toApp({cmd:'open',url});if(WEB)location.href=url;else window.open(url,'_blank','noopener')}
@@ -1018,12 +1013,14 @@ $('mPlus').onclick=()=>{$('offerLead').hidden=true;only('offer')};
 /* ---------- Start ---------- */
 ['helpVer','sVer','cvVer'].forEach(id=>$(id).textContent=VTXT);$('mVer').textContent=`Capital Ship · ${VTXT} · smAisle`;
 $('mBack').onclick=()=>{if(DAY)closeAll();else cover()};
-$('mFront').onclick=()=>{stopDemo();cover()};
+$('mFront').onclick=cover;
 /* smAisle home: same tab on the website, the app's own home inside smAisle Daily, a new tab elsewhere */
 ['mSm','coverSm'].forEach(id=>$(id).onclick=e=>{e.preventDefault();if(window.DG_APP)return toApp({cmd:'home'});if(WEB)location.href='https://smaisle.app/';else window.open('https://smaisle.app/','_blank','noopener')});$('howCalls').textContent=CALLS;
 if(WEB||window.DG_APP){$('coverHub').hidden=false;$('mHub').hidden=false;$('coverHub').onclick=e=>{e.preventDefault();goHub()};$('mHub').onclick=goHub}
 applyLook();sentUI();drawSound();previewUI();
 if(!agreed())only('terms');else{checkIn('open');LINK?gift():cover()}
 </script>
+<script>/* sound icon at the top right of the menu; it and Settings stay in step */
+(function(){var K='cs-sound',C='#segSound',m=document.querySelector('#menu');if(!m)return;var c=m.querySelector('.card,.sc')||m,x=c.querySelector('.x,[data-close]'),b=document.createElement('button');b.type='button';b.id='smSnd';b.setAttribute('style','position:absolute;top:9px;right:'+(x?'51px':'9px')+';width:38px;height:34px;padding:0;display:grid;place-items:center;background:var(--card,#fffdf6);color:var(--ink,#1a1814);border:2px solid var(--ink,#1a1814);border-radius:4px;z-index:3;cursor:pointer;touch-action:manipulation');if(getComputedStyle(c).position==='static')c.style.position='relative';c.appendChild(b);function on(){var v='on';try{v=(localStorage.getItem(K)||'on').replace(/"/g,'')}catch(e){}return v!=='off'}function draw(){var o=on();b.setAttribute('aria-label',o?'Turn sound off':'Turn sound on');b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5l5 4v-13l-5 4z" fill="currentColor"/>'+(o?'<path d="M16 9a4.2 4.2 0 0 1 0 6"/><path d="M18.6 6.5a8 8 0 0 1 0 11"/>':'<path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/>')+'</svg>'}function share(){try{localStorage.setItem('smaisle-sound',on()?'on':'off')}catch(e){}}b.onclick=function(e){e.stopPropagation();var v=on()?'off':'on';var b=document.querySelector(C+' button[data-v="'+v+'"]');if(b)b.click();draw();share()};document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest(C);setTimeout(function(){if(t)share();draw()},0)},true);draw()})();</script>
 </body>
 </html>

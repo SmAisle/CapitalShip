@@ -27,6 +27,11 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v37 (Nov 4)
+- One demo for every game (change list #30): Try it with a coach. The old walkthrough and the five intro cards are gone. "Try the demo" is on the cover, in How to Play and in Settings, and it comes up by itself the first time you start a game. Three real moves on a small practice board with the shared demo frame. It never touches the real game and saves nothing.
+- Source catch-up: v36 (sound icon) had only been added to index.html, so it is now in source/src.html too and a rebuild keeps it.
+- The iPhone app has its own bundled copy and does not have this yet.
+
 ## v35 (Nov 3)
 - Play again on the results screen. Daily and Archive: the same board starts fresh, in memory only, with "Your score is locked. Keep playing for fun." A replay saves, records and checks in nothing, and a reload drops it. When it ends the saved results and Share card come back. Make your own: Play again opens the empty form, or deals a new board after a Random one. Two players already had Play again. Hidden in the free preview.
 
