@@ -12,7 +12,7 @@ A daily word game played like battleship, from smAisle. Original design made wit
 
 ## Files
 - `index.html` is the whole game, built from `source/` with `python3 source/build.py` (src.html + logic.js).
-- 54 hand-written family-friendly themes in logic.js (THEMES), each 13-16 words of 3-7 letters. Themes go round in a shuffled order.
+- 164 hand-written family-friendly themes in logic.js (THEMES), 25+ words each of 3-7 letters (US states has 19, all that fit). Lines are name|old words|added words; the first 53 lines and their old words are frozen for days before Nov 23, 2026. Words can be added to any line; adding, removing or moving lines changes the schedule, so that needs a new cutover.
 - Calls tuned with a test robot (scratch): a player who guesses a word once half its letters show needs about 15 calls (median), so 18 leaves a few to spare.
 - `owner.html`: sign in with Jeff's Google account; opens / plays / finishes / win % / avg calls left per day (Eastern), streaks, versions, phone vs computer.
 
@@ -26,6 +26,10 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - No GitHub repo yet (needs one under SmAisle, e.g. LetterFleet) and not on smaisle.app; ask Jeff before pushing live.
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
+
+## v37 (Nov 4)
+- More content: 164 themes (was 53), 4,610 words (was about 770). Every day through Nov 22, 2026 stays exactly as it was, with its old words. From Nov 23 (No. 54, CUTOVER) each cycle shows every theme once in a shuffled order, new themes first the first time round, and no theme returns within 60 days (RETURN_GAP, or the whole list if shorter). Same for everyone.
+- Source caught up with v36 (the sound setting and menu sound icon were only in index.html).
 
 ## v35 (Nov 3)
 - Play again on the results screen. Daily and Archive: the same board starts fresh, in memory only, with "Your score is locked. Keep playing for fun." A replay saves, records and checks in nothing, and a reload drops it. When it ends the saved results and Share card come back. Make your own: Play again opens the empty form, or deals a new board after a Random one. Two players already had Play again. Hidden in the free preview.
