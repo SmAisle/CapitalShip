@@ -41,6 +41,9 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 ## v33 (Nov 3)
 - Correction from Jeff: the yellow ‹ smAisle Daily button shows on the cover only, never during play. During play the way back is the ‹ smAisle Daily row in the menu (website and app). The results screen keeps its row.
 
+## v39 (Nov 4)
+When the game ends, a yellow ‹ smAisle Daily button sits beside See results on the finished board, so one tap always leaves.
+
 ## v32 (Nov 3)
 - One way home (navigation standard): the yellow ‹ smAisle Daily button sits top left in the same spot on the cover and in the game, and now also shows in the smAisle Daily app (it posts home to the app). It replaces the white bar. smAisle Home is now a small link on the cover's version line, in place of See our other games. The cover now shows the version.
 

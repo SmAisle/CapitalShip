@@ -125,6 +125,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #bar button{flex:1;padding:10px 4px;border-radius:var(--r);border:2px solid var(--ink);color:var(--ink);background:var(--card);font:800 14px var(--sans);text-transform:uppercase;letter-spacing:.06em;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
 #bar button:active:not(:disabled){transform:translate(2px,2px);box-shadow:none}
 #bar #goBtn{flex:2.6;background:var(--btn);color:var(--btnInk);font-size:15px}
+#bar #finHub{flex:1.7;font-size:14px;white-space:nowrap}
 #bar #goBtn.nudge{animation:nudge .6s ease-in-out infinite alternate}
 #bar #sonarBtn{flex:1.4;background:var(--hi);color:var(--hiInk);font-size:16px;display:flex;align-items:center;justify-content:center;gap:7px}
 #bar #sonarBtn .plus1{background:var(--red);color:#fff;border-radius:99px;padding:2px 7px;font-size:12px;letter-spacing:0}
@@ -298,7 +299,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div id="tray"></div>
   <div id="guess" hidden><div class="q">Fill in the blanks</div><div id="gTiles"></div></div>
   <div id="kb"></div>
-  <div id="bar"><button id="sonarBtn" aria-label="Sonar, one free ping">Sonar <span class="plus1">+1</span></button><button id="cancelBtn" hidden>Cancel</button><button id="goBtn">Call</button></div>
+  <div id="bar"><button id="sonarBtn" aria-label="Sonar, one free ping">Sonar <span class="plus1">+1</span></button><button id="cancelBtn" hidden>Cancel</button><button id="finHub" class="hubBtn" hidden>‹ smAisle Daily</button><button id="goBtn">Call</button></div>
 </div>
 
 <div class="sheet" id="terms" hidden><div class="card">
@@ -543,7 +544,7 @@ function smDemo(o){
 </script>
 <script>
 /*LOGIC*/
-const VERSION='38',VDATE='Nov 4',GAME='cs',CALLS=15;
+const VERSION='39',VDATE='Nov 4',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -692,6 +693,7 @@ function drawKb(){const rows=['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'],g=sel>=0;$('kb
 /* Call round: [Guess now] [Call E]. Guessing round: [Stop here] [Tap a word], then [Cancel] [Guess]. */
 const blanks=()=>sel<0?0:known(DAY,ST,sel).filter(x=>!x).length;
 function drawBar(){const go=$('goBtn'),alt=$('cancelBtn'),g=sel>=0;$('guess').hidden=!g;$('tray').hidden=g;
+  $('finHub').hidden=!(ST.over&&(WEB||window.DG_APP));/* finished board: a way out beside See results */
   go.classList.remove('nudge');alt.hidden=true;
   if(ST.over){go.disabled=false;go.textContent='See results';return}
   if(TWO&&!g){go.disabled=true;go.textContent=TWO.busy?'…':'Call or guess';return}
@@ -997,7 +999,7 @@ $('coverDemo').onclick=$('helpDemo').onclick=$('mIntro').onclick=()=>openDemo();
 /* ---------- Finish screen: ‹ smAisle Daily and More smAisle games (shared list from smaisle.app/daily/games.js) ---------- */
 function goOut(url){if(window.DG_APP)return toApp({cmd:'open',url});if(WEB)location.href=url;else window.open(url,'_blank','noopener')}
 function goHub(){if(window.DG_APP)return toApp({cmd:'home'});goOut('https://smaisle.app/daily/')}
-$('dHub').onclick=$('wHub').onclick=goHub;
+$('dHub').onclick=$('wHub').onclick=$('finHub').onclick=goHub;
 let moreTried=false;
 function drawMore(){const S=window.SMAISLE;if(!S||!S.games)return;const G=S.games.filter(g=>g.id!=='cs'&&g.id!=='daily'&&g.url&&g.icon);if(!G.length)return;
   const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
