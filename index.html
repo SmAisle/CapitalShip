@@ -243,6 +243,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,-30%)}12%,80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-80%)}}
 @media (max-height:720px){#menu .card{gap:6px}#menu .go{padding:8px}#app{gap:4px}.k{height:37px}#msg{height:30px}.card{padding:12px 14px;gap:7px}.card h2{font-size:23px}.card li{font-size:14.5px;line-height:1.35}.card ul{gap:8px}.go{padding:10px}#qText{font-size:16.5px}.big{font-size:42px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mkH{display:flex;gap:8px;align-items:flex-start;font:600 13px/1.3 var(--sans);text-transform:none;letter-spacing:0}.mkH input{flex:none;width:20px;height:20px;margin:0}
 </style>
 <style id="smDemoCss">
 #smDemo{position:fixed;left:0;right:0;top:0;height:100vh;height:100dvh;z-index:50;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--sans,"Libre Franklin",Arial,sans-serif);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -320,7 +321,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="mh"><h1>Capital Ship</h1><div class="ln"><span id="cvDate"></span><span id="cvNo"></span></div></div>
   <p class="tag">Five hidden words. Call letters to find them, then capture them.</p>
   <button id="cvStats" hidden aria-label="Your stats"></button>
-  <div id="modeWrap"><div class="seg" id="segMode"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div><small id="modeNote"></small></div>
+  <div id="modeWrap" hidden><div class="seg" id="segMode"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div><small id="modeNote"></small></div>
   <button class="go" id="coverGo">Play today's puzzle</button>
   <div class="links"><button id="coverPast">Archive</button><span>·</span><button id="coverStats">Stats</button><span>·</span><button id="coverHow">How to Play</button><span>·</span><button id="coverDemo">Try the demo</button></div>
   <button class="go alt" id="coverMake">Make your own</button>
@@ -337,7 +338,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <li><b>Gray key</b> = no more of that letter.</li>
     <li><b>Sonar +1:</b> ping any square once a game, free.</li>
     <li>After <b id="howCalls">15</b> calls, <b>fill in the words</b>. One wrong guess ends the game.</li>
-    <li><b>Hard:</b> fill-in letters are checked as you type. One wrong letter ends the game.</li>
+    <li><b>Make your own</b> can be set to Hard: letters are checked as you type.</li>
     <li><b>Stars:</b> 3 words ⭐ · 4 words ⭐⭐ · all 5 ⭐⭐⭐</li>
   </ul>
   <button class="go" id="helpDemo">Try the demo</button>
@@ -383,7 +384,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
 <div class="sheet" id="stats" hidden><div class="card" style="position:relative">
   <button class="x" data-close aria-label="Close">✕</button>
   <h2>Your Stats</h2>
-  <div class="seg" id="segStats"><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div>
+  <div class="seg" id="segStats" hidden><button data-v="normal">Normal</button><button data-v="hard">Hard</button></div>
   <div class="statgrid" id="statgrid"></div>
   <div class="shead">Words captured</div>
   <div class="dist" id="dist"></div>
@@ -410,6 +411,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
     <label for="mkTheme">Theme</label><input id="mkTheme" class="soft" maxlength="24" placeholder="Like: Our family trip" autocomplete="off">
     <label>Your 5 words (3 to 7 letters)</label>
     <div class="words"><input class="mkW" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Word 1"><input class="mkW" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Word 2"><input class="mkW" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Word 3"><input class="mkW" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Word 4"><input class="mkW" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Word 5"></div>
+    <label class="mkH"><input type="checkbox" id="mkHard"> Hard: one wrong letter in the spelling ends the game</label>
     <label for="mkName">Your name (optional)</label><input id="mkName" class="soft" maxlength="16" placeholder="Shown to your friend" autocomplete="off">
     <p id="mkErr"></p>
     <button class="go" id="mkGo">Make my puzzle</button>
@@ -808,7 +810,7 @@ function starsOf(sunk){return sunk>=5?3:sunk===4?2:sunk===3?1:0}
 
 //module.exports={SIZE,NWORDS,EPOCH,THEMES,makeDay,newState,callLetter,guessWord,startGuessing,remaining,dayNo,dateOf,themeFor,starsOf,finishGame,known,canTry,sonarCell,makeCustom};
 
-const VERSION='39',VDATE='Nov 4',GAME='cs',CALLS=15;
+const VERSION='40',VDATE='Nov 6',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -901,9 +903,9 @@ async function checkIn(kind){
 }
 
 /* ---------- Saving ---------- */
-/* Normal and Hard share the daily board but keep separate saved games, stats and streaks. */
-let MODE=store.get('cs-mode','normal')==='hard'?'hard':'normal';
-const HARD=()=>MODE==='hard'&&!CUSTOM&&!TWO;
+/* Hard left the daily game in v40. It is now a Make your own option; old Hard results stay in storage, unused. */
+let MODE='normal';
+const HARD=()=>!!(CUSTOM&&CUSTOM.h)&&!TWO;
 const histKey=(m=MODE)=>m==='hard'?'cs-hist-h':'cs-hist';
 const skey=d=>'cs-d_'+d+(MODE==='hard'&&/^\d{4}-/.test(d)?'-h':'');
 function save(){if(!REPLAY)store.put(skey(DAY.date),ST)}
@@ -1037,7 +1039,7 @@ function closeAll(){document.querySelectorAll('.sheet').forEach(s=>s.hidden=true
 function closeSheet(s){s.hidden=true;if(!DAY)cover()}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeSheet(b.closest('.sheet')));
 document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2','gate'].includes(s.id))closeSheet(s)}));
-function cover(){if(REPLAY){REPLAY=null;ST=loadState(DAY.date);draw()}only('cover');const pv=PREVIEW();if(pv)MODE='normal';$('modeWrap').hidden=pv;document.querySelectorAll('#segMode button').forEach(b=>b.classList.toggle('sel',b.dataset.v===MODE));$('modeNote').textContent=MODE==='hard'?'In the guessing round, one wrong letter ends the game.':'In the guessing round, one wrong word ends the game.';const st=store.json(skey(TODAY),null),h=store.json(histKey(),{})[TODAY];
+function cover(){if(REPLAY){REPLAY=null;ST=loadState(DAY.date);draw()}only('cover');const pv=PREVIEW();if(pv)MODE='normal';$('modeWrap').hidden=true;document.querySelectorAll('#segMode button').forEach(b=>b.classList.toggle('sel',b.dataset.v===MODE));$('modeNote').textContent=MODE==='hard'?'In the guessing round, one wrong letter ends the game.':'In the guessing round, one wrong word ends the game.';const st=store.json(skey(TODAY),null),h=store.json(histKey(),{})[TODAY];
   $('cvDate').textContent=nice(TODAY,{weekday:'short',month:'short',day:'numeric',year:'numeric'});$('cvNo').textContent='Puzzle No. '+dayNo(TODAY);
   $('coverGo').textContent=h?'See today’s results':st&&st.calls&&st.calls.length?'Continue today’s puzzle':'Play today’s puzzle';
   const s=statsOf();$('cvStats').hidden=!s.played;if(s.played)$('cvStats').innerHTML=[[s.stars,'⭐ Stars'],[s.played,'Played'],[s.cur,'Streak'],[s.max,'Best streak']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
@@ -1108,9 +1110,9 @@ function b64u(s){return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=
 function unb64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return atob(s)}
 function scramble(t){const b=new TextEncoder().encode(t);return String.fromCharCode(...b.map((x,i)=>x^MK_KEY.charCodeAt(i%MK_KEY.length)^(i*7&255)))}
 function unscramble(t){const b=Uint8Array.from(t,(ch,i)=>ch.charCodeAt(0)^MK_KEY.charCodeAt(i%MK_KEY.length)^(i*7&255));return new TextDecoder().decode(b)}
-function encodeMake(m){return b64u(scramble(['1',m.t,m.n,m.w.join('.')].join('|')))}
-function decodeMake(code){try{const [v,t,n,w]=unscramble(unb64u(code)).split('|');const words=(w||'').split('.');
-  if(v!=='1'||words.length!==5||!words.every(x=>/^[A-Z]{3,7}$/.test(x)))return null;return {t:clean(t,24),n:clean(n,16),w:words,code}}catch(e){return null}}
+function encodeMake(m){return b64u(scramble(['1',m.t,m.n,m.w.join('.'),m.h?'h':''].join('|')))}
+function decodeMake(code){try{const [v,t,n,w,hf]=unscramble(unb64u(code)).split('|');const words=(w||'').split('.');
+  if(v!=='1'||words.length!==5||!words.every(x=>/^[A-Z]{3,7}$/.test(x)))return null;return {t:clean(t,24),n:clean(n,16),w:words,h:hf==='h'?1:0,code}}catch(e){return null}}
 function clean(t,n){return String(t||'').replace(/[<>&"|]/g,'').trim().slice(0,n)}
 function shareUrl(code,sid){return 'https://smaisle.app/CapitalShip/?c='+code+(sid?'&id='+sid:'')}
 /* keep it family friendly */
@@ -1125,11 +1127,11 @@ $('mkGo').onclick=()=>{const w=[...document.querySelectorAll('.mkW')].map(i=>i.v
   if(w.some(x=>x.length<3||x.length>7))return err('Each word needs 3 to 7 letters.');
   if(new Set(w).size<5)return err('Use 5 different words.');
   if(w.some(badText)||badText(t)||badText(n))return err('Let’s keep it family friendly. Try another word.');
-  const code=encodeMake({t,n,w});if(!makeCustom(w,t,code))return err('Those words don’t fit on the board. Try a shorter one.');
-  MADE={t,n,w,code};store.set('cs-name',n);checkIn('made');
+  const h=$('mkHard').checked?1:0,code=encodeMake({t,n,w,h});if(!makeCustom(w,t,code))return err('Those words don’t fit on the board. Try a shorter one.');
+  MADE={t,n,w,h,code};store.set('cs-name',n);checkIn('made');
   $('mkWords').innerHTML=w.map(x=>`<div class="wp s">${[...x].map(c=>`<b>${c}</b>`).join('')}</div>`).join('');
   $('mkForm').hidden=true;$('mkDone').hidden=false};
-$('mkAgain').onclick=()=>{document.querySelectorAll('.mkW').forEach(i=>i.value='');$('mkTheme').value='';$('mkForm').hidden=false;$('mkDone').hidden=true;$('mkErr').textContent=''};
+$('mkAgain').onclick=()=>{document.querySelectorAll('.mkW').forEach(i=>i.value='');$('mkTheme').value='';$('mkHard').checked=false;$('mkForm').hidden=false;$('mkDone').hidden=true;$('mkErr').textContent=''};
 /* Sending: each send gets a random id. The sender keeps a list (cs-sent); a friend who opened that link
    can send their name and score to Firestore at cs_shares/{id}/results/{device}, which the sender's list reads. */
 const SHARES='https://firestore.googleapis.com/v1/projects/'+FB_PROJ+'/databases/(default)/documents/cs_shares/';

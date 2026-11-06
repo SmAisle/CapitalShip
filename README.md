@@ -166,3 +166,6 @@ When the game ends, a yellow ‹ smAisle Daily button sits beside See results on
 ## v9 (Nov 2)
 - Guessing round (Jeff): when calls run out (or Guess now), the lit letters drop into the word boxes under the board, in place. Tap a box (or a lit square) and it opens large; type the blanks. Gray keys stay gray and can't be typed (a gray letter can't be in a blank). One wrong guess ends the game. "Stop here" (with a confirm) keeps the words sunk so far. Any word can be guessed, even with no letters showing.
 - Fair test player, a year of puzzles, 15 calls (stops when unsure): knows every word: all 5 on 93% of days; knows 9 in 10: 53%; knows 3 in 4: 22%. Avg about 4.4 words.
+
+## v40 (Nov 6)
+Hard left the daily game. It's now an option in Make your own: same 15 calls, with spelling checked letter by letter in the guessing round. The choice travels in the share link. Old Hard results stay on the device, unused.
