@@ -473,12 +473,6 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <button class="go alt hubBtn" id="wHub">‹ smAisle Daily</button>
 </div></div>
 
-<div class="sheet" id="gate" hidden><div class="card" style="text-align:center">
-  <h2>First word captured!</h2>
-  <p class="sub" style="margin:0">That’s the end of the free preview. Unlock the rest with smAisle Daily Plus: the full daily game, the Archive, Make your own and Two players.</p>
-  <button class="go" id="gateBuy" style="background:var(--hi);color:var(--hiInk)">Get smAisle Daily Plus</button>
-  <button class="go alt" id="gateHub" style="text-transform:none;letter-spacing:0">‹ smAisle Daily</button>
-</div></div>
 
 
 <div class="sheet" id="offer" hidden><div class="card" style="text-align:center;position:relative">
@@ -506,6 +500,7 @@ document.addEventListener('dblclick',function(e){e.preventDefault()},{passive:fa
   <div class="big" id="dBig"></div>
   <p class="sub" id="dSub"></p>
   <div class="recap" id="dWords"></div>
+  <div id="dPv" hidden style="text-align:center"><p class="sub" style="margin:0 0 8px;font-weight:700">Play a new one every day with smAisle Daily Plus</p><button class="go" id="dPvBuy" style="background:var(--hi);color:var(--hiInk);width:100%">Get smAisle Daily Plus</button></div>
   <form id="sendRow" hidden><label for="nameIn">Your name, so your friend sees your score</label><input id="nameIn" maxlength="16" autocomplete="off" placeholder="Leave blank to stay Someone"><button class="go">Send my score</button></form>
   <div class="shareRow"><button class="go" id="shareBtn">Share</button><button class="go alt hubBtn" id="dHub">‹ smAisle Daily</button></div>
   <button class="go alt" id="dSendBoard" hidden>Pass it to a friend</button>
@@ -546,7 +541,7 @@ function smDemo(o){
 </script>
 <script>
 /*LOGIC*/
-const VERSION='40',VDATE='Nov 6',GAME='cs',CALLS=15;
+const VERSION='41',VDATE='Nov 6',GAME='cs',CALLS=15;
 const VTXT=`v${VERSION} · ${VDATE}`;
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
@@ -560,7 +555,8 @@ const TODAY=todayET();
 /* One-time resets for testing: clears that day's saved game and result once per number (bump the number to reset again). */
 const RESET_DAYS={'2026-11-01':4};
 for(const [d,n] of Object.entries(RESET_DAYS)){const k='cs-reset_'+d;if(store.get(k,'')!==String(n)){try{localStorage.removeItem('cs-d_'+d)}catch(e){}const h=store.json('cs-hist',{});delete h[d];store.put('cs-hist',h);store.set(k,String(n))}}
-let REPLAY=null,REPLAYED=null;/* REPLAY: a finished daily or Archive board being played again for fun. It lives in memory only: nothing saves, records or checks in. */
+let REPLAY=null,REPLAYED=null,PVG=false;/* PVG: the free preview game (always PV_DATE), in memory only: nothing saves, records or checks in */
+/* REPLAY: a finished daily or Archive board being played again for fun. It lives in memory only: nothing saves, records or checks in. */
 let TWO=null,CUSTOM=null,sonarArm=false,DAY=null,ST=null,PAST=false,pick=null,sel=-1,typed='',lastLit=-1,justSunk=-1,dropIn=false;
 
 /* ---------- Look and theme ---------- */
@@ -623,7 +619,7 @@ function trimMap(m){const k=Object.keys(m).sort();while(k.length>60)delete m[k.s
 function inviteCode(){try{const c=localStorage.getItem('smaisle_code');if(c)return String(c).slice(0,40);const m=JSON.parse(localStorage.getItem('smaisle_codes')||'null');
   if(m&&typeof m==='object'){for(const k of ['daily15','abcdeal','gramble','all'])if(m[k])return String(m[k]).slice(0,40);const v=Object.values(m).find(x=>x);if(v)return String(v).slice(0,40)}}catch(e){}return 'unknown'}
 async function checkIn(kind){
-  if(!agreed())return;
+  if(!agreed()||PREVIEW())return;
   const day=TODAY,u=store.json('cs-usage',{first:day,days:0,opens:0,plays:0,o:{},p:{},r:{}});
   if(u.o[day]==null){u.days++;u.o[day]=0}
   if(kind==='open'){u.opens++;u.o[day]++}
@@ -644,9 +640,9 @@ let MODE='normal';
 const HARD=()=>!!(CUSTOM&&CUSTOM.h)&&!TWO;
 const histKey=(m=MODE)=>m==='hard'?'cs-hist-h':'cs-hist';
 const skey=d=>'cs-d_'+d+(MODE==='hard'&&/^\d{4}-/.test(d)?'-h':'');
-function save(){if(!REPLAY)store.put(skey(DAY.date),ST)}
+function save(){if(!REPLAY&&!PVG)store.put(skey(DAY.date),ST)}
 function loadState(date){const s=store.json(skey(date),null);return s&&s.calls?s:newState(CALLS)}
-function recordDay(){if(REPLAY)return;const hist=store.json(histKey(),{});if(hist[DAY.date])return;
+function recordDay(){if(REPLAY||PVG)return;const hist=store.json(histKey(),{});if(hist[DAY.date])return;
   hist[DAY.date]={win:ST.win,left:ST.left,sunk:ST.sunk.length,calls:ST.calls.length,...(DAY.date!==TODAY?{late:1}:{})};store.put(histKey(),hist);
   if(DAY.date===TODAY)markDone()}
 /* smAisle Daily hub: add this game to localStorage 'smaisle_done' {"YYYY-MM-DD":["cs",...]} */
@@ -667,8 +663,8 @@ addEventListener('resize',fitBoard);
 function keyState(L){const called=ST.calls.some(x=>x.l===L),seen=DAY.letters.some((ch,c)=>ch===L&&(ST.rev.includes(c)||ST.sunk.includes(DAY.own[c])));
   if((called||seen)&&remaining(DAY,ST,L)===0)return 'gone';return called?'called':''}
 function draw(){
-  if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')+(REPLAY?' · Replay':'')}
-  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||TWO)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
+  if(TWO){$('noLabel').textContent=TWO.names[TWO.turn];$('dateLabel').textContent='vs '+TWO.names[1-TWO.turn]}else if(CUSTOM){$('noLabel').textContent=CUSTOM.r?'Extra':'Custom';$('dateLabel').textContent=CUSTOM.r?'Random board':CUSTOM.n?'From '+CUSTOM.n:'Made for you'}else if(PVG){$('noLabel').textContent='Preview';$('dateLabel').textContent='Free game'}else{$('noLabel').textContent='No. '+DAY.no;$('dateLabel').textContent=nice(DAY.date,{weekday:'short',month:'short',day:'numeric'})+(PAST?' · Archive':'')+(REPLAY?' · Replay':'')}
+  $('themeName').textContent=DAY.theme;$('themeLab').textContent=(PAST||CUSTOM||TWO||PVG)?'Theme':"Today's theme";$('hardTag').hidden=!HARD();
   $('callsLeft').textContent=TWO?ST.calls.length:ST.left;$('callBox').classList.toggle('low',!TWO&&ST.left<=3&&!ST.over&&!ST.guessing);
   $('sunkCount').textContent=ST.sunk.length+'/'+DAY.words.length;
   const rev=new Set(ST.rev);
@@ -764,7 +760,7 @@ function doGuess(force){if(sel<0||(force!==true&&typed.length<blanks()))return;c
   else{justSunk=-1;say(TWO?`Not <b>${g}</b>. Your turn is over.`:HARD()?`Wrong letter. It was <b>${DAY.words[wi]}</b>.`:`Not <b>${g}</b>. It was <b>${DAY.words[wi]}</b>.`,1);afterMove();stamp('Nope');SND.wrong()}}
 function afterMove(){
   if(REPLAY){draw();if(ST.over){const r=REPLAY;setTimeout(()=>{if(REPLAY===r)endReplay()},ST.win?1100:1500)}return}
-  if(PREVIEW()&&!TWO&&!CUSTOM&&ST.sunk.length>=1&&!ST.over){save();draw();setTimeout(gateCheck,1400);return}
+  if(PVG){draw();if(ST.over)setTimeout(()=>{if(PVG)showDone()},ST.win?1100:1500);return}
   if(TWO){TWO.busy=true;saveTwo();draw();setTimeout(ST.over?twoWin:passTurn,ST.over?1500:1700);return}
   save();draw();
   if(ST.over){if(!CUSTOM){recordDay();if(!PAST)checkIn('done')}else checkIn('cdone');setTimeout(showDone,ST.win?1100:1500)}}
@@ -774,14 +770,19 @@ function only(id){document.querySelectorAll('.sheet').forEach(s=>s.hidden=s.id!=
 function closeAll(){document.querySelectorAll('.sheet').forEach(s=>s.hidden=true)}
 function closeSheet(s){s.hidden=true;if(!DAY)cover()}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeSheet(b.closest('.sheet')));
-document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2','gate'].includes(s.id))closeSheet(s)}));
+document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&!['terms','cover','quick','gift','hide','pass','win2'].includes(s.id))closeSheet(s)}));
 function cover(){if(REPLAY){REPLAY=null;ST=loadState(DAY.date);draw()}only('cover');const pv=PREVIEW();if(pv)MODE='normal';$('modeWrap').hidden=true;document.querySelectorAll('#segMode button').forEach(b=>b.classList.toggle('sel',b.dataset.v===MODE));$('modeNote').textContent=MODE==='hard'?'In the guessing round, one wrong letter ends the game.':'In the guessing round, one wrong word ends the game.';const st=store.json(skey(TODAY),null),h=store.json(histKey(),{})[TODAY];
   $('cvDate').textContent=nice(TODAY,{weekday:'short',month:'short',day:'numeric',year:'numeric'});$('cvNo').textContent='Puzzle No. '+dayNo(TODAY);
   $('coverGo').textContent=h?'See today’s results':st&&st.calls&&st.calls.length?'Continue today’s puzzle':'Play today’s puzzle';
+  if(pv){$('cvDate').textContent='Preview game';$('cvNo').textContent='Free sample';$('coverGo').textContent='Play the preview';$('cvStats').hidden=true;return}
   const s=statsOf();$('cvStats').hidden=!s.played;if(s.played)$('cvStats').innerHTML=[[s.stars,'⭐ Stars'],[s.played,'Played'],[s.cur,'Streak'],[s.max,'Best streak']].map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
-function start(date){REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
+function start(date){if(PREVIEW())return startPreview();PVG=false;REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=null;sonarArm=false;DAY=makeDay(date);PAST=date!==TODAY;ST=loadState(date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
   say(ST.over?(ST.win?'All five captured.':`${ST.sunk.length} of 5 captured.`):ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();
-  if(ST.over)setTimeout(showDone,300);else setTimeout(gateCheck,300)}
+  if(ST.over)setTimeout(showDone,300)}
+/* Free preview (Jeff, Nov 6): always the game of Fri Nov 6, 2026, every day. Starts fresh each time, saves nothing. */
+const PV_DATE='2026-11-06';
+function startPreview(){REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=null;PAST=false;PVG=true;sonarArm=false;dropIn=false;DAY=makeDay(PV_DATE);ST=newState(CALLS);
+  pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();say('Preview game. Tap a letter to call it.');draw()}
 document.querySelectorAll('#segMode button').forEach(b=>b.onclick=()=>{MODE=b.dataset.v;store.set('cs-mode',MODE);cover()});
 $('coverGo').onclick=()=>{start(TODAY);firstDemo()};
 $('coverHow').onclick=$('mHow').onclick=$('dHow').onclick=()=>only('help');
@@ -812,22 +813,22 @@ function drawStats(m=MODE){const s=statsOf(m);document.querySelectorAll('#segSta
 function startReplay(){REPLAY={};REPLAYED=null;ST=newState(CALLS);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;sonarArm=false;dropIn=false;closeAll();say('Replay. Your score is locked. Tap a letter.');draw()}
 function endReplay(){REPLAYED={n:ST.sunk.length};REPLAY=null;ST=loadState(DAY.date);sel=-1;typed='';lastLit=-1;justSunk=-1;draw();showDone()}
 /* Make your own: a fresh Random board after a random one, otherwise the Make your own form, empty. Two players has its own Play again (wAgain). */
-function playAgain(){if(!CUSTOM)return startReplay();if(CUSTOM.r){const m=randomMake();if(m){checkIn('rand');return startCustom(m)}}$('mkAgain').click();openMake()}
+function playAgain(){if(PVG)return startPreview();if(!CUSTOM)return startReplay();if(CUSTOM.r){const m=randomMake();if(m){checkIn('rand');return startCustom(m)}}$('mkAgain').click();openMake()}
 $('dAgain').onclick=playAgain;
 function showDone(){if(!ST.over)return;if(REPLAY)return endReplay();only('done');loadMore();
   if(CUSTOM&&PREVIEW()&&!ST.offered){ST.offered=1;save();setTimeout(()=>{if(!$('done').hidden){$('offerLead').hidden=false;only('offer')}},2200)}const s=starsOf(ST.sunk.length);
   $('dTitle').textContent=ST.win?'Brilliant!':s===2?'So close!':s===1?'Nice try!':'Tough one!';
   $('dStars').textContent='⭐'.repeat(s);
   $('dBig').textContent=`${ST.sunk.length}/5`;
-  $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`)+(HARD()?' · Hard':'');
+  $('dSub').textContent=(ST.win?'All five words captured.':`You captured ${ST.sunk.length} of 5 words.`)+(CUSTOM?` ${CUSTOM.n?CUSTOM.n+'’s':'A custom'} puzzle · ${DAY.theme}`:PVG?` Preview game · ${DAY.theme}`:` No. ${DAY.no} · ${DAY.theme}`)+(HARD()?' · Hard':'');
   $('sendRow').hidden=!(CUSTOM&&CUSTOM.sid&&!ST.sentScore);if(!$('sendRow').hidden){$('nameIn').value=store.get('cs-name','');$('sendRow').querySelector('button').textContent='Send my score'}
   $('dSendBoard').hidden=!CUSTOM;$('shareBtn').classList.toggle('alt',!$('sendRow').hidden);document.querySelector('#done .donegrid').hidden=!!CUSTOM;$('dMake').hidden=PREVIEW()||!CUSTOM||!CUSTOM.r;
   $('shareBtn').textContent=CUSTOM?'Share your result':'Share';
-  $('dAgain').hidden=PREVIEW();$('dLock').hidden=$('dAgain').hidden||!!CUSTOM;$('dLock').textContent=(REPLAYED?`Replay: ${REPLAYED.n} of 5 captured. `:'')+'Your score is locked. Keep playing for fun.';
+  $('dAgain').hidden=PREVIEW()&&!PVG;$('dAgain').textContent=PVG?'Play the preview again':'Play again';$('dPv').hidden=!PVG;$('shareBtn').hidden=PVG;$('dLock').hidden=$('dAgain').hidden||!!CUSTOM||PVG;$('dLock').textContent=(REPLAYED?`Replay: ${REPLAYED.n} of 5 captured. `:'')+'Your score is locked. Keep playing for fun.';
   $('dWords').innerHTML=DAY.words.map((w,i)=>`<div class="wp ${ST.sunk.includes(i)?'s':'lost'}">${[...w].map(c=>`<b>${c}</b>`).join('')}</div>`).join('');
   tick()}
 /* countdown to the next puzzle at midnight Eastern */
-function tick(){if($('done').hidden)return;if(CUSTOM){$('dNext').textContent='Custom puzzles don’t count toward your stats or streak.';return}if(PAST){$('dNext').textContent='Archive puzzle: played late, so it doesn’t count toward your streak.';return}
+function tick(){if($('done').hidden)return;if(PVG){$('dNext').textContent='';return}if(CUSTOM){$('dNext').textContent='Custom puzzles don’t count toward your stats or streak.';return}if(PAST){$('dNext').textContent='Archive puzzle: played late, so it doesn’t count toward your streak.';return}
   if(todayET()!==TODAY){$('dNext').textContent='Today’s new puzzle is out. Reopen the game to play it.';return}
   const et=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'})),mid=new Date(et);mid.setHours(24,0,0,0);const s=Math.max(0,Math.floor((mid-et)/1000));
   $('dNext').innerHTML=`Next puzzle in <b>${Math.floor(s/3600)}:${String(Math.floor(s%3600/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}</b>`;setTimeout(tick,1000)}
@@ -906,7 +907,7 @@ $('mSent').onclick=()=>{only('sent');const L=$('sentList'),G=sentList();L.innerH
     }).catch(()=>{c.querySelector('.w').textContent='Couldn’t load scores right now'})}};
 $('mkTry').onclick=()=>{if(MADE)startCustom(decodeMake(MADE.code))};
 function startCustom(m){const d=m&&makeCustom(m.w,m.t,m.code);if(!d){toast('That puzzle link is broken.');return cover()}
-  REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
+  PVG=false;REPLAY=null;REPLAYED=null;TWO=null;CUSTOM=m;DAY=d;PAST=false;sonarArm=false;ST=loadState(d.date);pick=null;sel=-1;typed='';lastLit=-1;justSunk=-1;closeAll();
   say(ST.over?`${ST.sunk.length} of 5 captured.`:ST.needSonar?SONAR_MSG:ST.guessing?guessMsg():ST.calls.length?`Welcome back. ${ST.left} calls left.`:'Tap a letter to call it.');draw();if(ST.over)setTimeout(showDone,300)}
 const QS=new URLSearchParams(location.search),LINK=decodeMake(QS.get('c')||'');if(LINK&&/^[a-z0-9]{8,16}$/.test(QS.get('id')||''))LINK.sid=QS.get('id');
 function gift(){only('gift');$('gTitle').textContent=LINK.n?`A puzzle from ${LINK.n}`:'A puzzle for you';$('gSub').textContent=`5 hidden words · Theme: ${LINK.t||'Made for you'}`}
@@ -943,7 +944,7 @@ function passTo(name,sub,then,btn){PASS=then;only('pass');$('pSub').textContent=
 $('pGo').onclick=()=>{const f=PASS;PASS=null;if(f)f()};
 $('pQuit').onclick=()=>{if(TWO){TWO.over=1;saveTwo()}TWO=null;SETUP=null;cover()};
 function showPass(){const n=TWO.names[TWO.turn];passTo(n,'Pass the phone to',showMine,`I’m ${n}, show my board`)}
-function showMine(){REPLAY=null;REPLAYED=null;const t=TWO.turn;DAY=TWO.days[t];ST=TWO.sts[t];CUSTOM=null;PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;TWO.busy=false;closeAll();
+function showMine(){PVG=false;REPLAY=null;REPLAYED=null;const t=TWO.turn;DAY=TWO.days[t];ST=TWO.sts[t];CUSTOM=null;PAST=false;sel=-1;typed='';pick=null;sonarArm=false;lastLit=-1;justSunk=-1;TWO.busy=false;closeAll();
   say(`<b>${TWO.names[t]}</b>, your move: call a letter, use Sonar, or tap a word to guess.`);draw()}
 function passTurn(){if(!TWO)return;TWO.turn^=1;TWO.busy=false;saveTwo();showPass()}
 function twoWin(){if(!TWO)return;const t=TWO.turn,me=TWO.names[t],st=TWO.sts[t];TWO.over=1;saveTwo();only('win2');SND.win();
@@ -953,17 +954,18 @@ $('wAgain').onclick=()=>{const n=TWO?TWO.names:SETUP.names;TWO=null;SETUP={names
 $('wToday').onclick=()=>{TWO=null;cover()};
 
 /* ---------- Preview (smAisle Daily Plus game) ----------
-   Capital Ship is a Plus game in smAisle Daily. Preview mode (?preview=1, or inside the app without Plus) plays today's
-   puzzle until the first word is sunk, then shows "Unlock the rest". Plus (or the plain website) unlocks everything. */
+   Capital Ship is a Plus game in smAisle Daily. Preview mode (?preview=1, or inside the app without Plus) always plays the
+   game of Nov 6, 2026 (PV_DATE, startPreview), the whole game, in memory only. The end screen offers Plus and
+   "Play the preview again". No Archive, Stats, Make your own or Two players. Plus (or the plain website) unlocks everything. */
 const PREVIEW=()=>new URLSearchParams(location.search).get('preview')==='1'&&!(window.DG_APP&&window.DG_APP.plus)||(!!window.DG_APP&&!window.DG_APP.plus);
 const toApp=m=>{try{window.webkit&&webkit.messageHandlers&&webkit.messageHandlers.dg&&webkit.messageHandlers.dg.postMessage(m)}catch(e){}};
-function previewUI(){const pv=PREVIEW();['coverPast','coverMake','coverTwo','mPast','mMake','mTwo','dPast','dMake'].forEach(id=>{const e=$(id);if(e)e.hidden=pv});
-  document.querySelectorAll('.links span:first-of-type').forEach(e=>e.hidden=pv);$('mPlus').hidden=!pv;if(pv)$('mSent').hidden=true;else sentUI()}
-function gateCheck(){if(PREVIEW()&&!TWO&&!CUSTOM&&!PAST&&ST&&ST.sunk.length>=1&&!ST.over){only('gate');return true}return false}
-$('gateBuy').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.href='https://smaisle.app/daily/#plus'};
-$('gateHub').onclick=()=>{if(window.DG_APP)toApp({cmd:'home'});else location.href='https://smaisle.app/daily/'};
+function previewUI(){const pv=PREVIEW();['coverPast','coverStats','coverMake','coverTwo','mPast','mStats','mMake','mTwo','dPast','dStats','dMake'].forEach(id=>{const e=$(id);if(e)e.hidden=pv});
+  document.querySelectorAll('#cover .links span').forEach((e,i)=>e.hidden=pv&&i<2);$('gToday').textContent=pv?'Play the preview instead':'Play today’s puzzle instead';$('mPlus').hidden=!pv;if(pv)$('mSent').hidden=true;else sentUI()}
+$('dPvBuy').onclick=()=>{if(window.DG_APP)toApp({cmd:'plus'});else location.href='https://smaisle.app/daily/#plus'};
 /* the app tells the page when Plus changes: dgNative('store',{plus:true}) */
-if(!window.dgNative)window.dgNative=(cmd,d)=>{if(cmd!=='store'||!window.DG_APP)return;window.DG_APP.plus=!!(d&&d.plus);previewUI();if(!PREVIEW()&&!$('gate').hidden)closeAll()};
+/* Plus arriving mid-preview switches straight to today's real game (nothing from the preview carries over) */
+if(!window.dgNative)window.dgNative=(cmd,d)=>{if(cmd!=='store'||!window.DG_APP)return;const was=PREVIEW();window.DG_APP.plus=!!(d&&d.plus);previewUI();
+  if(was&&!PREVIEW()){const inGame=PVG;PVG=false;DAY=null;ST=null;if(inGame)start(TODAY);else if(!$('cover').hidden||!$('done').hidden||!$('offer').hidden)cover()}};
 
 /* ---------- The demo: Try it with a coach. A practice board of its own that never touches DAY or ST and saves nothing.
    Real rules, checked by hand: one S, N and A light per call, shortest word first (SUN, then SAND, then WAVES), and
@@ -993,7 +995,7 @@ function openDemo(play){smDemo({name:'Capital Ship',moves:[
     {cap:'Out of calls, so your letters drop into the word boxes. Tap the first word.',nudge:'Tap the first word box, the one that starts with S.'},
     {cap:'It is SAND, so tap D. The demo taps Guess for you. One wrong guess ends a real game.',nudge:'S, A and N are in. The blank is D. Tap D.'}],
     win:'Capture all 5 words for 3 stars. 4 words is 2 stars and 3 words is 1. You get 15 calls and one free Sonar.',
-    play:play||(()=>start(TODAY)),board:csBoard})}
+    play:play||(()=>start(TODAY)),board:csBoard})}/* start() plays the preview game in preview mode */
 /* First time you start a game, the demo comes up on top of it. Skip or Play and the game is right there. */
 function firstDemo(){if(store.get('cs-intro',''))return;store.set('cs-intro','1');openDemo(()=>closeAll())}
 $('coverDemo').onclick=$('helpDemo').onclick=$('mIntro').onclick=()=>openDemo();

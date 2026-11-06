@@ -27,6 +27,13 @@ Version in How to play, menu and stats (v2 · Nov 2). No zoom (viewport max-scal
 - Name check: "WordSalvo" and "Word Fleet" are taken; "Letter Fleet" found free in a quick search (Nov 1).
 - No icon, sound, or vs-computer mode yet.
 
+## v41 (Nov 6)
+- Fixed free preview (Jeff, Nov 6): the preview (?preview=1, or the smAisle Daily app without Plus) is always the game of Fri Nov 6, 2026 (PV_DATE '2026-11-06', Desserts), every day, instead of today's puzzle. It is now the whole game (no stop after the first word). It runs in memory only: no saved game, results, streak, stats, Archive, smaisle_done or check-ins (checkIn does nothing in preview), and every open starts fresh.
+- Marked "Preview · Free game" in the game header, "Preview game · Free sample" and "Play the preview" on the cover. Archive and Stats are hidden in preview (Stats was still showing before).
+- End screen in preview: results, "Play a new one every day with smAisle Daily Plus" with Get smAisle Daily Plus (posts plus in the app, smaisle.app/daily/#plus on the web), the yellow ‹ smAisle Daily button and Play the preview again. No Share. The old "First word captured!" gate is gone.
+- If Plus arrives mid-preview (dgNative store plus:true), the page switches to today's real game, with no reload.
+- Website without ?preview=1 and Plus players: unchanged.
+
 ## v37 (Nov 4)
 - One demo for every game (change list #30): Try it with a coach. The old walkthrough and the five intro cards are gone. "Try the demo" is on the cover, in How to Play and in Settings, and it comes up by itself the first time you start a game. Three real moves on a small practice board with the shared demo frame. It never touches the real game and saves nothing.
 - Source catch-up: v36 (sound icon) had only been added to index.html, so it is now in source/src.html too and a rebuild keeps it.
